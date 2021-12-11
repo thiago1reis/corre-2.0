@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Login\LoginController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,7 +13,9 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::view('/','login')->name('home');
+Route::post('/login', [LoginController::class, 'login'])->name('login');
 
-Route::get('/', function () {
-    return view('login');
-});
+
+
+Route::get('/sistema',  [LoginController::class, 'painel'])->name('painel');

@@ -1,5 +1,10 @@
-.rodape{
-    border-top: 1px solid #c2c2c2
+body{
+    background-color: rgba(236, 243, 243, 0.781) !important;
+}
+
+.pagina-login{
+    margin-top: 90px; 
+    margin-bottom: 90px;
 }
 
 /* max-width  */

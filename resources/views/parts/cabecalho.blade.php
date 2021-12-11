@@ -1,10 +1,12 @@
-<div class="callout grid-container-fluid">
-    <div class="grid-x">
-        <div class="cell small-6">
-           <img class="float-left logo-corre " src="{{ asset('imagens/logo_corre.png') }}">
+<div class="container-fluid border-bottom border-2 p-3">
+    <div class="row">
+        <div class="col">
+            <img src="{{ asset('imagens/logo_corre.png') }}" class="float-start logo-corre" 
+                alt="logo-corre">
         </div>
-        <div class="cell small-6">
-            <img class="float-right logo-ifto" src="{{ asset('imagens/logo_ifto.png') }}">
+        <div class="col">
+            <img src="{{ asset('imagens/logo_ifto.png') }}" class="float-end logo-ifto" 
+                alt="logo-ifto">
         </div>
     </div>
 </div>

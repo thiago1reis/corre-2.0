@@ -11,5 +11,7 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.css('node_modules/foundation-sites/dist/css/foundation.css', 'public/site/foundation.css')
-    .scripts('node_modules/foundation-sites/dist/js/foundation.cjs.js', 'public/site/foundation.js')
+mix 
+ .scripts('node_modules/jquery/dist/jquery.js','public/site/jquery.js')
+ .scripts('node_modules/bootstrap/dist/js/bootstrap.js','public/site/bootstrap.js')
+ .sass('node_modules/bootstrap/scss/bootstrap.scss','public/site/bootstrap.css')
