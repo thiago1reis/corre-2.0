@@ -30,7 +30,7 @@ class LoginController extends Controller
     |--------------------------------------------------------------------------*/
     public function painel(){
         if(Auth::check() === true){
-            return view('sistema.painel');
+            return redirect()->route('painel');
         }
         return redirect()->route('home');
     }

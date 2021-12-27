@@ -7,10 +7,12 @@
     <title>CORRE</title>
     <link rel="stylesheet" href="{{ asset('site/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ asset('site/estilo.css') }}">
+    @livewireStyles
 </head>
 <body>
-    @yield('content')
+    {{ $slot }} 
     <script src="{{ asset('site/jquery.js') }}"></script> 
     <script src="{{ asset('site/bootstrap.js') }}"></script> 
+    @livewireScripts
 </body>
 </html>

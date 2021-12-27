@@ -1,7 +1,6 @@
-@extends('parts._layout')
-@section('content')
-@include('parts.cabecalho')
-<div class="pagina-login container ">
+
+@include('layouts.cabecalho')
+<div class="pagina-login container">
   <div class="row">
     <div class="col-sm-6 col-md-12 col-lg-4">{{-- Lado esquerdo --}}</div>
     <div class="col-sm-6 col-md-12 col-lg-4"> 
@@ -40,5 +39,4 @@
     <div class="col-sm-6 col-md-12 col-lg-4">{{-- Lado direito --}}</div>
   </div>
 </div> 
-@include('parts.rodape')
-@endsection
+@include('layouts.rodape')

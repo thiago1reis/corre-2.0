@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Login\LoginController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Livewire\{Alunos, Index, Painel};
 
 /*
 |--------------------------------------------------------------------------
@@ -13,9 +14,14 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::view('/','login')->name('home');
+
+
+Route::get('/', Index::class)->name('home');
+
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 
+Route::group(['prefix' => 'sistema', 'middleware' => ['auth']], function(){
+    Route::get('/',  Painel::class)->name('painel');
+    Route::get('alunos', Alunos::class, 'render')->name('alunos');
+});
 
-
-Route::get('/sistema',  [LoginController::class, 'painel'])->name('painel');
