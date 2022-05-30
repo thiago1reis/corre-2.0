@@ -24,4 +24,4 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['auth']], function(){
     Route::get('/',  Painel::class)->name('painel');
     Route::get('alunos', Alunos::class, 'render')->name('alunos');
 });
-
+ 
