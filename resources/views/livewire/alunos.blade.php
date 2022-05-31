@@ -2,11 +2,26 @@
 <div class="container-fluid">
     <fieldset class="border border-secondary p-3 mb-3">
         <legend  class="float-none w-auto">Adicionar Aluno</legend>
-        <form method="POST" wire:submit.prevent="create">
+        <form method="POST" wire:submit.prevent="store">
             <div>
+                {{--Alerta de Sucesso --}}
                 @if (session()->has('success'))
                     <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
                         <strong>Tudo certo!</strong> {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+                 {{--Alerta de Aviso --}}
+                @if (session('attention'))
+                    <div class="alert alert-warning alert-dismissible fade show mb-3" role="alert">
+                        <strong>Atenção!</strong> {{ session('attention') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+                {{--Alerta de Erro --}}
+                @if (session()->has('error'))
+                    <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+                        <strong>Erro!</strong> {{ session('error') }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif
@@ -21,25 +36,25 @@
                 <div class="col-sm-10">
                     <div class="row">
                         <div class="col-sm-4 my-2">
-                            <label for="nome" class="form-label">Nome:</label>
+                            <label for="nome" class="form-label">Nome: <span class="text-danger fw-bold">*</span></label>
                             <input type="text" class="form-control" id="nome" name="nome" wire:model="nome" placeholder="Digite o nome do aluno">
-                            @error('nome')<span class="text-danger" >{{ $message }}</span>@enderror
+                            @error('nome')<span class="text-danger" >Este campo é obrigatório</span>@enderror
                         </div>
 
                         <div class="col-sm-4 my-2">
-                            <label for="matricula" class="form-label">Matricula:</label>
+                            <label for="matricula" class="form-label">Matrícula: <span class="text-danger fw-bold">*</span></label>
                             <input type="text" class="form-control" id="matricula" name="matricula" wire:model="matricula" placeholder="Digite a matricula do aluno">
-                            @error('matricula')<span class="text-danger" >{{ $message }}</span>@enderror
+                            @error('matricula')<span class="text-danger" >Este campo é obrigatório</span>@enderror
                         </div>
 
                         <div class="col-sm-4 my-2">
-                            <label for="data_nascimento" class="form-label">Data de Nascimento:</label>
+                            <label for="data_nascimento" class="form-label">Data de Nascimento: <span class="text-danger fw-bold">*</span></label>
                             <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" wire:model="data_nascimento">
-                            @error('data_nascimento')<span class="text-danger" >{{ $message }}</span>@enderror
+                            @error('data_nascimento')<span class="text-danger" >Este campo é obrigatório</span>@enderror
                         </div>
 
                         <div class="col-sm-4 my-2">
-                            <label for="sexo" class="form-label">Sexo:</label><br>
+                            <label for="sexo" class="form-label">Sexo: <span class="text-danger fw-bold">*</span></label><br>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="sexo" id="inlineRadio1" wire:model="sexo" value="Feminino">
                                 <label class="form-check-label" for="inlineRadio1">Feminino</label>
@@ -53,7 +68,7 @@
                                 <input class="form-check-input" type="radio" name="sexo" id="inlineRadio3" wire:model="sexo" value="Outros" >
                                 <label class="form-check-label" for="inlineRadio3">Outros</label>
                             </div><br>
-                            @error('sexo')<span class="text-danger" >{{ $message }}</span>@enderror    
+                            @error('sexo')<span class="text-danger" >Este campo é obrigatório</span>@enderror    
                         </div>
 
                         <div class="col-sm-4 my-2">
@@ -82,20 +97,22 @@
                         </div>
 
                     </div>
-                </div>
-                <div>
-                    <button type="submit">Like Post</button>
+                    <div class=" my-3 float-end ">
+                        <span class="" wire:loading.delay.shortest>Carregando...</span> <!-- 50ms -->
+                        <button type="button" class="btn btn-outline-primary" wire:loading.attr="disabled" wire:loading.class.remove="btn-outline-primary" wire:loading.class="btn-outline-secondary">Importar</button>
+                        <button type="submit" class="btn btn-success" wire:loading.attr="disabled" wire:loading.class.remove="btn-success" wire:loading.class="btn-secondary">Adicionar</button>
+                    </div>
                 </div>
             </div>
         </form> 
     </fieldset>
-</div>
-<div class="container-fluid">
+
     <fieldset class="border border-secondary p-3 mb-3">
         <legend  class="float-none w-auto">Alunos Adicionados</legend> 
-        
             @foreach ($alunos as $aluno)
                 {{ $aluno->nome }}<br>
             @endforeach
     </fieldset>
 </div>
+
+

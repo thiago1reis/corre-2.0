@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-     /*--------------------------------------------------------------------------
+    /*--------------------------------------------------------------------------
     | Efetua o login
     |--------------------------------------------------------------------------*/
     public function login(Request $request){

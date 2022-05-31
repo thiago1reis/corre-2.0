@@ -3,7 +3,7 @@
     <div class="col-sm-6 col-md-12 col-lg-4">{{-- Lado esquerdo --}}</div>
     <div class="col-sm-6 col-md-12 col-lg-4"> 
       <fieldset class="border border-secondary p-3">
-      {{--Alerta de Erro --}}
+      {{--Alerta de Aviso --}}
         @if (session('attention'))
           <div class="alert alert-warning alert-dismissible fade show mb-3" role="alert">
             <strong>Atenção!</strong> {{ session('attention') }}
