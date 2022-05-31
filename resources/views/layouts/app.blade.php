@@ -10,7 +10,21 @@
     @livewireStyles
 </head>
 <body>
+   
+    {{--Acopla o cabeçalho no app--}}
+    @include('layouts.cabecalho') 
+
+    {{--Acopla o menu no app caso seja feita a autenticação --}}
+    @if(Auth::check() == true)  
+        @include('layouts.menu') 
+    @endif
+
+    {{--Renderiza o componente Livewire--}}
     {{ $slot }} 
+
+    {{--Acopla o rodapé no app--}}
+    @include('layouts.rodape') 
+  
     <script src="{{ asset('site/jquery.js') }}"></script> 
     <script src="{{ asset('site/bootstrap.js') }}"></script> 
     @livewireScripts

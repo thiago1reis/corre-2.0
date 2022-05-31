@@ -32,7 +32,7 @@
             </a>
             <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
               <li><a class="dropdown-item" href="#">Configurações</a></li>
-              <li><a class="dropdown-item" href="#">Sair</a></li>
+              <li><a class="dropdown-item" href="{{ route('logout') }}">Sair</a></li>
             </ul>
           </li>
         </ul>

@@ -19,6 +19,7 @@ use App\Http\Livewire\{Alunos, Index, Painel};
 Route::get('/', Index::class)->name('home');
 
 Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::group(['prefix' => 'sistema', 'middleware' => ['auth']], function(){
     Route::get('/',  Painel::class)->name('painel');

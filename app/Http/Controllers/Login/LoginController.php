@@ -35,7 +35,11 @@ class LoginController extends Controller
         return redirect()->route('home');
     }
 
-
-
-
+    /*--------------------------------------------------------------------------
+    | Efetua o logout
+    |--------------------------------------------------------------------------*/
+    public function logout(){
+        Auth::logout();
+        return redirect()->route('home');
+    }
 }
