@@ -11,6 +11,7 @@ class Alunos extends Component
     /*--------------------------------------------------------------------------
     | Definição de atributos
     |--------------------------------------------------------------------------*/
+    public $foto; 
     public $nome; 
     public $matricula; 
     public $data_nascimento;

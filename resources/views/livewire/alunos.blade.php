@@ -30,7 +30,11 @@
                 <div class="col-sm-2">
                     <div class="my-2">
                         <label for="foto" class="form-label">Foto:</label>
-                        <input class="form-control" type="file" id="foto" name="foto">
+                        <input class="form-control" type="file" id="foto" name="foto" wire:model="foto" onchange="previewImagem()">
+                        <figure class="figure">
+                            <img wire:model="foto" id="previewFoto" src="{{ asset('imagens/aluno.png') }}" class="figure-img img-fluid rounded border mt-4" alt="Foto do Aluno">
+                            <figcaption class="figure-caption text-end">Prévia da foto a ser adicionada.</figcaption>
+                        </figure>
                     </div>
                 </div>
                 <div class="col-sm-10">
@@ -43,7 +47,7 @@
 
                         <div class="col-sm-4 my-2">
                             <label for="matricula" class="form-label">Matrícula: <span class="text-danger fw-bold">*</span></label>
-                            <input type="text" class="form-control" id="matricula" name="matricula" wire:model="matricula" placeholder="Digite a matricula do aluno">
+                            <input type="text" class="form-control" id="matricula" name="matricula" wire:model="matricula" placeholder="Digite a matrícula do aluno">
                             @error('matricula')<span class="text-danger" >Este campo é obrigatório</span>@enderror
                         </div>
 
@@ -114,5 +118,17 @@
             @endforeach
     </fieldset>
 </div>
+<script>
+    function previewImagem()
+    {
+        var foto = document.querySelector('input[name=foto]').files[0];                                            
+        var preview = document.querySelector('#previewFoto');           
+        var reader = new FileReader();        
+        reader.onloadend = function () {preview.src = reader.result;}           
+        if(foto){reader.readAsDataURL(foto);}                                    
+        else{preview.src = "";}
+    }
+</script>
+
 
 
