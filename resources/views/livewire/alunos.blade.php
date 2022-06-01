@@ -1,4 +1,3 @@
-
 <div class="container-fluid">
     <fieldset class="border border-secondary p-3 mb-3">
         <legend  class="float-none w-auto">Adicionar Aluno</legend>
@@ -31,10 +30,12 @@
                     <div class="my-2">
                         <label for="foto" class="form-label">Foto:</label>
                         <input class="form-control" type="file" id="foto" name="foto" wire:model="foto" onchange="previewImagem()">
-                        <figure class="figure">
-                            <img wire:model="foto" id="previewFoto" src="{{ asset('imagens/aluno.png') }}" class="figure-img img-fluid rounded border mt-4" alt="Foto do Aluno">
-                            <figcaption class="figure-caption text-end">Prévia da foto a ser adicionada.</figcaption>
-                        </figure>
+                        @if($foto)
+                            <img class="figure-img img-fluid rounded border mt-4" alt="Foto do Aluno" src="{{ $foto->temporaryUrl() }}">
+                            <figcaption class="figure-caption text-end">Prévia da foto.</figcaption>
+                        @else
+                            <img class="figure-img img-fluid rounded border mt-4 bg-white" alt="Foto do Aluno" src="{{ asset('imagens/aluno.png') }}">
+                        @endif
                     </div>
                 </div>
                 <div class="col-sm-10">
@@ -77,12 +78,12 @@
 
                         <div class="col-sm-4 my-2">
                             <label for="telefone" class="form-label">Telefone:</label>
-                            <input type="text" class="form-control" id="telefone" name="telefone" wire:model="telefone" placeholder="(00) 00000-0000">
+                            <input type="text" class="form-control" id="telefone" name="telefone" wire:model="telefone" maxlength="15" placeholder="(00) 00000-0000">
                         </div>
 
                         <div class="col-sm-4 my-2">
                             <label for="email" class="form-label">Email:</label>
-                            <input type="text" class="form-control" id="email" name="email" wire:model="email" placeholder="nome@email.com">
+                            <input type="email" class="form-control" id="email" name="email" wire:model="email" placeholder="nome@email.com">
                         </div>
 
                         <div class="col-sm-4 my-2">
@@ -92,18 +93,23 @@
 
                         <div class="col-sm-4 my-2">
                             <label for="telefone_responsavel" class="form-label">Telefone do Responsável:</label>
-                            <input type="text" class="form-control" id="telefone_responsavel" name="telefone_responsavel" wire:model="telefone_responsavel" placeholder="(00) 00000-0000">
+                            <input type="text" class="form-control" id="telefone_responsavel" name="telefone_responsavel" maxlength="15" wire:model="telefone_responsavel" placeholder="(00) 00000-0000">
                         </div>
 
                         <div class="col-sm-12 my-2">
                             <label for="observacao" class="form-label">Observações:</label>
                             <textarea class="form-control" id="observacao" name="observacao" wire:model="observacao" style="height: 100px"></textarea>
                         </div>
-
                     </div>
                     <div class=" my-3 float-end ">
-                        <span class="" wire:loading.delay.shortest>Carregando...</span> <!-- 50ms -->
-                        <button type="button" class="btn btn-outline-primary" wire:loading.attr="disabled" wire:loading.class.remove="btn-outline-primary" wire:loading.class="btn-outline-secondary">Importar</button>
+                        {{-- Efeite de carregamento quando enviar o formulário--}}
+                        <div wire:loading.delay.shortest class="spinner-border spinner-border-sm text-secondary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        {{-- Frase de carregamento quando enviar o formulário--}}
+                        <span class="text-secondary " wire:loading.delay.shortest>Carregando...</span> <!-- 50ms -->
+                        {{-- botões do formulário --}}
+                        <button type="button" class="btn btn-outline-primary " wire:loading.attr="disabled" wire:loading.class.remove="btn-outline-primary" wire:loading.class="btn-outline-secondary">Importar</button>
                         <button type="submit" class="btn btn-success" wire:loading.attr="disabled" wire:loading.class.remove="btn-success" wire:loading.class="btn-secondary">Adicionar</button>
                     </div>
                 </div>

@@ -5,9 +5,13 @@ namespace App\Http\Livewire;
 use App\Models\Aluno;
 use Exception;
 use Livewire\Component;
+use Livewire\WithFileUploads;
+use Manny;
 
 class Alunos extends Component
 {
+   use WithFileUploads;
+   
     /*--------------------------------------------------------------------------
     | Definição de atributos
     |--------------------------------------------------------------------------*/
@@ -33,6 +37,23 @@ class Alunos extends Component
     ];
 
     /*--------------------------------------------------------------------------
+    | Adiciona mascara nos campos dos formulários
+    |--------------------------------------------------------------------------*/
+    public function updated($field)
+	{ 
+        //Campo Telefone
+		if ($field == 'telefone')
+		{
+			$this->telefone = Manny::mask($this->telefone, "(11) 11111-1111");
+		}
+        //Campo Telefone do responsável
+        if ($field == 'telefone_responsavel')
+		{
+			$this->telefone_responsavel = Manny::mask($this->telefone_responsavel, "(11) 11111-1111");
+		}
+	}
+    
+    /*--------------------------------------------------------------------------
     | Renderiza a página
     |--------------------------------------------------------------------------*/
     public function render()
@@ -46,6 +67,7 @@ class Alunos extends Component
     |--------------------------------------------------------------------------*/
     public function store()
     {
+       
         //Valida os campos Obrigatórios
         $this->validate();
        
