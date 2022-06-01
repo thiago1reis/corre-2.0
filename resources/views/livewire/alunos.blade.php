@@ -120,22 +120,64 @@
 
     <fieldset class="border border-secondary p-3 mb-3">
         <legend  class="float-none w-auto">Alunos Adicionados</legend> 
-            @foreach ($alunos as $aluno)
-                {{ $aluno->nome }}<br>
-            @endforeach
+            
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                              <th scope="col">Foto</th>
+                              <th scope="col">Nome</th>
+                              <th scope="col">Matrícula</th>
+                            
+                              <th scope="col">Telefone</th>
+                              <th scope="col">E-mail</th>
+                              
+                              
+                              <th scope="col">Ações</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @foreach ($alunos as $aluno)
+                            <tr>
+                              <th scope="row">  
+                                @if($aluno->foto)
+                                    <img style="width: 75px" class="img-thumbnail " src="{{ url("storage/{$aluno->foto}") }}"  alt="{{ $aluno->nome }}"> 
+                                @else 
+                                    <img style="width: 75px" class="img-thumbnail" src="{{ asset('imagens/aluno.png') }}" alt="{{ $aluno->nome }}"> 
+                                @endif
+                              </th>
+                              <td class="align-middle">{{ $aluno->nome }}</td>
+                              <td class="align-middle">{{ $aluno->matricula }}</td>
+                             
+                              <td class="align-middle">{{ $aluno->telefone }}</td>
+                              <td class="align-middle">{{ $aluno->email }}</td>
+                              
+                             
+                              <td class="align-middle">
+                                    <a class="me-3"><i title="Informações Datalhadas " class="icofont-ui-zoom-in"></i></a> 
+                                    <a class="me-3"><i title="Editar Dados" class="icofont-ui-edit"></i></a> 
+                                        <a class="me-3"><i title="Deletar Registro" class="icofont-ui-delete"></i></a> 
+                                  
+                              </td>
+                                
+                            
+                            </tr>
+                            @endforeach
+                          </tbody>
+                    </table>
+                </div>
+
+
+               
+
+                
+              
+
+            
+           
+           
+           
     </fieldset>
 </div>
-<script>
-    function previewImagem()
-    {
-        var foto = document.querySelector('input[name=foto]').files[0];                                            
-        var preview = document.querySelector('#previewFoto');           
-        var reader = new FileReader();        
-        reader.onloadend = function () {preview.src = reader.result;}           
-        if(foto){reader.readAsDataURL(foto);}                                    
-        else{preview.src = "";}
-    }
-</script>
-
 
 

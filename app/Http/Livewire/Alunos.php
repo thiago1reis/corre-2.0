@@ -70,22 +70,25 @@ class Alunos extends Component
     public function store()
     {
         
-       
-        //Valida os campos Obrigatórios
+        //Valida os campos Obrigatórios.
         $this->validate();
-    
-        
+
         //Verifica se a matrícula informada já existe.
         if(Aluno::where('matricula', $this->matricula)->exists()){
             return session()->flash('attention', 'Essa matrícula já pertence a outro aluno.');     
         }
 
+        //Faz o upload da foto do aluno.
         if($this->foto){
+            //Valida a extensão da foto.
             $this->validate([
                 'foto' => 'image|mimes:jpg,jpeg,png'
             ]);
+            //Renomeia o arquivo.
             $nomeArquivo = $this->matricula.'.'.$this->foto->getClientOriginalExtension();
-            $upload = $this->foto->storeAS('Alunos', $nomeArquivo);
+            //Faz o upload no diretório.
+            $upload = $this->foto->storeAS('Alunos', $nomeArquivo, 'public');
+            //Verifica se o upload da foto foi feito.
             if(!$upload){
                 return session()->flash('error', 'Não foi possível fazer o upload da foto.'); 
             }
