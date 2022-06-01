@@ -29,11 +29,12 @@ class Alunos extends Component
     /*--------------------------------------------------------------------------
     | Definição das validações
     |--------------------------------------------------------------------------*/
-    protected $rules = [
+    protected $rules = [  
         'nome' => 'required',
         'matricula' => 'required',
         'data_nascimento' => 'required',
-        'sexo' => 'required'
+        'sexo' => 'required',
+       
     ];
 
     /*--------------------------------------------------------------------------
@@ -52,7 +53,8 @@ class Alunos extends Component
 			$this->telefone_responsavel = Manny::mask($this->telefone_responsavel, "(11) 11111-1111");
 		}
 	}
-    
+
+
     /*--------------------------------------------------------------------------
     | Renderiza a página
     |--------------------------------------------------------------------------*/
@@ -67,18 +69,35 @@ class Alunos extends Component
     |--------------------------------------------------------------------------*/
     public function store()
     {
+        
        
         //Valida os campos Obrigatórios
         $this->validate();
-       
+    
+        
         //Verifica se a matrícula informada já existe.
         if(Aluno::where('matricula', $this->matricula)->exists()){
             return session()->flash('attention', 'Essa matrícula já pertence a outro aluno.');     
         }
 
+        if($this->foto){
+            $this->validate([
+                'foto' => 'image|mimes:jpg,jpeg,png'
+            ]);
+            $nomeArquivo = $this->matricula.'.'.$this->foto->getClientOriginalExtension();
+            $upload = $this->foto->storeAS('Alunos', $nomeArquivo);
+            if(!$upload){
+                return session()->flash('error', 'Não foi possível fazer o upload da foto.'); 
+            }
+        }
+        else{
+            $upload = '';
+        }
+       
         //Salva os dados.
         try{
             Aluno::create([
+                'foto' => $upload,
                 'nome' => $this->nome,
                 'matricula' => $this->matricula,
                 'data_nascimento' => $this->data_nascimento,
@@ -91,7 +110,8 @@ class Alunos extends Component
             ]);  
             session()->flash('success', 'Aluno foi adicionado com sucesso.');
             //Limpa os campos
-            $this->nome = "";
+            $this->foto = '';
+            $this->nome = '';
             $this->matricula = '';
             $this->data_nascimento = '';
             $this->sexo = '';

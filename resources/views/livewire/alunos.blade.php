@@ -29,7 +29,8 @@
                 <div class="col-sm-2">
                     <div class="my-2">
                         <label for="foto" class="form-label">Foto:</label>
-                        <input class="form-control" type="file" id="foto" name="foto" wire:model="foto" onchange="previewImagem()">
+                        <input class="form-control" type="file" id="foto" name="foto" wire:model="foto" >
+                        @error('foto')<span class="text-danger" >{{$message}}</span>@enderror
                         @if($foto)
                             <img class="figure-img img-fluid rounded border mt-4" alt="Foto do Aluno" src="{{ $foto->temporaryUrl() }}">
                             <figcaption class="figure-caption text-end">Prévia da foto.</figcaption>
