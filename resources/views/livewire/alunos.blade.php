@@ -110,74 +110,74 @@
                         {{-- Frase de carregamento quando enviar o formulário--}}
                         <span class="text-secondary " wire:loading.delay.shortest>Carregando...</span> <!-- 50ms -->
                         {{-- botões do formulário --}}
-                        <button type="button" class="btn btn-outline-primary " wire:loading.attr="disabled" wire:loading.class.remove="btn-outline-primary" wire:loading.class="btn-outline-secondary">Importar</button>
+                        <button type="button" class="btn btn-outline-primary " wire:loading.attr="disabled" wire:loading.class.remove="btn-outline-primary" wire:loading.class="btn-outline-secondary"><i class="icofont-ui-file"></i> Importar</button>
                         <button type="submit" class="btn btn-success" wire:loading.attr="disabled" wire:loading.class.remove="btn-success" wire:loading.class="btn-secondary">Adicionar</button>
                     </div>
                 </div>
             </div>
         </form> 
     </fieldset>
-
     <fieldset class="border border-secondary p-3 mb-3">
         <legend  class="float-none w-auto">Alunos Adicionados</legend> 
-            
                 <div class="table-responsive">
                     <table class="table">
-                        <thead>
+                         <thead>
                             <tr>
-                              <th scope="col">Foto</th>
-                              <th scope="col">Nome</th>
-                              <th scope="col">Matrícula</th>
-                            
-                              <th scope="col">Telefone</th>
-                              <th scope="col">E-mail</th>
-                              
-                              
-                              <th scope="col">Ações</th>
+                              <th width="100">Foto</th>
+                              <th width="300">Nome</th>
+                              <th width="200">Matrícula</th>
+                              <th width="200">Telefone</th>
+                              <th width="300">E-mail</th>
+                              <th width="100">Ações</th>
                             </tr>
                           </thead>
                           <tbody>
                             @foreach ($alunos as $aluno)
-                            <tr>
-                              <th scope="row">  
+                            <tr class="text-nowrap bd-highlight">
+                              <td class="align-middle" >  
                                 @if($aluno->foto)
                                     <img style="width: 75px" class="img-thumbnail " src="{{ url("storage/{$aluno->foto}") }}"  alt="{{ $aluno->nome }}"> 
                                 @else 
                                     <img style="width: 75px" class="img-thumbnail" src="{{ asset('imagens/aluno.png') }}" alt="{{ $aluno->nome }}"> 
                                 @endif
-                              </th>
-                              <td class="align-middle">{{ $aluno->nome }}</td>
-                              <td class="align-middle">{{ $aluno->matricula }}</td>
-                             
-                              <td class="align-middle">{{ $aluno->telefone }}</td>
-                              <td class="align-middle">{{ $aluno->email }}</td>
-                              
-                             
-                              <td class="align-middle">
-                                    <a class="me-3"><i title="Informações Datalhadas " class="icofont-ui-zoom-in"></i></a> 
-                                    <a class="me-3"><i title="Editar Dados" class="icofont-ui-edit"></i></a> 
-                                        <a class="me-3"><i title="Deletar Registro" class="icofont-ui-delete"></i></a> 
-                                  
                               </td>
-                                
-                            
+                              <td class="align-middle"><span>{{ $aluno->nome }}</span></td>
+                              <td class="align-middle">{{ $aluno->matricula }}</td>                        
+                              <td class="align-middle">{{ $aluno->telefone }}</td>
+                              <td class="align-middle">{{ $aluno->email }}</td>                         
+                              <td class="align-middle">
+                                    {{-- <a href="#" class="me-3 link-secondary text-decoration-none"><i title="Informações Datalhadas " class="icofont-ui-zoom-in"></i></a> 
+                                     --}}
+                                    <a type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" class="me-3 link-secondary text-decoration-none"><i title="Editar Dados" class="icofont-ui-edit"></i></a> 
+                                    <a href="#" class="me-3 link-secondary text-decoration-none"><i title="Deletar Registro" class="icofont-ui-delete"></i></a> 
+                              </td> 
                             </tr>
                             @endforeach
                           </tbody>
                     </table>
                 </div>
-
-
-               
-
-                
-              
-
-            
-           
-           
-           
+            </div> 
     </fieldset>
 </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Editar Dados</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 
