@@ -7,6 +7,7 @@ use Exception;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Manny;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class Alunos extends Component
 {
@@ -25,6 +26,10 @@ class Alunos extends Component
     public $responsavel;
     public $telefone_responsavel;
     public $observacao;
+    public $nomeEdit;
+
+    public Boolean $alter;
+    
 
     /*--------------------------------------------------------------------------
     | Definição das validações
@@ -55,6 +60,11 @@ class Alunos extends Component
 	}
 
 
+    public function alter(){
+        dd('entrei nessa porra');
+        $this->alter = true;
+    }
+
     /*--------------------------------------------------------------------------
     | Renderiza a página
     |--------------------------------------------------------------------------*/
@@ -68,8 +78,7 @@ class Alunos extends Component
     | Adiciona aluno no banco de dados
     |--------------------------------------------------------------------------*/
     public function store()
-    {
-        
+    { 
         //Valida os campos Obrigatórios.
         $this->validate();
 
@@ -126,5 +135,18 @@ class Alunos extends Component
          }catch(Exception $e){
            session()->flash('error', 'Não foi possível salvar os dados.');
          }
+    }
+
+  
+     
+    public function edit($id){
+        $aluno = Aluno::find($id);
+        $this->nomeEdit = $aluno->nome;
+       
+    }
+  
+    public function destroy($id){
+      Aluno::destroy($id);
+      session()->flash('successList', 'Registro do aluno deletado com sucesso.');
     }
 }
