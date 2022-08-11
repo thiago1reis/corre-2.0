@@ -23,10 +23,10 @@
         <form action="{{ route('login')}}" method="POST">
           @csrf
           <div class="mb-3">
-            <input type="email" class="form-control" id="email" name="email" placeholder="Digite o e-mail">
+            <input type="email" class="form-control" id="email" name="email" placeholder="Digite o e-mail" value="{{ old('email') }}">
           </div>
           <div class="mb-3">
-            <input type="password" class="form-control" id="password"name="password" placeholder="Digie a senha">
+            <input type="password" class="form-control" id="password"name="password" placeholder="Digie a senha" value="{{ old('password') }}">
           </div>
           <div class="d-grid mb-3">
             <button class="btn btn-success" type="submit">Entrar</button>

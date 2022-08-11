@@ -22,7 +22,7 @@ class LoginController extends Controller
             }
             return redirect()->back()->with('attention', 'Seu usuário está desativado temporariamente.');
         }
-        return redirect()->back()->withErrors(['Falha ao autenticar!']);
+        return redirect()->back()->withInput($request->input())->withErrors(['Falha ao autenticar!']);
     }
 
     /*--------------------------------------------------------------------------

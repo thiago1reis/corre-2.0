@@ -7,7 +7,7 @@ use Exception;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Manny;
-use phpDocumentor\Reflection\Types\Boolean;
+
 
 class Alunos extends Component
 {
@@ -26,10 +26,8 @@ class Alunos extends Component
     public $responsavel;
     public $telefone_responsavel;
     public $observacao;
-    public $nomeEdit;
+    public $aluno_delete_id;
 
-    public Boolean $alter;
-    
 
     /*--------------------------------------------------------------------------
     | Definição das validações
@@ -41,6 +39,7 @@ class Alunos extends Component
         'sexo' => 'required',
        
     ];
+    
 
     /*--------------------------------------------------------------------------
     | Adiciona mascara nos campos dos formulários
@@ -58,12 +57,6 @@ class Alunos extends Component
 			$this->telefone_responsavel = Manny::mask($this->telefone_responsavel, "(11) 11111-1111");
 		}
 	}
-
-
-    public function alter(){
-        dd('entrei nessa porra');
-        $this->alter = true;
-    }
 
     /*--------------------------------------------------------------------------
     | Renderiza a página
@@ -133,20 +126,38 @@ class Alunos extends Component
             $this->telefone_responsavel = '';
             $this->observacao = '';
          }catch(Exception $e){
-           session()->flash('error', 'Não foi possível salvar os dados.');
+           session()->flash('error', $e);
          }
     }
 
-  
-     
-    public function edit($id){
-        $aluno = Aluno::find($id);
-        $this->nomeEdit = $aluno->nome;
-       
+    /*--------------------------------------------------------------------------
+    | Adiciona aluno no banco de dados
+    |--------------------------------------------------------------------------*/
+    public function deleteConfirm($id)
+    {
+        $this->aluno_delete_id = $id; //student id
+        $this->dispatchBrowserEvent('show-delete-confirmation-modal');
     }
-  
-    public function destroy($id){
-      Aluno::destroy($id);
-      session()->flash('successList', 'Registro do aluno deletado com sucesso.');
+
+    /*--------------------------------------------------------------------------
+    | Adiciona aluno no banco de dados
+    |--------------------------------------------------------------------------*/
+    public function destroy()
+    {
+        $aluno = Aluno::where('id', $this->aluno_delete_id)->first();
+        $aluno->delete();
+        session()->flash('successList', 'Aluno deletado com sucesso!');
+        $this->dispatchBrowserEvent('close-modal');
+        $this->aluno_delete_id = '';
     }
+
+    /*--------------------------------------------------------------------------
+    | Cancela aluno selecionado e fecha a modal
+    |--------------------------------------------------------------------------*/
+    public function cancel()
+    {
+        $this->aluno_delete_id = '';
+        $this->dispatchBrowserEvent('close-modal');
+    }
+
 }
