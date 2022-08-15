@@ -1,6 +1,6 @@
 
 
-<p align="center"><img src="public/imagens/logo_corre.png" alt="logo-corre" style="background-color: #fff;"></p>
+<p align="center"><img src="public/imagens/logo_corre.png" alt="logo-corre"></p>
 
 
 ## Sobre o  C.O.R.R.E - 2.0

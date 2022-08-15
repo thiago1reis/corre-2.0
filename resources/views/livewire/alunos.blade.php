@@ -97,6 +97,7 @@
     </fieldset>
     <fieldset class="border border-secondary p-3 mb-3">
         <legend  class="float-none w-auto">Alunos Adicionados</legend> 
+        <input type="text" class="form-control 4 mb-3" id="search " name="search " wire:model="search" placeholder="Busque por nome ou matricula">
         @include('layouts.alertas.alertasList') 
         <div class="table-responsive">
             <table class="table">
@@ -132,7 +133,14 @@
                     @endforeach
                 </tbody>
             </table>
-        </div> 
+        </div>
+        {{-- {{ $alunos->links() }} --}}
+      
+        @if(isset($filtro))
+        {{ $alunos->appends($filtro)->links() }}
+        @else
+        {{ $alunos->links() }}
+        @endif 
     </fieldset>
 
     {{-- Modal para deletar --}}

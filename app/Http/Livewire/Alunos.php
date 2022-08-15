@@ -6,13 +6,15 @@ use App\Models\Aluno;
 use Exception;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 use Manny;
 
 
 class Alunos extends Component
-{
-   use WithFileUploads;
-   
+{   
+    use WithPagination; 
+    use WithFileUploads;
+
     /*--------------------------------------------------------------------------
     | Definição de atributos
     |--------------------------------------------------------------------------*/
@@ -27,7 +29,9 @@ class Alunos extends Component
     public $telefone_responsavel;
     public $observacao;
     public $aluno_delete_id;
-
+    public $search  = '';
+    protected $paginationTheme = 'bootstrap';
+   
 
     /*--------------------------------------------------------------------------
     | Definição das validações
@@ -37,7 +41,6 @@ class Alunos extends Component
         'matricula' => 'required',
         'data_nascimento' => 'required',
         'sexo' => 'required',
-       
     ];
     
 
@@ -59,11 +62,20 @@ class Alunos extends Component
 	}
 
     /*--------------------------------------------------------------------------
+    | Redefine a página para pagina 1 apos uma consulta apos acesser os elementos de outra página
+    |--------------------------------------------------------------------------*/
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+
+    /*--------------------------------------------------------------------------
     | Renderiza a página
     |--------------------------------------------------------------------------*/
     public function render()
     {
-        $alunos = Aluno::get();
+        $alunos = Aluno::where('nome', 'LIKE', "%{$this->search}%")->Orwhere('matricula', 'LIKE', "%{$this->search}%")->orderBy('id' , "DESC")->paginate(5); 
         return view('livewire.alunos', ['alunos' => $alunos]);
     }
 
