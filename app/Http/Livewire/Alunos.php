@@ -18,10 +18,21 @@ class Alunos extends Component
     /*--------------------------------------------------------------------------
     | Definição de atributos
     |--------------------------------------------------------------------------*/
-    public $foto, $nome, $matricula, $data_nascimento, $sexo, $telefone , $email, $responsavel, $telefone_responsavel, $observacao, $aluno_delete_id;
-    public $show_foto, $show_nome, $show_matricula, $show_data_nascimento, $show_sexo, $show_telefone, $show_email, $show_responsavel, $show_telefone_responsavel, $show_observacao;
+    public $foto, $nome, $matricula, $data_nascimento, $sexo, $telefone , $email, $responsavel, $telefone_responsavel, $observacao;
+
+    public $show_foto, $show_nome, $show_matricula, $show_data_nascimento, $show_sexo, $show_telefone, $show_email, $show_responsavel, 
+    $show_telefone_responsavel, $show_observacao;
+
+    public $aluno_edit_foto, $aluno_edit_nome, $aluno_edit_matricula, $aluno_edit_data_nascimento, $aluno_edit_sexo, $aluno_edit_telefone,
+    $aluno_edit_email, $aluno_edit_responsavel, $aluno_edit_telefone_responsavel, $aluno_edit_observacao;
+
+    public $aluno_delete_id;
+
     public $search  = '';
+
     protected $paginationTheme = 'bootstrap';
+
+    public $novaFoto;
 
     /*--------------------------------------------------------------------------
     | Definição das validações
@@ -48,8 +59,16 @@ class Alunos extends Component
 		{
 			$this->telefone_responsavel = Manny::mask($this->telefone_responsavel, "(11) 11111-1111");
 		}
+        if($this->aluno_edit_foto){
+            $this->previaFotoNova = $this->aluno_edit_foto->temporaryUrl();
+        }
+        if($this->foto){
+            $this->previaFoto = $this->foto->temporaryUrl();
+        }
+
 	}
 
+ 
     /*--------------------------------------------------------------------------
     | Redefine a página para pagina 1 apos uma consulta apos acesser os elementos de outra página
     |--------------------------------------------------------------------------*/
@@ -164,6 +183,26 @@ class Alunos extends Component
     }
 
 
+    public function selectEdit($id)
+    {
+       
+        // dd('to aquui');
+        $aluno = Aluno::where('id', $id)->first();
+        // $this->aluno_edit_id = $aluno->id;
+        $this->aluno_edit_foto = $aluno->foto;
+        $this->aluno_edit_nome = $aluno->nome; 
+        $this->aluno_edit_matricula = $aluno->matricula;
+        $this->aluno_edit_data_nascimento = $aluno->data_nascimento; 
+        $this->aluno_edit_sexo = $aluno->sexo; 
+        $this->aluno_edit_telefone = $aluno->telefone; 
+        $this->aluno_edit_email = $aluno->email; 
+        $this->aluno_edit_responsavel = $aluno->responsavel; 
+        $this->aluno_edit_telefone_responsavel = $aluno->telefone_responsavel;
+        $this->aluno_edit_observacao = $aluno->observacao;
+        $this->dispatchBrowserEvent('show-edit-student-modal');
+    }
+
+
 
 
     /*--------------------------------------------------------------------------
@@ -190,7 +229,7 @@ class Alunos extends Component
     /*--------------------------------------------------------------------------
     | Cancela aluno selecionado e fecha a modal
     |--------------------------------------------------------------------------*/
-    public function cancelDestroy()
+    public function cancelDelete()
     {
         $this->aluno_delete_id = '';
         $this->dispatchBrowserEvent('close-modal');
