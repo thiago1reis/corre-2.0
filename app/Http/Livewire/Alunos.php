@@ -18,20 +18,10 @@ class Alunos extends Component
     /*--------------------------------------------------------------------------
     | Definição de atributos
     |--------------------------------------------------------------------------*/
-    public $foto; 
-    public $nome; 
-    public $matricula; 
-    public $data_nascimento;
-    public $sexo;
-    public $telefone;
-    public $email;
-    public $responsavel;
-    public $telefone_responsavel;
-    public $observacao;
-    public $aluno_delete_id;
+    public $foto, $nome, $matricula, $data_nascimento, $sexo, $telefone , $email, $responsavel, $telefone_responsavel, $observacao, $aluno_delete_id;
+    public $show_foto, $show_nome, $show_matricula, $show_data_nascimento, $show_sexo, $show_telefone, $show_email, $show_responsavel, $show_telefone_responsavel, $show_observacao;
     public $search  = '';
     protected $paginationTheme = 'bootstrap';
-   
 
     /*--------------------------------------------------------------------------
     | Definição das validações
@@ -43,7 +33,6 @@ class Alunos extends Component
         'sexo' => 'required',
     ];
     
-
     /*--------------------------------------------------------------------------
     | Adiciona mascara nos campos dos formulários
     |--------------------------------------------------------------------------*/
@@ -74,7 +63,8 @@ class Alunos extends Component
     | Renderiza a página
     |--------------------------------------------------------------------------*/
     public function render()
-    {
+    {   
+        $this->nomePagina = 'Alunos'; 
         $alunos = Aluno::where('nome', 'LIKE', "%{$this->search}%")->Orwhere('matricula', 'LIKE', "%{$this->search}%")->orderBy('id' , "DESC")->paginate(5); 
         return view('livewire.alunos', ['alunos' => $alunos]);
     }
@@ -142,6 +132,40 @@ class Alunos extends Component
          }
     }
 
+    public function show($id)
+    {
+        $aluno = Aluno::where('id', $id)->first();
+        $this->show_foto = $aluno->foto;
+        $this->show_nome = $aluno->nome; 
+        $this->show_matricula = $aluno->matricula;
+        $this->show_data_nascimento = $aluno->data_nascimento; 
+        $this->show_sexo = $aluno->sexo; 
+        $this->show_telefone = $aluno->telefone; 
+        $this->show_email = $aluno->email; 
+        $this->show_responsavel = $aluno->responsavel; 
+        $this->show_telefone_responsavel = $aluno->telefone_responsavel;
+        $this->show_observacao = $aluno->observacao;
+        $this->dispatchBrowserEvent('show-view-student-modal');
+    }
+
+    public function closeShow()
+    {
+        $this->show_foto = '';
+        $this->show_nome = ''; 
+        $this->show_matricula = '';
+        $this->show_data_nascimento = ''; 
+        $this->show_sexo = ''; 
+        $this->show_telefone = ''; 
+        $this->show_email = ''; 
+        $this->show_responsavel = ''; 
+        $this->show_telefone_responsavel = '';
+        $this->show_observacao = '';
+        $this->dispatchBrowserEvent('close-modal');
+    }
+
+
+
+
     /*--------------------------------------------------------------------------
     | Adiciona aluno no banco de dados
     |--------------------------------------------------------------------------*/
@@ -166,7 +190,7 @@ class Alunos extends Component
     /*--------------------------------------------------------------------------
     | Cancela aluno selecionado e fecha a modal
     |--------------------------------------------------------------------------*/
-    public function cancel()
+    public function cancelDestroy()
     {
         $this->aluno_delete_id = '';
         $this->dispatchBrowserEvent('close-modal');

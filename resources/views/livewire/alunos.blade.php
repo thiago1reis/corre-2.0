@@ -97,7 +97,7 @@
     </fieldset>
     <fieldset class="border border-secondary p-3 mb-3">
         <legend  class="float-none w-auto">Alunos Adicionados</legend> 
-        <input type="text" class="form-control 4 mb-3" id="search " name="search " wire:model="search" placeholder="Busque por nome ou matricula">
+        <input type="text" class="form-control 4 mb-3" id="search " name="search " wire:model="search" placeholder="Busque por nome ou matrícula">
         @include('layouts.alertas.alertasList') 
         <div class="table-responsive">
             <table class="table">
@@ -125,7 +125,9 @@
                         <td class="align-middle">{{ $aluno->matricula }}</td>                        
                         <td class="align-middle">{{ $aluno->telefone }}</td>
                         <td class="align-middle">{{ $aluno->email }}</td>                         
-                        <td class="align-middle">  
+                        <td class="align-middle"> 
+                            {{-- <button class="btn btn-sm btn-secondary" wire:click="viewStudentDetails({{ $student->id }})">View</button> --}}
+                            <a type="button" wire:click="show({{ $aluno->id }})" data-bs-toggle="modal" data-bs-target="#exampleModal" class="me-3 link-secondary text-decoration-none"><i title="Visualizar Dados" class="icofont-ui-file"></i></a>
                             <a type="button" wire:click="edit({{ $aluno->id }})" data-bs-toggle="modal" data-bs-target="#exampleModal" class="me-3 link-secondary text-decoration-none"><i title="Editar Dados" class="icofont-ui-edit"></i></a>
                             <a type="button" wire:click="deleteConfirm({{ $aluno->id }})" class="me-3 link-secondary text-decoration-none"><i title="Deletar Registro" class="icofont-ui-delete"></i></a> 
                         </td> 
@@ -134,8 +136,6 @@
                 </tbody>
             </table>
         </div>
-        {{-- {{ $alunos->links() }} --}}
-      
         @if(isset($filtro))
         {{ $alunos->appends($filtro)->links() }}
         @else
@@ -143,19 +143,82 @@
         @endif 
     </fieldset>
 
+    {{-- Modal para vizualizar dados --}}
+    <div wire:ignore.self class="modal fade" id="showModal" tabindex="-1" data-bs-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="showModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Dados do Aluno</h5>
+                    <button type="button" class="btn-close" wire:click="closeShow" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th>Foto: </th>
+                                <td> @if($show_foto)
+                                    <img style="width: 75px" class="img-thumbnail " src="{{ url("storage/{$show_foto}") }}"  alt="{{ $show_nome }}"> 
+                                    @else 
+                                    <img style="width: 75px" class="img-thumbnail" src="{{ asset('imagens/aluno.png') }}" alt="{{ $show_nome }}"> 
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Nome:</th>
+                                <td>{{ $show_nome }}</td>
+                            </tr>
+                            <tr>
+                                <th>Matrícula:</th>
+                                <td>{{ $show_matricula }}</td>
+                            </tr>
+                            <tr>
+                                <th>Data de Nascimento:</th>
+                                <td>{{date('d/m/Y', strtotime($show_data_nascimento ))}}</td>
+                            </tr>
+                            <tr>
+                                <th>Sexo:</th>
+                                <td>{{ $show_sexo }}</td>
+                            </tr>
+                            <tr>
+                                <th>Telefone:</th>
+                                <td>{{ $show_telefone }}</td>
+                            </tr>
+                            <tr>
+                                <th>Email:</th>
+                                <td>{{ $show_email }}</td>
+                            </tr>
+                            <tr>
+                                <th>Responsável:</th>
+                                <td>{{ $show_responsavel }}</td>
+                            </tr>
+                            <tr>
+                                <th>Telefone do Responsável:</th>
+                                <td>{{ $show_telefone_responsavel }}</td>
+                            </tr>
+                            <tr>
+                                <th>Obeservações:</th>
+                                <td>{{ $show_observacao }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{-- Modal para deletar --}}
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true" data-keyboard="false" data-bs-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="deleteModalLabel">Deletar Aluno</h5>
-                    <button type="button" class="btn-close" wire:click="cancel" aria-label="Close"></button>
+                    <button type="button" class="btn-close" wire:click="cancelDestroy" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <h6>Tem certeza que deseja deletar os dados deste aluno?</h6>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" wire:click="cancel">Cancelar</button>
+                    <button type="button" class="btn btn-primary" wire:click="cancelDestroy">Cancelar</button>
                     <button type="button" class="btn btn-danger" wire:click="destroy">Deletar</button>
                 </div>
             </div>
@@ -165,9 +228,13 @@
 @push('scripts')
     <script>
         window.addEventListener('close-modal', event =>{
-            $('#addStudentModal').modal('hide');
+            $('#showModal').modal('hide');
             $('#editStudentModal').modal('hide');
             $('#deleteModal').modal('hide');
+        });
+
+        window.addEventListener('show-view-student-modal', event =>{
+            $('#showModal').modal('show');
         });
 
         window.addEventListener('show-edit-student-modal', event =>{
@@ -176,10 +243,6 @@
 
         window.addEventListener('show-delete-confirmation-modal', event =>{
             $('#deleteModal').modal('show');
-        });
-
-        window.addEventListener('show-view-student-modal', event =>{
-            $('#viewStudentModal').modal('show');
         });
     </script>
 @endpush
