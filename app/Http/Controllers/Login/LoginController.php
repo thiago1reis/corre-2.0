@@ -28,11 +28,11 @@ class LoginController extends Controller
     /*--------------------------------------------------------------------------
     | Verifica se foi feito o login e entra no painel administativo
     |--------------------------------------------------------------------------*/
-    public function painel(){
+    public function checkAuth(){
         if(Auth::check() === true){
             return redirect()->route('painel');
         }
-        return redirect()->route('home');
+        return redirect()->route('home')->with('attention', 'Sessão expirada, faça login novamente.');
     }
 
     /*--------------------------------------------------------------------------

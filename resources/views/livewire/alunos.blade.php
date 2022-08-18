@@ -145,7 +145,7 @@
     </fieldset>
 
     {{-- Modal para editar dados --}}
-    <div wire:ignore.self class="modal fade" id="editStudentModal" tabindex="-1" data-bs-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div wire:ignore.self class="modal fade" id="editModal" tabindex="-1" data-bs-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -332,16 +332,16 @@
     <script>
         window.addEventListener('close-modal', event =>{
             $('#showModal').modal('hide');
-            $('#editStudentModal').modal('hide');
+            $('#editModal').modal('hide');
             $('#deleteModal').modal('hide');
         });
 
-        window.addEventListener('show-view-student-modal', event =>{
+        window.addEventListener('show-view-modal', event =>{
             $('#showModal').modal('show');
         });
 
-        window.addEventListener('show-edit-student-modal', event =>{
-            $('#editStudentModal').modal('show');
+        window.addEventListener('show-edit-modal', event =>{
+            $('#editModal').modal('show');
         });
 
         window.addEventListener('show-delete-confirmation-modal', event =>{

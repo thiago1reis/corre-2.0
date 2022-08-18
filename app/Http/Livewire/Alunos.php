@@ -69,7 +69,6 @@ class Alunos extends Component
         }
 	}
 
- 
     /*--------------------------------------------------------------------------
     | Redefine a página para pagina 1 apos uma consulta apos acesser os elementos de outra página
     |--------------------------------------------------------------------------*/
@@ -78,13 +77,11 @@ class Alunos extends Component
         $this->resetPage();
     }
 
-
     /*--------------------------------------------------------------------------
     | Renderiza a página
     |--------------------------------------------------------------------------*/
     public function render()
     {   
-        $this->nomePagina = 'Alunos'; 
         $alunos = Aluno::where('nome', 'LIKE', "%{$this->search}%")->Orwhere('matricula', 'LIKE', "%{$this->search}%")->orderBy('id' , "DESC")->paginate(5); 
         return view('livewire.alunos', ['alunos' => $alunos]);
     }
@@ -171,7 +168,7 @@ class Alunos extends Component
         $this->show_responsavel = $aluno->responsavel; 
         $this->show_telefone_responsavel = $aluno->telefone_responsavel;
         $this->show_observacao = $aluno->observacao;
-        $this->dispatchBrowserEvent('show-view-student-modal');
+        $this->dispatchBrowserEvent('show-view-modal');
         
     }
 
@@ -205,7 +202,7 @@ class Alunos extends Component
         $this->edit_responsavel = $aluno->responsavel; 
         $this->edit_telefone_responsavel = $aluno->telefone_responsavel;
         $this->edit_observacao = $aluno->observacao;
-        $this->dispatchBrowserEvent('show-edit-student-modal');
+        $this->dispatchBrowserEvent('show-edit-modal');
     }
 
     public function edit(){
@@ -231,6 +228,7 @@ class Alunos extends Component
             $this->validate([
                 'edit_foto' => 'image|mimes:jpg,jpeg,png'
             ]);
+            //Remove foto atual 
             Storage::disk('public')->delete($aluno->foto);
             //Renomeia o arquivo.
             $nomeArquivo = $this->edit_matricula.'.'.$this->edit_foto->getClientOriginalExtension();
@@ -259,7 +257,7 @@ class Alunos extends Component
         ]);
         session()->flash('successList', 'Dados do aluno editado com sucesso!');
         //Limpa os campos
-        $this->foto = '';
+        $this->edit_foto = '';
         $this->edit_nome = '';
         $this->edit_matricula = '';
         $this->edit_data_nascimento = '';
@@ -277,16 +275,16 @@ class Alunos extends Component
 
     public function cancelEdit()
     {
-        $this->aluno_edit_foto = '';
-        $this->aluno_edit_nome = ''; 
-        $this->aluno_edit_matricula = '';
-        $this->aluno_edit_data_nascimento = ''; 
-        $this->aluno_edit_sexo = ''; 
-        $this->aluno_edit_telefone = ''; 
-        $this->aluno_edit_email = ''; 
-        $this->aluno_edit_responsavel = ''; 
-        $this->aluno_edit_telefone_responsavel = '';
-        $this->aluno_edit_observacao = '';
+        $this->edit_foto = '';
+        $this->edit_nome = ''; 
+        $this->edit_matricula = '';
+        $this->edit_data_nascimento = ''; 
+        $this->edit_sexo = ''; 
+        $this->edit_telefone = ''; 
+        $this->edit_email = ''; 
+        $this->edit_responsavel = ''; 
+        $this->edit_telefone_responsavel = '';
+        $this->edit_observacao = '';
         $this->previaFotoNova = '';
         $this->dispatchBrowserEvent('close-modal');
     }
@@ -296,12 +294,12 @@ class Alunos extends Component
     |--------------------------------------------------------------------------*/
     public function deleteConfirm($id)
     {
-        $this->aluno_delete_id = $id; //student id
+        $this->aluno_delete_id = $id; 
         $this->dispatchBrowserEvent('show-delete-confirmation-modal');
     }
 
     /*--------------------------------------------------------------------------
-    | Adiciona aluno no banco de dados
+    | Deleta os dados do aluno do banco de dados
     |--------------------------------------------------------------------------*/
     public function destroy()
     {
@@ -314,7 +312,7 @@ class Alunos extends Component
     }
 
     /*--------------------------------------------------------------------------
-    | Cancela aluno selecionado e fecha a modal
+    | Cancela a seleção do aluno que ia ter os dados deletados
     |--------------------------------------------------------------------------*/
     public function cancelDelete()
     {
