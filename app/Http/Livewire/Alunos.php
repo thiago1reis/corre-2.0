@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Aluno;
 use Exception;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
@@ -224,8 +225,28 @@ class Alunos extends Component
              return session()->flash('attentionModal', 'Essa matrícula já pertence a outro aluno.');   
         }
 
+        //Faz o upload da foto do aluno.
+        if($this->previaFotoNova){
+            //Valida a extensão da foto.
+            $this->validate([
+                'edit_foto' => 'image|mimes:jpg,jpeg,png'
+            ]);
+            Storage::disk('public')->delete($aluno->foto);
+            //Renomeia o arquivo.
+            $nomeArquivo = $this->edit_matricula.'.'.$this->edit_foto->getClientOriginalExtension();
+            //Faz o upload no diretório.
+            $upload = $this->edit_foto->storeAS('Alunos', $nomeArquivo, 'public');
+            //Verifica se o upload da foto foi feito.
+            if(!$upload){
+                return session()->flash('errorModal', 'Não foi possível fazer o upload da foto.'); 
+            }
+        }
+        else{
+            $upload =  $aluno->foto;
+        }
+
         $aluno->update([
-            // 'foto' => $upload,
+            'foto' => $upload,
             'nome' => $this->edit_nome,
             'matricula' => $this->edit_matricula,
             'data_nascimento' => $this->edit_data_nascimento,
@@ -238,7 +259,7 @@ class Alunos extends Component
         ]);
         session()->flash('successList', 'Dados do aluno editado com sucesso!');
         //Limpa os campos
-        // $this->foto = '';
+        $this->foto = '';
         $this->edit_nome = '';
         $this->edit_matricula = '';
         $this->edit_data_nascimento = '';
@@ -285,6 +306,7 @@ class Alunos extends Component
     public function destroy()
     {
         $aluno = Aluno::where('id', $this->aluno_delete_id)->first();
+        Storage::disk('public')->delete($aluno->foto);
         $aluno->delete();
         session()->flash('successList', 'Aluno deletado com sucesso!');
         $this->dispatchBrowserEvent('close-modal');
