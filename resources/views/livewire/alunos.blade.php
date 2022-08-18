@@ -21,7 +21,7 @@
                     <div class="row">
                         <div class="col-sm-4 my-2">
                             <label for="nome" class="form-label">Nome: <span class="text-danger fw-bold">*</span></label>
-                            <input type="text" class="form-control" id="nome" name="nome" wire:model="nome" placeholder="Digite o nome do aluno">
+                            <input type="text" class="form-control" id="nome" wire:model="nome" placeholder="Digite o nome do aluno">
                             @error('nome')<span class="text-danger" >Este campo é obrigatório</span>@enderror
                         </div>
 
@@ -126,7 +126,6 @@
                         <td class="align-middle">{{ $aluno->telefone }}</td>
                         <td class="align-middle">{{ $aluno->email }}</td>                         
                         <td class="align-middle"> 
-                            {{-- <button class="btn btn-sm btn-secondary" wire:click="viewStudentDetails({{ $student->id }})">View</button> --}}
                             <a type="button" wire:click="show({{ $aluno->id }})" class="me-3 link-secondary text-decoration-none"><i title="Visualizar Dados" class="icofont-ui-file"></i></a>
                             <a type="button" wire:click="selectEdit({{ $aluno->id }})" class="me-3 link-secondary text-decoration-none"><i title="Editar Dados" class="icofont-ui-edit"></i></a>
                             <a type="button" wire:click="deleteConfirm({{ $aluno->id }})" class="me-3 link-secondary text-decoration-none"><i title="Deletar Registro" class="icofont-ui-delete"></i></a> 
@@ -146,30 +145,28 @@
     </fieldset>
 
     {{-- Modal para editar dados --}}
-    <div wire:ignore.self class="modal fade" id="editStudentModal" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div wire:ignore.self class="modal fade" id="editStudentModal" tabindex="-1" data-bs-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Editar Aluno</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" wire:click="cancelEdit" aria-label="Close"></button>
                 </div>
-                   
                 <div class="modal-body">
-                    <form method="POST" wire:submit.prevent="store">
+                    @include('layouts.alertas.alertasModal')
+                    <form method="POST" wire:submit.prevent="edit">
                         <div class="row">
                             <div class="col-sm-2">
                                 <div class="my-2">
-                                    <label for="foto" class="form-label">Foto:</label>
-                                    <input class="form-control" type="file" id="foto" name="foto" wire:model="aluno_edit_foto" >
-                                    @error('foto')<span class="text-danger" >{{$message}}</span>@enderror
-                                    @if($aluno_edit_foto)  
+                                    <label for="edit_foto" class="form-label">Foto:</label>
+                                    <input class="form-control" type="file" id="edit_foto" wire:model="edit_foto" >
+                                    @error('edit_foto')<span class="text-danger" >{{$message}}</span>@enderror
+                                    @if($edit_foto)  
                                         @if($previaFotoNova)
                                             <img class="figure-img img-fluid rounded border mt-4" alt="Foto do Aluno" src="{{ $previaFotoNova }}">
                                             <figcaption class="figure-caption text-end">Prévia da foto.</figcaption>
                                         @else
-                                            <img class="figure-img img-fluid rounded border mt-4" alt="{{ $nome }}" src="{{ url("storage/{$aluno_edit_foto}") }}">
+                                            <img class="figure-img img-fluid rounded border mt-4" alt="{{ $nome }}" src="{{ url("storage/{$edit_foto}") }}">
                                         @endif        
                                     @else
                                         <img class="figure-img img-fluid rounded border mt-4 bg-white" alt="Foto do Aluno" src="{{ asset('imagens/aluno.png') }}">
@@ -179,64 +176,55 @@
                             <div class="col-sm-10">
                                 <div class="row">
                                     <div class="col-sm-4 my-2">
-                                        <label for="nome" class="form-label">Nome: <span class="text-danger fw-bold">*</span></label>
-                                        <input type="text" class="form-control" id="nome" name="nome" wire:model="aluno_edit_nome" placeholder="Digite o nome do aluno">
-                                        @error('nome')<span class="text-danger" >Este campo é obrigatório</span>@enderror
+                                        <label for="edit_nome" class="form-label">Nome: <span class="text-danger fw-bold">*</span></label>
+                                        <input type="text" class="form-control" id="edit_nome" wire:model="edit_nome" placeholder="Digite o nome do aluno">
+                                        @error('edit_nome')<span class="text-danger" >Este campo é obrigatório</span>@enderror
                                     </div>
-            
                                     <div class="col-sm-4 my-2">
-                                        <label for="matricula" class="form-label">Matrícula: <span class="text-danger fw-bold">*</span></label>
-                                        <input type="text" class="form-control" id="matricula" name="matricula" wire:model="aluno_edit_matricula" placeholder="Digite a matrícula do aluno">
-                                        @error('matricula')<span class="text-danger" >Este campo é obrigatório</span>@enderror
+                                        <label for="edit_matricula" class="form-label">Matrícula: <span class="text-danger fw-bold">*</span></label>
+                                        <input type="text" class="form-control" id="edit_matricula" wire:model="edit_matricula" placeholder="Digite a matrícula do aluno">
+                                        @error('edit_matricula')<span class="text-danger" >Este campo é obrigatório</span>@enderror
                                     </div>
-            
                                     <div class="col-sm-4 my-2">
-                                        <label for="data_nascimento" class="form-label">Data de Nascimento: <span class="text-danger fw-bold">*</span></label>
-                                        <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" wire:model="aluno_edit_data_nascimento">
-                                        @error('data_nascimento')<span class="text-danger" >Este campo é obrigatório</span>@enderror
+                                        <label for="edit_data_nascimento" class="form-label">Data de Nascimento: <span class="text-danger fw-bold">*</span></label>
+                                        <input type="date" class="form-control" id="edit_data_nascimento"  wire:model="edit_data_nascimento">
+                                        @error('edit_data_nascimento')<span class="text-danger" >Este campo é obrigatório</span>@enderror
                                     </div>
-            
                                     <div class="col-sm-5 my-2">
-                                        <label for="sexo" class="form-label">Sexo: <span class="text-danger fw-bold">*</span></label><br>
+                                        <label for="edit_sexo" class="form-label">Sexo: <span class="text-danger fw-bold">*</span></label><br>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="sexo" id="inlineRadio1" wire:model="aluno_edit_sexo" value="Feminino">
+                                            <input class="form-check-input" type="radio" id="inlineRadio1" wire:model="edit_sexo" value="Feminino">
                                             <label class="form-check-label" for="inlineRadio1">Feminino</label>
                                         </div>
-            
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="sexo" id="inlineRadio2" wire:model="aluno_edit_sexo" value="Masculino">
+                                            <input class="form-check-input" type="radio" id="inlineRadio2" wire:model="edit_sexo" value="Masculino">
                                             <label class="form-check-label" for="inlineRadio2">Masculino</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="sexo" id="inlineRadio3" wire:model="aluno_edit_sexo" value="Outros" >
+                                            <input class="form-check-input" type="radio" id="inlineRadio3" wire:model="edit_sexo" value="Outros" >
                                             <label class="form-check-label" for="inlineRadio3">Outros</label>
                                         </div><br>
-                                        @error('sexo')<span class="text-danger" >Este campo é obrigatório</span>@enderror    
+                                        @error('edit_sexo')<span class="text-danger" >Este campo é obrigatório</span>@enderror    
                                     </div>
-            
                                     <div class="col-sm-3 my-2">
-                                        <label for="telefone" class="form-label">Telefone:</label>
-                                        <input type="text" class="form-control" id="telefone" name="telefone" wire:model="aluno_edit_telefone" maxlength="15" placeholder="(00) 00000-0000">
+                                        <label for="edit_telefone" class="form-label">Telefone:</label>
+                                        <input type="text" class="form-control" id="edit_telefone" wire:model="edit_telefone" maxlength="15" placeholder="(00) 00000-0000">
                                     </div>
-            
                                     <div class="col-sm-4 my-2">
-                                        <label for="email" class="form-label">Email:</label>
-                                        <input type="email" class="form-control" id="email" name="email" wire:model="aluno_edit_email" placeholder="nome@email.com">
+                                        <label for="edit_email" class="form-label">Email:</label>
+                                        <input type="email" class="form-control" id="edit_email" wire:model="edit_email" placeholder="nome@email.com">
                                     </div>
-            
                                     <div class="col-sm-4 my-2">
-                                        <label for="responsavel" class="form-label">Responsável:</label>
-                                        <input type="text" class="form-control" id="responsavel" name="responsavel" wire:model="aluno_edit_responsavel" placeholder="Digite o nome do responsável pelo aluno">
+                                        <label for="edit_responsavel" class="form-label">Responsável:</label>
+                                        <input type="text" class="form-control" id="edit_responsavel" wire:model="edit_responsavel" placeholder="Digite o nome do responsável pelo aluno">
                                     </div>
-            
                                     <div class="col-sm-4 my-2">
-                                        <label for="telefone_responsavel" class="form-label">Telefone do Responsável:</label>
-                                        <input type="text" class="form-control" id="telefone_responsavel" name="telefone_responsavel" maxlength="15" wire:model="aluno_edit_telefone_responsavel" placeholder="(00) 00000-0000">
+                                        <label for="edit_telefone_responsavel" class="form-label">Telefone do Responsável:</label>
+                                        <input type="text" class="form-control" id="edit_telefone_responsavel" maxlength="15" wire:model="edit_telefone_responsavel" placeholder="(00) 00000-0000">
                                     </div>
-            
                                     <div class="col-sm-12 my-2">
-                                        <label for="observacao" class="form-label">Observações:</label>
-                                        <textarea class="form-control" id="observacao" name="observacao" wire:model="aluno_edit_observacao" style="height: 100px"></textarea>
+                                        <label for="edit_observacao" class="form-label">Observações:</label>
+                                        <textarea class="form-control" id="edit_observacao"  wire:model="edit_observacao" style="height: 100px"></textarea>
                                     </div>
                                 </div>
                                 <div class=" my-3 float-end ">
@@ -247,14 +235,12 @@
                                     {{-- Frase de carregamento quando enviar o formulário--}}
                                     <span class="text-secondary " wire:loading.delay.shortest>Carregando...</span> <!-- 50ms -->
                                     {{-- botões do formulário --}}
-                                    <button type="button" class="btn btn-outline-primary " wire:loading.remove><i class="icofont-ui-file"></i> Importar</button>
-                                    <button type="submit" class="btn btn-success" wire:loading.attr="disabled" wire:loading.class.remove="btn-success" wire:loading.class="btn-secondary">Adicionar</button>
+                                    <button type="button" class="btn btn-primary" wire:click="cancelEdit" wire:loading.attr="disabled" wire:loading.class.remove="btn-primary" wire:loading.class="btn-secondary">Cancelar</button>
+                                    <button type="submit" class="btn btn-success" wire:loading.attr="disabled" wire:loading.class.remove="btn-success" wire:loading.class="btn-secondary">Salvar</button>
                                 </div>
                             </div>
                         </div>
                     </form> 
-                   
-                       
                 </div>
             </div>
         </div>

@@ -23,49 +23,49 @@ class Alunos extends Component
     public $show_foto, $show_nome, $show_matricula, $show_data_nascimento, $show_sexo, $show_telefone, $show_email, $show_responsavel, 
     $show_telefone_responsavel, $show_observacao;
 
-    public $aluno_edit_foto, $aluno_edit_nome, $aluno_edit_matricula, $aluno_edit_data_nascimento, $aluno_edit_sexo, $aluno_edit_telefone,
-    $aluno_edit_email, $aluno_edit_responsavel, $aluno_edit_telefone_responsavel, $aluno_edit_observacao;
+    public $edit_id, $edit_foto, $edit_nome, $edit_matricula, $edit_data_nascimento, $edit_sexo, $edit_telefone,
+    $edit_email, $edit_responsavel, $edit_telefone_responsavel, $edit_observacao;
 
     public $aluno_delete_id;
 
-    public $search  = '';
+    public $search;
+
+    public $previaFotoNova, $previaFoto; 
 
     protected $paginationTheme = 'bootstrap';
 
-    public $novaFoto;
-
-    /*--------------------------------------------------------------------------
-    | Definição das validações
-    |--------------------------------------------------------------------------*/
-    protected $rules = [  
-        'nome' => 'required',
-        'matricula' => 'required',
-        'data_nascimento' => 'required',
-        'sexo' => 'required',
-    ];
-    
     /*--------------------------------------------------------------------------
     | Adiciona mascara nos campos dos formulários
     |--------------------------------------------------------------------------*/
     public function updated($field)
 	{ 
-        //Campo Telefone
 		if ($field == 'telefone')
 		{
 			$this->telefone = Manny::mask($this->telefone, "(11) 11111-1111");
 		}
-        //Campo Telefone do responsável
+       
         if ($field == 'telefone_responsavel')
 		{
 			$this->telefone_responsavel = Manny::mask($this->telefone_responsavel, "(11) 11111-1111");
 		}
-        if($this->aluno_edit_foto){
-            $this->previaFotoNova = $this->aluno_edit_foto->temporaryUrl();
-        }
-        if($this->foto){
-            $this->previaFoto = $this->foto->temporaryUrl();
+
+        if ($field == 'edit_telefone')
+		{
+			$this->edit_telefone = Manny::mask($this->edit_telefone, "(11) 11111-1111");
+		}
+
+        if ($field == 'edit_telefone_responsavel')
+		{
+			$this->edit_telefone_responsavel = Manny::mask($this->edit_telefone_responsavel, "(11) 11111-1111");
+		}
+
+        if($field == 'edit_foto'){
+            $this->previaFotoNova = $this->edit_foto->temporaryUrl();
         }
 
+        if($field == 'foto'){
+            $this->previaFoto = $this->foto->temporaryUrl();
+        }
 	}
 
  
@@ -94,7 +94,12 @@ class Alunos extends Component
     public function store()
     { 
         //Valida os campos Obrigatórios.
-        $this->validate();
+        $this->validate([ 
+            'nome' => 'required',
+            'matricula' => 'required',
+            'data_nascimento' => 'required',
+            'sexo' => 'required',
+        ]);
 
         //Verifica se a matrícula informada já existe.
         if(Aluno::where('matricula', $this->matricula)->exists()){
@@ -146,6 +151,7 @@ class Alunos extends Component
             $this->responsavel = '';
             $this->telefone_responsavel = '';
             $this->observacao = '';
+            $this->previaFoto = '';
          }catch(Exception $e){
            session()->flash('error', $e);
          }
@@ -165,6 +171,7 @@ class Alunos extends Component
         $this->show_telefone_responsavel = $aluno->telefone_responsavel;
         $this->show_observacao = $aluno->observacao;
         $this->dispatchBrowserEvent('show-view-student-modal');
+        
     }
 
     public function closeShow()
@@ -185,25 +192,83 @@ class Alunos extends Component
 
     public function selectEdit($id)
     {
-       
-        // dd('to aquui');
         $aluno = Aluno::where('id', $id)->first();
-        // $this->aluno_edit_id = $aluno->id;
-        $this->aluno_edit_foto = $aluno->foto;
-        $this->aluno_edit_nome = $aluno->nome; 
-        $this->aluno_edit_matricula = $aluno->matricula;
-        $this->aluno_edit_data_nascimento = $aluno->data_nascimento; 
-        $this->aluno_edit_sexo = $aluno->sexo; 
-        $this->aluno_edit_telefone = $aluno->telefone; 
-        $this->aluno_edit_email = $aluno->email; 
-        $this->aluno_edit_responsavel = $aluno->responsavel; 
-        $this->aluno_edit_telefone_responsavel = $aluno->telefone_responsavel;
-        $this->aluno_edit_observacao = $aluno->observacao;
+        $this->edit_id = $aluno->id;
+        $this->edit_foto = $aluno->foto;
+        $this->edit_nome = $aluno->nome; 
+        $this->edit_matricula = $aluno->matricula;
+        $this->edit_data_nascimento = $aluno->data_nascimento; 
+        $this->edit_sexo = $aluno->sexo; 
+        $this->edit_telefone = $aluno->telefone; 
+        $this->edit_email = $aluno->email; 
+        $this->edit_responsavel = $aluno->responsavel; 
+        $this->edit_telefone_responsavel = $aluno->telefone_responsavel;
+        $this->edit_observacao = $aluno->observacao;
         $this->dispatchBrowserEvent('show-edit-student-modal');
+    }
+
+    public function edit(){
+       //Valida os campos Obrigatórios.
+       $this->validate([ 
+            'edit_nome' => 'required',
+            'edit_matricula' => 'required',
+            'edit_data_nascimento' => 'required',
+            'edit_sexo' => 'required',
+        ]);
+
+        $aluno = Aluno::where('id', $this->edit_id)->first();
+        //Verifica se a matrícula informada já existe.
+        if($this->edit_matricula == $aluno->matricula){
+            ##continua código## 
+        }elseif(Aluno::where('matricula', $this->edit_matricula)->exists()){
+             return session()->flash('attentionModal', 'Essa matrícula já pertence a outro aluno.');   
+        }
+
+        $aluno->update([
+            // 'foto' => $upload,
+            'nome' => $this->edit_nome,
+            'matricula' => $this->edit_matricula,
+            'data_nascimento' => $this->edit_data_nascimento,
+            'sexo' => $this->edit_sexo,
+            'telefone' => $this->edit_telefone,
+            'email' => $this->edit_email,
+            'responsavel' => $this->edit_responsavel,
+            'telefone_responsavel' => $this->edit_telefone_responsavel,
+            'observacao' => $this->edit_observacao
+        ]);
+        session()->flash('successList', 'Dados do aluno editado com sucesso!');
+        //Limpa os campos
+        // $this->foto = '';
+        $this->edit_nome = '';
+        $this->edit_matricula = '';
+        $this->edit_data_nascimento = '';
+        $this->edit_sexo = '';
+        $this->edit_telefone = '';
+        $this->edit_email = '';
+        $this->edit_responsavel = '';
+        $this->edit_telefone_responsavel = '';
+        $this->edit_observacao = '';
+        $this->previaFotoNova = '';
+        $this->dispatchBrowserEvent('close-modal');
     }
 
 
 
+    public function cancelEdit()
+    {
+        $this->aluno_edit_foto = '';
+        $this->aluno_edit_nome = ''; 
+        $this->aluno_edit_matricula = '';
+        $this->aluno_edit_data_nascimento = ''; 
+        $this->aluno_edit_sexo = ''; 
+        $this->aluno_edit_telefone = ''; 
+        $this->aluno_edit_email = ''; 
+        $this->aluno_edit_responsavel = ''; 
+        $this->aluno_edit_telefone_responsavel = '';
+        $this->aluno_edit_observacao = '';
+        $this->previaFotoNova = '';
+        $this->dispatchBrowserEvent('close-modal');
+    }
 
     /*--------------------------------------------------------------------------
     | Adiciona aluno no banco de dados
