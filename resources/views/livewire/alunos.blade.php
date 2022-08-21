@@ -7,7 +7,7 @@
                 <div class="col-sm-2">
                     <div class="my-2">
                         <label for="foto" class="form-label">Foto:</label>
-                        <input class="form-control" type="file" id="foto" name="foto" wire:model="foto" >
+                        <input class="form-control" type="file" id="foto" wire:model="foto">
                         @error('foto')<span class="text-danger" >{{$message}}</span>@enderror
                         @if($foto)
                             <img class="figure-img img-fluid rounded border mt-4" alt="Foto do Aluno" src="{{ $previaFoto }}">
@@ -80,7 +80,7 @@
                             <textarea class="form-control" id="observacao" name="observacao" wire:model="observacao" style="height: 100px"></textarea>
                         </div>
                     </div>
-                    <div class=" my-3 float-end ">
+                    <div class="my-3 float-end">
                         {{-- Efeite de carregamento quando enviar o formulário--}}
                         <div wire:loading.delay.shortest class="spinner-border spinner-border-sm text-secondary" role="status">
                             <span class="visually-hidden">Loading...</span>
@@ -88,7 +88,7 @@
                         {{-- Frase de carregamento quando enviar o formulário--}}
                         <span class="text-secondary " wire:loading.delay.shortest>Carregando...</span> <!-- 50ms -->
                         {{-- botões do formulário --}}
-                        <button type="button" class="btn btn-outline-primary " wire:loading.remove><i class="icofont-ui-file"></i> Importar</button>
+                        <button  data-bs-toggle="modal" data-bs-target="#importModal" type="button" class="btn btn-outline-primary" wire:loading.remove><i class="icofont-ui-file"></i> Importar</button>
                         <button type="submit" class="btn btn-success" wire:loading.attr="disabled" wire:loading.class.remove="btn-success" wire:loading.class="btn-secondary">Adicionar</button>
                     </div>
                 </div>
@@ -143,6 +143,39 @@
             @endif 
         </div>
     </fieldset>
+
+    {{-- Modal para importar dados --}}
+    <div wire:ignore.self class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true" data-keyboard="false" data-bs-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Importar Dados</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @include('layouts.alertas.alertasModal')
+                    <form method="POST" wire:submit.prevent="import">
+                        <div class="mb-3">
+                            <label for="arquivo" class="form-label">Arquivo CSV: <span class="text-danger fw-bold">*</span></label>
+                            <input class="form-control" type="file" id="arquivoCSV" wire:model="arquivo">
+                            @error('arquivo')<span class="text-danger" >{{$message}}</span>@enderror
+                        </div>
+                        <div class=" my-3 float-end ">
+                            {{-- Efeite de carregamento quando enviar o formulário--}}
+                            <div wire:loading.delay.shortest class="spinner-border spinner-border-sm text-secondary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            {{-- Frase de carregamento quando enviar o formulário--}}
+                            <span class="text-secondary " wire:loading.delay.shortest>Carregando...</span> <!-- 50ms -->
+                            {{-- botões do formulário --}}
+                            <button type="button" data-bs-dismiss="modal" class="btn btn-primary" wire:loading.attr="disabled" wire:loading.class.remove="btn-primary" wire:loading.class="btn-secondary">Cancelar</button>
+                            <button type="submit" class="btn btn-success" wire:loading.attr="disabled" wire:loading.class.remove="btn-success" wire:loading.class="btn-secondary">Salvar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     {{-- Modal para editar dados --}}
     <div wire:ignore.self class="modal fade" id="editModal" tabindex="-1" data-bs-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
@@ -310,7 +343,7 @@
     </div>
 
     {{-- Modal para deletar --}}
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true" data-keyboard="false" data-bs-backdrop="static">
+    <div wire:ignore.self class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true" data-keyboard="false" data-bs-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -335,15 +368,12 @@
             $('#editModal').modal('hide');
             $('#deleteModal').modal('hide');
         });
-
         window.addEventListener('show-view-modal', event =>{
             $('#showModal').modal('show');
         });
-
         window.addEventListener('show-edit-modal', event =>{
             $('#editModal').modal('show');
         });
-
         window.addEventListener('show-delete-confirmation-modal', event =>{
             $('#deleteModal').modal('show');
         });

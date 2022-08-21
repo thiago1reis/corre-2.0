@@ -20,6 +20,8 @@ class Alunos extends Component
     | Definição de atributos
     |--------------------------------------------------------------------------*/
     public $foto, $nome, $matricula, $data_nascimento, $sexo, $telefone , $email, $responsavel, $telefone_responsavel, $observacao;
+    
+    public $arquivo;
 
     public $show_foto, $show_nome, $show_matricula, $show_data_nascimento, $show_sexo, $show_telefone, $show_email, $show_responsavel, 
     $show_telefone_responsavel, $show_observacao;
@@ -154,6 +156,57 @@ class Alunos extends Component
            session()->flash('error', $e);
          }
     }
+
+
+    public function import(){
+        //Valida os campos Obrigatórios.
+        $this->validate([ 
+            'arquivo' => 'required|mimes:csv,txt',
+        ]);
+
+       
+
+        $arquivo_tmp = $this->arquivo->path();
+
+        $alunos = file($arquivo_tmp);
+
+        
+        $addAluno = '';
+        
+        foreach($alunos as $aluno){
+           
+            $aluno = trim($aluno);
+            $valor = explode(';', $aluno);
+          
+            if($verificaMat = Aluno::where('matricula', $valor[1])->exists()){
+                unset($aluno);
+            }
+
+            if(!$verificaMat){
+                $addAluno = Aluno::create([
+                    'nome' => $valor[0],
+                    'matricula' => $valor[1],
+                    'data_nascimento' => $valor[2],
+                    'sexo' => $valor[3],
+                ]);
+            }
+        }
+        if(!$verificaMat && $addAluno){
+            return session()->flash('successModal', 'Dados dos alunos foram importados com sucesso.'); 
+            $this->arquivo = '';
+        }
+        elseif(!$addAluno){
+            return session()->flash('errorModal', 'Esses alunos já foram adicionados.'); 
+            $this->arquivo = '';
+        }
+        elseif($verificaMat &&  $addAluno){
+            return session()->flash('attentionModal', 'Dados dos alunos importados com sucesso, alguns alunos foram ingnorados pois seus dados já havim sido adicionado anteriormente.'); 
+            $this->arquivo = '';
+        }
+    }
+
+
+
 
     public function show($id)
     {
