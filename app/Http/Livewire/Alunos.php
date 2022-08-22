@@ -10,7 +10,6 @@ use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use Manny;
 
-
 class Alunos extends Component
 {   
     use WithPagination; 
@@ -38,34 +37,31 @@ class Alunos extends Component
     protected $paginationTheme = 'bootstrap';
 
     /*--------------------------------------------------------------------------
-    | Adiciona mascara nos campos dos formulários
+    | Atualiza formularios
     |--------------------------------------------------------------------------*/
     public function updated($field)
 	{ 
+        //Adiciona mascara aos campos dos formularios
 		if ($field == 'telefone')
 		{
 			$this->telefone = Manny::mask($this->telefone, "(11) 11111-1111");
-		}
-       
+		}    
         if ($field == 'telefone_responsavel')
 		{
 			$this->telefone_responsavel = Manny::mask($this->telefone_responsavel, "(11) 11111-1111");
 		}
-
         if ($field == 'edit_telefone')
 		{
 			$this->edit_telefone = Manny::mask($this->edit_telefone, "(11) 11111-1111");
 		}
-
         if ($field == 'edit_telefone_responsavel')
 		{
 			$this->edit_telefone_responsavel = Manny::mask($this->edit_telefone_responsavel, "(11) 11111-1111");
 		}
-
+        //Cria previa da foto nos campos de imagens
         if($field == 'edit_foto'){
             $this->previaFotoNova = $this->edit_foto->temporaryUrl();
         }
-
         if($field == 'foto'){
             $this->previaFoto = $this->foto->temporaryUrl();
         }
@@ -100,12 +96,10 @@ class Alunos extends Component
             'data_nascimento' => 'required',
             'sexo' => 'required',
         ]);
-
         //Verifica se a matrícula informada já existe.
         if(Aluno::where('matricula', $this->matricula)->exists()){
             return session()->flash('attention', 'Essa matrícula já pertence a outro aluno.');     
         }
-
         //Faz o upload da foto do aluno.
         if($this->foto){
             //Valida a extensão da foto.
@@ -124,7 +118,6 @@ class Alunos extends Component
         else{
             $upload = '';
         }
-       
         //Salva os dados.
         try{
             Aluno::create([
@@ -157,60 +150,61 @@ class Alunos extends Component
          }
     }
 
-
+    /*--------------------------------------------------------------------------
+    | Importa dados de alunos para o banco de dados
+    |--------------------------------------------------------------------------*/
     public function import(){
         //Valida os campos Obrigatórios.
         $this->validate([ 
             'arquivo' => 'required|mimes:csv,txt',
         ]);
-
-       
-
-        $arquivo_tmp = $this->arquivo->path();
-
-        $alunos = file($arquivo_tmp);
-
-        
-        $addAluno = '';
-        
-        foreach($alunos as $aluno){
-           
-            $aluno = trim($aluno);
-            $valor = explode(';', $aluno);
-          
-            if($verificaMat = Aluno::where('matricula', $valor[1])->exists()){
-                unset($aluno);
+        try{
+            //coloca o arquivo em uma pasta temporaria e trasforma em array sting 
+            $alunos = file($this->arquivo->path());
+            $addAluno = '';
+            foreach($alunos as $aluno){
+                //Retira os espaços e os ";" da string 
+                $valor = explode(';', $aluno = trim($aluno));
+                //Elimina os dado do aluno caso ele ja esteja cadastrado.
+                if($verificaMat = Aluno::where('matricula', $valor[1])->exists()){
+                    unset($aluno);
+                }
+                //Salva dados do aluno no banco caso seu cadastro não tenha sido feito anteriormente. 
+                if(!$verificaMat){
+                    $addAluno = Aluno::create([
+                        'nome' => $valor[0],
+                        'matricula' => $valor[1],
+                        'data_nascimento' => $valor[2],
+                        'sexo' => $valor[3],
+                    ]);
+                }
             }
-
-            if(!$verificaMat){
-                $addAluno = Aluno::create([
-                    'nome' => $valor[0],
-                    'matricula' => $valor[1],
-                    'data_nascimento' => $valor[2],
-                    'sexo' => $valor[3],
-                ]);
+            //Retorna caso nenhum aluno vindo do arquivo exista antes no banco. 
+            if(!$verificaMat && $addAluno){
+                return session()->flash('successModal', 'Dados dos alunos foram importados com sucesso.'); 
+                $this->arquivo = '';
             }
-        }
-        if(!$verificaMat && $addAluno){
-            return session()->flash('successModal', 'Dados dos alunos foram importados com sucesso.'); 
-            $this->arquivo = '';
-        }
-        elseif(!$addAluno){
-            return session()->flash('errorModal', 'Esses alunos já foram adicionados.'); 
-            $this->arquivo = '';
-        }
-        elseif($verificaMat &&  $addAluno){
-            return session()->flash('attentionModal', 'Dados dos alunos importados com sucesso, alguns alunos foram ingnorados pois seus dados já havim sido adicionado anteriormente.'); 
-            $this->arquivo = '';
+            //Retorna caso todos os alunos do arquivo existam no banco
+            if($verificaMat && !$addAluno){
+                return session()->flash('errorModal', 'Esses alunos já foram adicionados.'); 
+                $this->arquivo = '';
+            }
+            //Retorna caso alguns alunos do arquivo existam no banco e outros não.
+            if($verificaMat &&  $addAluno){
+                return session()->flash('attentionModal', 'Dados dos alunos importados com sucesso, alguns alunos foram ingnorados pois seus dados já havim sido adicionado anteriormente.'); 
+                $this->arquivo = '';
+            }
+        }catch(Exception $e){
+            session()->flash('errorModal', $e);
         }
     }
 
-
-
-
+    /*--------------------------------------------------------------------------
+    | Abre modal para mostrar dados do aluno 
+    |--------------------------------------------------------------------------*/
     public function show($id)
     {
-        $aluno = Aluno::where('id', $id)->first();
+        $aluno = Aluno::find($id);
         $this->show_foto = $aluno->foto;
         $this->show_nome = $aluno->nome; 
         $this->show_matricula = $aluno->matricula;
@@ -222,9 +216,11 @@ class Alunos extends Component
         $this->show_telefone_responsavel = $aluno->telefone_responsavel;
         $this->show_observacao = $aluno->observacao;
         $this->dispatchBrowserEvent('show-view-modal');
-        
     }
 
+    /*--------------------------------------------------------------------------
+    | Fecha modal que exibe dados do aluno
+    |--------------------------------------------------------------------------*/
     public function closeShow()
     {
         $this->show_foto = '';
@@ -240,10 +236,12 @@ class Alunos extends Component
         $this->dispatchBrowserEvent('close-modal');
     }
 
-
+    /*--------------------------------------------------------------------------
+    | Seleciona aluno que vai ter dados editado e abre a modal de edição
+    |--------------------------------------------------------------------------*/
     public function selectEdit($id)
     {
-        $aluno = Aluno::where('id', $id)->first();
+        $aluno = Aluno::find($id);
         $this->edit_id = $aluno->id;
         $this->edit_foto = $aluno->foto;
         $this->edit_nome = $aluno->nome; 
@@ -258,6 +256,9 @@ class Alunos extends Component
         $this->dispatchBrowserEvent('show-edit-modal');
     }
 
+    /*--------------------------------------------------------------------------
+    | Edita os dados do aluno no banco e fecha modal de edição
+    |--------------------------------------------------------------------------*/
     public function edit(){
        //Valida os campos Obrigatórios.
        $this->validate([ 
@@ -266,15 +267,13 @@ class Alunos extends Component
             'edit_data_nascimento' => 'required',
             'edit_sexo' => 'required',
         ]);
-
-        $aluno = Aluno::where('id', $this->edit_id)->first();
+        $aluno = Aluno::find($this->edit_id);
         //Verifica se a matrícula informada já existe.
         if($this->edit_matricula == $aluno->matricula){
             ##continua código## 
         }elseif(Aluno::where('matricula', $this->edit_matricula)->exists()){
              return session()->flash('attentionModal', 'Essa matrícula já pertence a outro aluno.');   
         }
-
         //Faz o upload da foto do aluno.
         if($this->previaFotoNova){
             //Valida a extensão da foto.
@@ -293,39 +292,45 @@ class Alunos extends Component
             }
         }
         else{
+            //Se não foi selecionado uma nova foto para o aluno, a foto atual permanecerá
             $upload =  $aluno->foto;
         }
-
-        $aluno->update([
-            'foto' => $upload,
-            'nome' => $this->edit_nome,
-            'matricula' => $this->edit_matricula,
-            'data_nascimento' => $this->edit_data_nascimento,
-            'sexo' => $this->edit_sexo,
-            'telefone' => $this->edit_telefone,
-            'email' => $this->edit_email,
-            'responsavel' => $this->edit_responsavel,
-            'telefone_responsavel' => $this->edit_telefone_responsavel,
-            'observacao' => $this->edit_observacao
-        ]);
-        session()->flash('successList', 'Dados do aluno editado com sucesso!');
-        //Limpa os campos
-        $this->edit_foto = '';
-        $this->edit_nome = '';
-        $this->edit_matricula = '';
-        $this->edit_data_nascimento = '';
-        $this->edit_sexo = '';
-        $this->edit_telefone = '';
-        $this->edit_email = '';
-        $this->edit_responsavel = '';
-        $this->edit_telefone_responsavel = '';
-        $this->edit_observacao = '';
-        $this->previaFotoNova = '';
-        $this->dispatchBrowserEvent('close-modal');
+        //Edita os dados.
+        try{
+            $aluno->update([
+                'foto' => $upload,
+                'nome' => $this->edit_nome,
+                'matricula' => $this->edit_matricula,
+                'data_nascimento' => $this->edit_data_nascimento,
+                'sexo' => $this->edit_sexo,
+                'telefone' => $this->edit_telefone,
+                'email' => $this->edit_email,
+                'responsavel' => $this->edit_responsavel,
+                'telefone_responsavel' => $this->edit_telefone_responsavel,
+                'observacao' => $this->edit_observacao
+            ]);
+            session()->flash('successList', 'Dados do aluno editado com sucesso!');
+            //Limpa os campos
+            $this->edit_foto = '';
+            $this->edit_nome = '';
+            $this->edit_matricula = '';
+            $this->edit_data_nascimento = '';
+            $this->edit_sexo = '';
+            $this->edit_telefone = '';
+            $this->edit_email = '';
+            $this->edit_responsavel = '';
+            $this->edit_telefone_responsavel = '';
+            $this->edit_observacao = '';
+            $this->previaFotoNova = '';
+            $this->dispatchBrowserEvent('close-modal');
+        }catch(Exception $e){
+            session()->flash('errorModal', $e);
+        }
     }
 
-
-
+    /*--------------------------------------------------------------------------
+    | Cancela edição do dados do aluno
+    |--------------------------------------------------------------------------*/
     public function cancelEdit()
     {
         $this->edit_foto = '';
@@ -343,7 +348,7 @@ class Alunos extends Component
     }
 
     /*--------------------------------------------------------------------------
-    | Adiciona aluno no banco de dados
+    | Abre modal para confirmar exclusão dos dados do aluno
     |--------------------------------------------------------------------------*/
     public function deleteConfirm($id)
     {
@@ -356,7 +361,7 @@ class Alunos extends Component
     |--------------------------------------------------------------------------*/
     public function destroy()
     {
-        $aluno = Aluno::where('id', $this->aluno_delete_id)->first();
+        $aluno = Aluno::find($this->aluno_delete_id);
         Storage::disk('public')->delete($aluno->foto);
         $aluno->delete();
         session()->flash('successList', 'Aluno deletado com sucesso!');
@@ -372,5 +377,4 @@ class Alunos extends Component
         $this->aluno_delete_id = '';
         $this->dispatchBrowserEvent('close-modal');
     }
-
 }
