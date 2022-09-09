@@ -15,7 +15,7 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="{{ route('alunos') }}">Alunos</a></li>
-            <li><a class="dropdown-item" href="#">Disciplinas</a></li>
+            <li><a class="dropdown-item" href="{{ route('disciplinas') }}">Disciplinas</a></li>
           </ul>
         </li>
         <li class="nav-item px-3">

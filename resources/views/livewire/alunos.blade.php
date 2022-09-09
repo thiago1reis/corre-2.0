@@ -136,10 +136,10 @@
             </table>
         </div>
         <div class="d-flex justify-content-center">
-            @if(isset($filtro))
-            {{ $alunos->appends($filtro)->links() }}
+            @if(isset($search))
+                {{ $alunos->appends($search)->links() }}
             @else
-            {{ $alunos->links() }}
+                {{ $alunos->links() }}
             @endif 
         </div>
     </fieldset>

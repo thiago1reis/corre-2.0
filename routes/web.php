@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Login\LoginController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Livewire\{Alunos, Index, Painel};
+use App\Http\Livewire\{Alunos, Disciplinas, Index, Painel};
 
 /*
 |--------------------------------------------------------------------------
@@ -24,5 +24,6 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::group(['prefix' => 'sistema', 'middleware' => ['auth']], function(){
     Route::get('/',  Painel::class)->name('painel');
     Route::get('alunos', Alunos::class, 'render')->name('alunos');
+    Route::get('disciplinas', Disciplinas::class, 'render')->name('disciplinas');
 });
  
