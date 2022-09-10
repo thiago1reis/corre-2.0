@@ -26,7 +26,6 @@
             </div>
         </form> 
     </fieldset>
-
     <fieldset class="border border-secondary p-3 mb-3">
         <legend  class="float-none w-auto">Disciplinas Adicionadas</legend> 
         <input type="text" class="form-control 4 mb-3" id="search " name="search " wire:model="search" placeholder="Busque por nome">
@@ -46,7 +45,6 @@
                         <td class="align-middle"><span>{{ $disciplina->nome }}</span></td>
                         <td class="align-middle">{{ $disciplina->observacao }}</td> 
                         <td class="align-middle"> 
-                            <a type="button" wire:click="show({{ $disciplina->id }})" class="me-3 link-secondary text-decoration-none"><i title="Visualizar Dados" class="icofont-ui-file"></i></a>
                             <a type="button" wire:click="selectEdit({{ $disciplina->id }})" class="me-3 link-secondary text-decoration-none"><i title="Editar Dados" class="icofont-ui-edit"></i></a>
                             <a type="button" wire:click="deleteConfirm({{ $disciplina->id }})" class="me-3 link-secondary text-decoration-none"><i title="Deletar Registro" class="icofont-ui-delete"></i></a> 
                         </td> 
@@ -64,3 +62,56 @@
         </div>
     </fieldset>
 
+    {{-- Modal para editar dados --}}
+    <div wire:ignore.self class="modal fade" id="editModal" tabindex="-1" data-bs-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Aluno</h5>
+                    <button type="button" class="btn-close" wire:click="cancelEdit" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @include('layouts.alertas.alertasModal')
+                    <form method="POST" wire:submit.prevent="edit">
+                        <div class="row">
+                            <div class="col-sm-3 my-2">
+                                <label for="edit_nome" class="form-label">Nome: <span class="text-danger fw-bold">*</span></label>
+                                <input type="text" class="form-control" id="edit_nome" wire:model="edit_nome" placeholder="Digite o nome da disciplina">
+                                @error('edit_nome')<span class="text-danger" >Este campo é obrigatório</span>@enderror
+                            </div>
+                            <div class="col-sm-9 my-2">
+                                <label for="edit_observacao" class="form-label">Observações:</label>
+                                <input type="text" class="form-control" id="edit_observacao" wire:model="edit_observacao">
+                            </div>
+                        </div>
+                        <div class=" my-3 float-end ">
+                            {{-- Efeite de carregamento quando enviar o formulário--}}
+                            <div wire:loading.delay.shortest class="spinner-border spinner-border-sm text-secondary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            {{-- Frase de carregamento quando enviar o formulário--}}
+                            <span class="text-secondary " wire:loading.delay.shortest>Carregando...</span> <!-- 50ms -->
+                            {{-- botões do formulário --}}
+                            <button type="button" class="btn btn-primary" wire:click="cancelEdit" wire:loading.attr="disabled" wire:loading.class.remove="btn-primary" wire:loading.class="btn-secondary">Cancelar</button>
+                            <button type="submit" class="btn btn-success" wire:loading.attr="disabled" wire:loading.class.remove="btn-success" wire:loading.class="btn-secondary">Salvar</button>
+                        </div>
+                    </form> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@push('scripts')
+    <script>
+        window.addEventListener('close-modal', event =>{
+            $('#editModal').modal('hide');
+            $('#deleteModal').modal('hide');
+        });
+        window.addEventListener('show-edit-modal', event =>{
+            $('#editModal').modal('show');
+        });
+        window.addEventListener('show-delete-confirmation-modal', event =>{
+            $('#deleteModal').modal('show');
+        });
+    </script>
+@endpush
