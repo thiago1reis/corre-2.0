@@ -100,6 +100,27 @@
             </div>
         </div>
     </div>
+
+    {{-- Modal para deletar --}}
+    <div wire:ignore.self class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true" data-keyboard="false" data-bs-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Deletar Disciplina</h5>
+                    <button type="button" class="btn-close" wire:click="cancelDelete" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6>Tem certeza que deseja deletar os dados da disciplina?</h6>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" wire:click="cancelDelete">Cancelar</button>
+                    <button type="button" class="btn btn-danger" wire:click="destroy">Deletar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 @push('scripts')
     <script>

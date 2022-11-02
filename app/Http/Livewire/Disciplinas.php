@@ -18,6 +18,8 @@ class Disciplinas extends Component
 
     public $edit_id, $edit_observacao;
 
+    public $delete_id;
+
     public $search;
 
     protected $paginationTheme = 'bootstrap';
@@ -118,6 +120,36 @@ class Disciplinas extends Component
     {
         $this->edit_nome = ''; 
         $this->edit_observacao = '';
+        $this->dispatchBrowserEvent('close-modal');
+    }
+
+    /*--------------------------------------------------------------------------
+    | Abre modal para confirmar exclusão dos dados da disciplina
+    |--------------------------------------------------------------------------*/
+    public function deleteConfirm($id)
+    {
+        $this->delete_id = $id; 
+        $this->dispatchBrowserEvent('show-delete-confirmation-modal');
+    }
+
+    /*--------------------------------------------------------------------------
+    | Deleta os dados da disciplina do banco de dados
+    |--------------------------------------------------------------------------*/
+    public function destroy()
+    {
+        $disciplina = Disciplina::find($this->delete_id);
+        $disciplina->delete();
+        session()->flash('successList', 'Disciplina deletada com sucesso!');
+        $this->dispatchBrowserEvent('close-modal');
+        $this->delete_id = '';
+    }
+
+    /*--------------------------------------------------------------------------
+    | Cancela a seleção da disciplina que ia ter os dados deletados
+    |--------------------------------------------------------------------------*/
+    public function cancelDelete()
+    {
+        $this->delete_id = '';
         $this->dispatchBrowserEvent('close-modal');
     }
 
