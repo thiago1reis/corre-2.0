@@ -152,8 +152,4 @@ class Disciplinas extends Component
         $this->delete_id = '';
         $this->dispatchBrowserEvent('close-modal');
     }
-
-
-
-
 }
