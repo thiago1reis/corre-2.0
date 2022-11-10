@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Disciplina;
+use App\Services\CreateService;
 use Exception;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -11,63 +12,67 @@ class Disciplinas extends Component
 {
     use WithPagination; 
 
-    /*--------------------------------------------------------------------------
-    | Definição de atributos
-    |--------------------------------------------------------------------------*/
+    private CreateService $createService;
+    public Disciplina $disciplina;
     public $nome, $observacao;
-
     public $edit_id, $edit_observacao;
-
     public $delete_id;
-
     public $search;
-
     protected $paginationTheme = 'bootstrap';
 
-    /*--------------------------------------------------------------------------
-    | Redefine a página para pagina 1 apos uma consulta apos acesser os elementos de outra página
-    |--------------------------------------------------------------------------*/
+    //Valida campos obirgatórios
+    protected function rules(){
+        return [
+            'nome' => 'required',
+        ];
+    }
+
+    //Inicializa a service
+    public function boot(CreateService $createService)
+    {
+        $this->createService = $createService;
+    }
+
+    //Redefine a página para pagina 1 usuario acessar os elementos de outra página
     public function updatingSearch()
     {
         $this->resetPage();
     }
 
-    /*--------------------------------------------------------------------------
-    | Renderiza a página
-    |--------------------------------------------------------------------------*/
+    //Renderiza a página
     public function render()
     {
         $disciplinas = Disciplina::where('nome', 'LIKE', "%{$this->search}%")->Orwhere('observacao', 'LIKE', "%{$this->search}%")->orderBy('id' , "DESC")->paginate(5); 
         return view('livewire.disciplinas', ['disciplinas' => $disciplinas]);
     }
 
-    /*--------------------------------------------------------------------------
-    | Adiciona disciplina no banco de dados
-    |--------------------------------------------------------------------------*/
-    public function store()
+    //Salva os dados
+    public function store(Disciplina $disciplina)
     { 
-        //Valida os campos Obrigatórios.
-        $this->validate([ 
-            'nome' => 'required',
-        ]);
-        //Verifica se a disciplina informada já existe.
-        if(Disciplina::where('nome', $this->nome)->exists()){
-            return session()->flash('attention', 'Essa disciplina já foi adicionada.');     
+        $this->validate();
+
+        ## Verifica se a disciplina informada já existe ##
+        if($disciplina->where('nome', $this->nome)->exists()){
+            $this->addError('nome', 'Essa disciplina já foi adicionada.');   
+            return false;
         }
         
-        //Salva os dados.
+        $dados = [
+            'nome' => $this->nome,
+            'observacao' => $this->observacao
+        ];
+
         try{
-            Disciplina::create([
-                'nome' => $this->nome,
-                'observacao' => $this->observacao
-            ]);  
+            $this->createService->create($disciplina, $dados);
             session()->flash('success', 'Disciplina foi adicionada com sucesso.');
+
             //Limpa os campos
             $this->nome = '';
             $this->observacao = '';
-         }catch(Exception $e){
-           session()->flash('error', $e);
-         }
+        }catch(Exception $e){
+            //dd($e); 
+            session()->flash('error', 'Algo saiu errado, tente novamente mais tarde.');
+        }
     }
 
     /*--------------------------------------------------------------------------

@@ -7,7 +7,7 @@
                 <div class="col-sm-3 my-2">
                     <label for="nome" class="form-label">Nome: <span class="text-danger fw-bold">*</span></label>
                     <input type="text" class="form-control" id="nome" wire:model="nome" placeholder="Digite o nome da disciplina">
-                    @error('nome')<span class="text-danger" >Este campo é obrigatório</span>@enderror
+                    @error('nome')<span class="text-danger">{{ $message }}</span>@enderror
                 </div>
                 <div class="col-sm-9 my-2">
                     <label for="observacao" class="form-label">Observações:</label>
