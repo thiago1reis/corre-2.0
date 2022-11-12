@@ -19,6 +19,10 @@ body{
 .btn-fixed-size{
     width: 8em;
 }
+
+.admin-option :hover{
+    border-color: #6c757d;
+}
   
 /* max-width  */
 @media screen and (max-width: 600px) {
