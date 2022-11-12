@@ -12,14 +12,14 @@ body{
    height: 19rem;
  }
 
-
 .card-painel a{
     color: #6c757d;
  }
 
-
+.btn-fixed-size{
+    width: 8em;
+}
   
-
 /* max-width  */
 @media screen and (max-width: 600px) {
 	.logo-corre{

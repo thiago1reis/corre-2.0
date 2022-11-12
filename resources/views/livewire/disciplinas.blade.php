@@ -15,22 +15,25 @@
                 </div>
             </div>
             <div class="my-3 float-end">
-                {{-- Efeite de carregamento quando enviar o formulário--}}
-                <div wire:loading.delay.shortest class="spinner-border spinner-border-sm text-secondary" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-                {{-- Frase de carregamento quando enviar o formulário--}}
-                <span class="text-secondary " wire:loading.delay.shortest>Carregando...</span> <!-- 50ms -->
-                {{-- botões do formulário --}}
-                <button type="submit" class="btn btn-success" wire:loading.attr="disabled" wire:loading.class.remove="btn-success" wire:loading.class="btn-secondary">Adicionar</button>
+                <button wire:target="store" type="submit" class="btn btn-success btn-fixed-size" wire:loading.attr="disabled">
+                    {{-- Texto padrão do botão--}}
+                    <span wire:click="store" wire:loading.remove.delay.shortest>Adicionar</span>
+                    {{-- Efeito de carregamento quando o butão é acionado--}}
+                    <div wire:click="store" wire:loading.delay.shortest class="spinner-border spinner-border-sm text-white" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </button>
             </div>
         </form> 
     </fieldset>
     <fieldset class="border border-secondary p-3 mb-3">
-        <legend  class="float-none w-auto">Disciplinas Adicionadas</legend> 
+        <legend  class="float-none w-auto">Disciplinas Adicionadas</legend>
+        
+       
         <input type="text" class="form-control 4 mb-3" id="search " name="search " wire:model="search" placeholder="Busque por nome">
+     </form> 
         @include('layouts.alertas.alertasList') 
-        <div class="table-responsive">
+        <div wire:init="loadPosts" class="table-responsive">
             <table class="table">
                 <thead>
                     <tr>
@@ -53,7 +56,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="d-flex justify-content-center">
+        <div  class="d-flex justify-content-center">
             @if(isset($search))
             {{ $disciplinas->appends($search)->links() }}
             @else

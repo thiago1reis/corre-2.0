@@ -18,6 +18,7 @@ class Disciplinas extends Component
     public $edit_id, $edit_observacao;
     public $delete_id;
     public $search;
+    public $readyToLoad = false;
     protected $paginationTheme = 'bootstrap';
 
     //Valida campos obirgatórios
@@ -25,6 +26,22 @@ class Disciplinas extends Component
         return [
             'nome' => 'required',
         ];
+    }
+
+    public function loadPosts()
+    {
+        $this->readyToLoad = true;
+    }
+
+    //Limpa os campos
+    protected function clearFields(){
+        $this->nome = '';
+        $this->observacao = '';
+    }
+
+    //Monta o componente
+    public function mount(Disciplina $disciplina){
+        $this->disciplina = $disciplina;
     }
 
     //Inicializa a service
@@ -43,16 +60,16 @@ class Disciplinas extends Component
     public function render()
     {
         $disciplinas = Disciplina::where('nome', 'LIKE', "%{$this->search}%")->Orwhere('observacao', 'LIKE', "%{$this->search}%")->orderBy('id' , "DESC")->paginate(5); 
-        return view('livewire.disciplinas', ['disciplinas' => $disciplinas]);
+        return view('livewire.disciplinas', ['disciplinas' => $disciplinas ]);
     }
 
     //Salva os dados
-    public function store(Disciplina $disciplina)
+    public function store()
     { 
         $this->validate();
 
-        ## Verifica se a disciplina informada já existe ##
-        if($disciplina->where('nome', $this->nome)->exists()){
+        ## Verifica se a disciplina informada já existe ## //transformar em service
+        if($this->disciplina->where('nome', $this->nome)->exists()){
             $this->addError('nome', 'Essa disciplina já foi adicionada.');   
             return false;
         }
@@ -63,12 +80,9 @@ class Disciplinas extends Component
         ];
 
         try{
-            $this->createService->create($disciplina, $dados);
+            $this->createService->create($this->disciplina, $dados);
+            $this->clearFields();//Ver o hook
             session()->flash('success', 'Disciplina foi adicionada com sucesso.');
-
-            //Limpa os campos
-            $this->nome = '';
-            $this->observacao = '';
         }catch(Exception $e){
             //dd($e); 
             session()->flash('error', 'Algo saiu errado, tente novamente mais tarde.');
