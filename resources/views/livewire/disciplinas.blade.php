@@ -5,8 +5,10 @@
         <form method="POST" wire:submit.prevent="store">
             <div class="row">
                 <div class="col-sm-3 my-2">
-                    <label for="nome" class="form-label">Nome: <span class="text-danger fw-bold">*</span></label>
-                    <input type="text" class="form-control" id="nome" wire:model="nome" placeholder="Digite o nome da disciplina">
+                    <label for="nome" class="form-label ">Nome: 
+                        <span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" class="form-control @error('nome') is-invalid @enderror" id="nome" wire:model="nome" placeholder="Digite o nome da disciplina">
                     @error('nome')<span class="text-danger">{{ $message }}</span>@enderror
                 </div>
                 <div class="col-sm-9 my-2">
@@ -28,17 +30,14 @@
     </fieldset>
     <fieldset class="border border-secondary p-3 mb-3">
         <legend  class="float-none w-auto">Disciplinas Adicionadas</legend>
-        
-       
         <input type="text" class="form-control 4 mb-3" id="search " name="search " wire:model="search" placeholder="Busque por nome">
-     </form> 
         @include('layouts.alertas.alertasList') 
-        <div wire:init="loadPosts" class="table-responsive">
+        <div class="table-responsive">
             <table class="table">
                 <thead>
                     <tr>
                         <th width="300">Nome</th>
-                        <th width="800">Observaçõe</th>
+                        <th width="800">Observações</th>
                         <th width="100">Ações</th>
                     </tr>
                 </thead>
@@ -56,7 +55,7 @@
                 </tbody>
             </table>
         </div>
-        <div  class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center">
             @if(isset($search))
             {{ $disciplinas->appends($search)->links() }}
             @else
@@ -78,13 +77,13 @@
                     <form method="POST" wire:submit.prevent="edit">
                         <div class="row">
                             <div class="col-sm-3 my-2">
-                                <label for="edit_nome" class="form-label">Nome: <span class="text-danger fw-bold">*</span></label>
-                                <input type="text" class="form-control" id="edit_nome" wire:model="edit_nome" placeholder="Digite o nome da disciplina">
-                                @error('edit_nome')<span class="text-danger" >Este campo é obrigatório</span>@enderror
+                                <label for="editar_nome" class="form-label">Nome: <span class="text-danger fw-bold">*</span></label>
+                                <input type="text" class="form-control @error('editar_nome') is-invalid @enderror" id="editar_nome" wire:model="editar_nome" placeholder="Digite o nome da disciplina">
+                                @error('editar_nome')<span class="text-danger">{{ $message }}</span>@enderror
                             </div>
                             <div class="col-sm-9 my-2">
-                                <label for="edit_observacao" class="form-label">Observações:</label>
-                                <input type="text" class="form-control" id="edit_observacao" wire:model="edit_observacao">
+                                <label for="editar_observacao" class="form-label">Observações:</label>
+                                <input type="text" class="form-control" id="edit_obeditar_observacaoservacao" wire:model="editar_observacao">
                             </div>
                         </div>
                         <div class=" my-3 float-end ">
@@ -122,8 +121,6 @@
             </div>
         </div>
     </div>
-
-
 </div>
 @push('scripts')
     <script>

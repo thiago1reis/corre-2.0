@@ -4,7 +4,9 @@ namespace App\Http\Livewire;
 
 use App\Models\Disciplina;
 use App\Services\CreateService;
+use App\Services\UpdateService;
 use Exception;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -13,30 +15,19 @@ class Disciplinas extends Component
     use WithPagination; 
 
     private CreateService $createService;
-    public Disciplina $disciplina;
-    public $nome, $observacao;
-    public $edit_id, $edit_observacao;
-    public $delete_id;
+    private UpdateService $updateService;
+    public $nome;
+    public $observacao;
     public $search;
-    public $readyToLoad = false;
     protected $paginationTheme = 'bootstrap';
-
-    //Valida campos obirgatórios
-    protected function rules(){
-        return [
-            'nome' => 'required',
-        ];
-    }
-
-    public function loadPosts()
-    {
-        $this->readyToLoad = true;
-    }
 
     //Limpa os campos
     protected function clearFields(){
         $this->nome = '';
         $this->observacao = '';
+        $this->editar_id = '';
+        $this->editar_nome = '';
+        $this->editar_observacao = '';
     }
 
     //Monta o componente
@@ -45,9 +36,10 @@ class Disciplinas extends Component
     }
 
     //Inicializa a service
-    public function boot(CreateService $createService)
+    public function boot(CreateService $createService, UpdateService $updateService)
     {
         $this->createService = $createService;
+        $this->updateService = $updateService;
     }
 
     //Redefine a página para pagina 1 usuario acessar os elementos de outra página
@@ -66,13 +58,10 @@ class Disciplinas extends Component
     //Salva os dados
     public function store()
     { 
-        $this->validate();
-
-        ## Verifica se a disciplina informada já existe ## //transformar em service
-        if($this->disciplina->where('nome', $this->nome)->exists()){
-            $this->addError('nome', 'Essa disciplina já foi adicionada.');   
-            return false;
-        }
+        //Valida campos obirgatórios
+        $this->validate([
+            'nome' => ['required', Rule::unique(Disciplina::class, 'nome')]
+        ]);
         
         $dados = [
             'nome' => $this->nome,
@@ -81,7 +70,7 @@ class Disciplinas extends Component
 
         try{
             $this->createService->create($this->disciplina, $dados);
-            $this->clearFields();//Ver o hook
+            $this->clearFields();
             session()->flash('success', 'Disciplina foi adicionada com sucesso.');
         }catch(Exception $e){
             //dd($e); 
@@ -89,86 +78,68 @@ class Disciplinas extends Component
         }
     }
 
-    /*--------------------------------------------------------------------------
-    | Seleciona disciplina que vai ter dados editado e abre a modal de edição
-    |--------------------------------------------------------------------------*/
+    //Seleciona disciplina a ser editada
     public function selectEdit($id)
     {
-        $disciplina = Disciplina::find($id);
-        $this->edit_id = $disciplina->id;
-        $this->edit_nome = $disciplina->nome;
-        $this->edit_observacao = $disciplina->observacao;
+        $this->disciplina = $this->disciplina->find($id);
+        $this->editar_id = $this->disciplina->id;
+        $this->editar_nome = $this->disciplina->nome;
+        $this->editar_observacao = $this->disciplina->observacao;
         $this->dispatchBrowserEvent('show-edit-modal');
     }
 
-    /*--------------------------------------------------------------------------
-    | Edita os dados da disciplina no banco e fecha modal de edição
-    |--------------------------------------------------------------------------*/
+    //Edita os dados.
     public function edit(){
-        //Valida os campos Obrigatórios.
-        $this->validate([ 
-             'edit_nome' => 'required',
-         ]);
-         $disciplina = Disciplina::find($this->edit_id);
-         //Verifica se a disciplina informada já existe.
-         if($this->edit_nome == $disciplina->nome){
-             ##continua código## 
-         }elseif(Disciplina::where('nome', $this->edit_nome)->exists()){
-              return session()->flash('attentionModal', 'Essa disciplina já foi adicionada.');   
-         }
-         //Edita os dados.
-         try{
-             $disciplina->update([
-                 'nome' => $this->edit_nome,
-                 'observacao' => $this->edit_observacao
-             ]);
-             session()->flash('successList', 'Dados da disciplina editado com sucesso!');
-             //Limpa os campos
-             $this->edit_nome = '';
-             $this->edit_observacao = '';
-             $this->dispatchBrowserEvent('close-modal');
-         }catch(Exception $e){
-             session()->flash('errorModal', $e);
-         }
+        
+        //Valida campos obirgatórios
+        $this->validate([
+            'editar_nome' => ['required', Rule::unique(Disciplina::class, 'nome')->ignore($this->editar_id)]
+        ]);
+
+        $dados = [
+            'nome' => $this->editar_nome,
+            'observacao' => $this->editar_observacao
+        ];
+         
+        try{
+            $this->updateService->update($this->disciplina, $dados);
+            session()->flash('successList', 'Dados da disciplina editado com sucesso!');
+            $this->clearFields();
+            $this->dispatchBrowserEvent('close-modal');
+        }catch(Exception $e){
+            //dd($e); 
+            session()->flash('errorModal', 'Algo saiu errado, tente novamente mais tarde.');
+        }
     }
 
-    /*--------------------------------------------------------------------------
-    | Cancela edição do dados da disciplina
-    |--------------------------------------------------------------------------*/
+    //Cancela edição
     public function cancelEdit()
     {
-        $this->edit_nome = ''; 
-        $this->edit_observacao = '';
+        $this->clearFields();
         $this->dispatchBrowserEvent('close-modal');
     }
 
-    /*--------------------------------------------------------------------------
-    | Abre modal para confirmar exclusão dos dados da disciplina
-    |--------------------------------------------------------------------------*/
+    //Seleciona disciplina para ser deletada
     public function deleteConfirm($id)
     {
-        $this->delete_id = $id; 
+        $this->deletar_id = $id; 
         $this->dispatchBrowserEvent('show-delete-confirmation-modal');
     }
 
-    /*--------------------------------------------------------------------------
-    | Deleta os dados da disciplina do banco de dados
-    |--------------------------------------------------------------------------*/
+    //Deleta disciplina
     public function destroy()
     {
-        $disciplina = Disciplina::find($this->delete_id);
-        $disciplina->delete();
-        session()->flash('successList', 'Disciplina deletada com sucesso!');
+        $this->disciplina = $this->disciplina->find($this->deletar_id); //Fazer Service para deletar
+        $this->disciplina->delete();
+        $this->clearFields();
         $this->dispatchBrowserEvent('close-modal');
-        $this->delete_id = '';
+        session()->flash('successList', 'Disciplina deletada com sucesso!');
     }
 
-    /*--------------------------------------------------------------------------
-    | Cancela a seleção da disciplina que ia ter os dados deletados
-    |--------------------------------------------------------------------------*/
+    //Cancela a seleção da disciplina que ia ter os dados deletados
     public function cancelDelete()
     {
-        $this->delete_id = '';
+        $this->clearFields();
         $this->dispatchBrowserEvent('close-modal');
     }
 }
