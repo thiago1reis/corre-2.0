@@ -27,7 +27,6 @@ class Disciplinas extends Component
     protected function clearFields(){
         $this->nome = '';
         $this->observacao = '';
-        $this->editar_id = '';
         $this->editar_nome = '';
         $this->editar_observacao = '';
     }
@@ -49,13 +48,6 @@ class Disciplinas extends Component
     public function updatingSearch()
     {
         $this->resetPage();
-    }
-
-    //Renderiza a página
-    public function render()
-    {
-        $disciplinas = Disciplina::where('nome', 'LIKE', "%{$this->search}%")->Orwhere('observacao', 'LIKE', "%{$this->search}%")->orderBy('id' , "DESC")->paginate(10); 
-        return view('livewire.disciplinas', ['disciplinas' => $disciplinas ]);
     }
 
     //Salva os dados
@@ -96,7 +88,7 @@ class Disciplinas extends Component
         
         //Valida campos obirgatórios
         $this->validate([
-            'editar_nome' => ['required', Rule::unique(Disciplina::class, 'nome')->ignore($this->editar_id)]
+            'editar_nome' => ['required', Rule::unique(Disciplina::class, 'nome')->ignore($this->disciplina)]
         ]);
 
         $dados = [
@@ -106,9 +98,9 @@ class Disciplinas extends Component
          
         try{
             $this->updateService->update($this->disciplina, $dados);
-            session()->flash('successList', 'Dados da disciplina editado com sucesso!');
             $this->clearFields();
             $this->dispatchBrowserEvent('close-modal');
+            session()->flash('successList', 'Dados da disciplina editado com sucesso!');
         }catch(Exception $e){
             //dd($e); 
             session()->flash('errorModal', 'Algo saiu errado, tente novamente mais tarde.');
@@ -117,7 +109,7 @@ class Disciplinas extends Component
 
     //Cancela edição
     public function cancelEdit()
-    {
+    {   
         $this->clearFields();
         $this->dispatchBrowserEvent('close-modal');
     }
@@ -144,4 +136,11 @@ class Disciplinas extends Component
         $this->clearFields();
         $this->dispatchBrowserEvent('close-modal');
     }
+
+     //Renderiza a página
+     public function render()
+     {
+         $disciplinas = Disciplina::where('nome', 'LIKE', "%{$this->search}%")->Orwhere('observacao', 'LIKE', "%{$this->search}%")->orderBy('id' , "DESC")->paginate(10); 
+         return view('livewire.disciplinas.disciplinas', ['disciplinas' => $disciplinas ]);
+     }
 }
