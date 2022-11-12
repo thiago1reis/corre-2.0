@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Disciplina;
 use App\Services\CreateService;
+use App\Services\DeleteService;
 use App\Services\UpdateService;
 use Exception;
 use Illuminate\Validation\Rule;
@@ -16,6 +17,7 @@ class Disciplinas extends Component
 
     private CreateService $createService;
     private UpdateService $updateService;
+    private DeleteService $deleteService;
     public $nome;
     public $observacao;
     public $search;
@@ -36,10 +38,11 @@ class Disciplinas extends Component
     }
 
     //Inicializa a service
-    public function boot(CreateService $createService, UpdateService $updateService)
+    public function boot(CreateService $createService, UpdateService $updateService, DeleteService $deleteService)
     {
         $this->createService = $createService;
         $this->updateService = $updateService;
+        $this->deleteService = $deleteService;
     }
 
     //Redefine a página para pagina 1 usuario acessar os elementos de outra página
@@ -51,7 +54,7 @@ class Disciplinas extends Component
     //Renderiza a página
     public function render()
     {
-        $disciplinas = Disciplina::where('nome', 'LIKE', "%{$this->search}%")->Orwhere('observacao', 'LIKE', "%{$this->search}%")->orderBy('id' , "DESC")->paginate(5); 
+        $disciplinas = Disciplina::where('nome', 'LIKE', "%{$this->search}%")->Orwhere('observacao', 'LIKE', "%{$this->search}%")->orderBy('id' , "DESC")->paginate(10); 
         return view('livewire.disciplinas', ['disciplinas' => $disciplinas ]);
     }
 
@@ -122,15 +125,14 @@ class Disciplinas extends Component
     //Seleciona disciplina para ser deletada
     public function deleteConfirm($id)
     {
-        $this->deletar_id = $id; 
+        $this->disciplina = $this->disciplina->find($id);
         $this->dispatchBrowserEvent('show-delete-confirmation-modal');
     }
 
     //Deleta disciplina
     public function destroy()
     {
-        $this->disciplina = $this->disciplina->find($this->deletar_id); //Fazer Service para deletar
-        $this->disciplina->delete();
+        $this->deleteService->delete($this->disciplina);
         $this->clearFields();
         $this->dispatchBrowserEvent('close-modal');
         session()->flash('successList', 'Disciplina deletada com sucesso!');
