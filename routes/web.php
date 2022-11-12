@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Login\LoginController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Livewire\{Alunos, Disciplinas, Index, Painel};
+use App\Http\Livewire\{Alunos, Disciplinas, Login, Painel};
 
 /*
 |--------------------------------------------------------------------------
@@ -16,8 +16,7 @@ use App\Http\Livewire\{Alunos, Disciplinas, Index, Painel};
 */
 
 
-Route::get('/', Index::class)->name('home');
-Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::get('/', Login::class)->name('login');
 Route::get('/check-auth', [LoginController::class, 'checkAuth'])->name('checkAuth');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 

@@ -3,43 +3,21 @@
 namespace App\Http\Controllers\Login;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    /*--------------------------------------------------------------------------
-    | Efetua o login
-    |--------------------------------------------------------------------------*/
-    public function login(Request $request){
-        $credentials = [
-            'email' => $request->email,
-            'password' => $request->password
-        ];
-        if(Auth::attempt($credentials)){
-            if(Auth::user()->status == 1){
-                return redirect()->route('painel');
-            }
-            return redirect()->back()->with('attention', 'Seu usuário está desativado temporariamente.');
-        }
-        return redirect()->back()->withInput($request->input())->withErrors(['Falha ao autenticar!']);
-    }
-
-    /*--------------------------------------------------------------------------
-    | Verifica se foi feito o login e entra no painel administativo
-    |--------------------------------------------------------------------------*/
+    // Verifica se foi feito o login e entra no painel administativo
     public function checkAuth(){
         if(Auth::check() === true){
             return redirect()->route('painel');
         }
-        return redirect()->route('home')->with('attention', 'Sessão expirada, faça login novamente.');
+        return redirect()->route('login')->with('attention-login', 'Faça login para continuar.');
     }
 
-    /*--------------------------------------------------------------------------
-    | Efetua o logout
-    |--------------------------------------------------------------------------*/
+    //Efetua o logout
     public function logout(){
         Auth::logout();
-        return redirect()->route('home');
+        return redirect()->route('login');
     }
 }
