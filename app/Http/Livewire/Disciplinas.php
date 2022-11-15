@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Disciplina;
 use App\Services\CreateService;
 use App\Services\DeleteService;
+use App\Services\GetAllService;
 use App\Services\UpdateService;
 use Exception;
 use Illuminate\Validation\Rule;
@@ -18,6 +19,7 @@ class Disciplinas extends Component
     private CreateService $createService;
     private UpdateService $updateService;
     private DeleteService $deleteService;
+    private GetAllService $getAllService;
     public $nome;
     public $observacao;
     public $search;
@@ -37,11 +39,17 @@ class Disciplinas extends Component
     }
 
     //Inicializa a service
-    public function boot(CreateService $createService, UpdateService $updateService, DeleteService $deleteService)
+    public function boot(
+        CreateService $createService, 
+        UpdateService $updateService,
+        DeleteService $deleteService,
+        GetAllService $getAllService
+        )
     {
         $this->createService = $createService;
         $this->updateService = $updateService;
         $this->deleteService = $deleteService;
+        $this->getAllService = $getAllService;
     }
 
     //Redefine a página para pagina 1 usuario acessar os elementos de outra página
@@ -140,7 +148,13 @@ class Disciplinas extends Component
      //Renderiza a página
      public function render()
      {
-         $disciplinas = Disciplina::where('nome', 'LIKE', "%{$this->search}%")->Orwhere('observacao', 'LIKE', "%{$this->search}%")->orderBy('id' , "DESC")->paginate(10); 
-         return view('livewire.disciplinas.disciplinas', ['disciplinas' => $disciplinas ]);
+        //Campos que irão como parâmetro para retornar os dados
+        $fields = [
+            'nome',
+            'observacao',
+        ];
+
+        $disciplinas = $this->getAllService->getAll($this->disciplina, $fields, $this->search); 
+        return view('livewire.disciplinas.disciplinas', ['disciplinas' => $disciplinas ]);
      }
 }
