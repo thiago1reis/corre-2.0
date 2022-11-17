@@ -7,52 +7,54 @@
                 <div class="col-sm-2">
                     <div class="my-2">
                         <label for="foto" class="form-label">Foto:</label>
-                        <input class="form-control" type="file" id="foto" wire:model="foto">
-                        @error('foto')<span class="text-danger" >{{$message}}</span>@enderror
-                        @if($foto)
-                            <img class="figure-img img-fluid rounded border mt-4" alt="Foto do Aluno" src="{{ $previaFoto }}">
-                            <figcaption class="figure-caption text-end">Prévia da foto.</figcaption>
+                        
+                        <input class="form-control @error('foto') is-invalid @enderror" type="file" wire:model="foto" accept="image/*">
+                     
+                        @if($previaFoto)
+                        <img class="figure-img img-fluid rounded border mt-4 @error('foto') border border-danger @enderror" alt="Foto do Aluno" src="{{ $previaFoto }}">
                         @else
-                            <img class="figure-img img-fluid rounded border mt-4 bg-white" alt="Foto do Aluno" src="{{ asset('imagens/aluno.png') }}">
+                        <img class="figure-img img-fluid rounded border mt-4 bg-white" alt="Foto do Aluno" src="{{ asset('imagens/aluno.png') }}">
                         @endif
+                        @error('foto')<span class="text-danger" >{{$message}}</span>@enderror
                     </div>
                 </div>
                 <div class="col-sm-10">
                     <div class="row">
+
                         <div class="col-sm-4 my-2">
                             <label for="nome" class="form-label">Nome: <span class="text-danger fw-bold">*</span></label>
-                            <input type="text" class="form-control" id="nome" wire:model="nome" placeholder="Digite o nome do aluno">
-                            @error('nome')<span class="text-danger" >Este campo é obrigatório</span>@enderror
+                            <input type="text" class="form-control @error('nome') is-invalid @enderror" id="nome" wire:model="nome" placeholder="Digite o nome do aluno">
+                            @error('nome')<span class="text-danger">{{ $message }}</span>@enderror
                         </div>
 
                         <div class="col-sm-4 my-2">
                             <label for="matricula" class="form-label">Matrícula: <span class="text-danger fw-bold">*</span></label>
-                            <input type="text" class="form-control" id="matricula" name="matricula" wire:model="matricula" placeholder="Digite a matrícula do aluno">
-                            @error('matricula')<span class="text-danger" >Este campo é obrigatório</span>@enderror
+                            <input type="text" class="form-control @error('matricula') is-invalid @enderror" id="matricula" name="matricula" wire:model="matricula" placeholder="Digite a matrícula do aluno">
+                            @error('matricula')<span class="text-danger">{{ $message }}</span>@enderror
                         </div>
 
                         <div class="col-sm-4 my-2">
                             <label for="data_nascimento" class="form-label">Data de Nascimento: <span class="text-danger fw-bold">*</span></label>
-                            <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" wire:model="data_nascimento">
-                            @error('data_nascimento')<span class="text-danger" >Este campo é obrigatório</span>@enderror
+                            <input type="date" class="form-control @error('data_nascimento') is-invalid @enderror" id="data_nascimento" name="data_nascimento" wire:model="data_nascimento">
+                            @error('data_nascimento')<span class="text-danger" >{{ $message }}</span>@enderror
                         </div>
 
                         <div class="col-sm-4 my-2">
                             <label for="sexo" class="form-label">Sexo: <span class="text-danger fw-bold">*</span></label><br>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="sexo" id="inlineRadio1" wire:model="sexo" value="Feminino">
+                                <input class="form-check-input @error('sexo') is-invalid @enderror" type="radio" name="sexo" id="inlineRadio1" wire:model="sexo" value="Feminino">
                                 <label class="form-check-label" for="inlineRadio1">Feminino</label>
                             </div>
 
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="sexo" id="inlineRadio2" wire:model="sexo" value="Masculino">
+                                <input class="form-check-input @error('sexo') is-invalid @enderror" type="radio" name="sexo" id="inlineRadio2" wire:model="sexo" value="Masculino">
                                 <label class="form-check-label" for="inlineRadio2">Masculino</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="sexo" id="inlineRadio3" wire:model="sexo" value="Outros" >
+                                <input class="form-check-input @error('sexo') is-invalid @enderror" type="radio" name="sexo" id="inlineRadio3" wire:model="sexo" value="Outros" >
                                 <label class="form-check-label" for="inlineRadio3">Outros</label>
                             </div><br>
-                            @error('sexo')<span class="text-danger" >Este campo é obrigatório</span>@enderror    
+                            @error('sexo')<span class="text-danger" >{{ $message }}</span>@enderror    
                         </div>
 
                         <div class="col-sm-4 my-2">

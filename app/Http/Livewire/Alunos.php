@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Aluno;
 use Exception;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -20,7 +21,7 @@ class Alunos extends Component
     |--------------------------------------------------------------------------*/
     public $foto, $nome, $matricula, $data_nascimento, $sexo, $telefone , $email, $responsavel, $telefone_responsavel, $observacao;
     
-    public $arquivo;
+    public $arquivo; 
 
     public $show_foto, $show_nome, $show_matricula, $show_data_nascimento, $show_sexo, $show_telefone, $show_email, $show_responsavel, 
     $show_telefone_responsavel, $show_observacao;
@@ -59,14 +60,15 @@ class Alunos extends Component
 			$this->edit_telefone_responsavel = Manny::mask($this->edit_telefone_responsavel, "(11) 11111-1111");
 		}
         //Cria previa da foto nos campos de imagens
-        if($field == 'edit_foto'){
-            $this->previaFotoNova = $this->edit_foto->temporaryUrl();
-        }
-        if($field == 'foto'){
-            $this->previaFoto = $this->foto->temporaryUrl();
-        }
+        // if($field == 'edit_foto'){
+        //     $this->previaFotoNova = $this->edit_foto->temporaryUrl();
+        // }
+        // if($field == 'foto'){
+        //     $this->previaFoto = $this->foto->temporaryUrl();
+        // }
+        
 	}
-
+ 
     /*--------------------------------------------------------------------------
     | Redefine a página para pagina 1 apos uma consulta apos acesser os elementos de outra página
     |--------------------------------------------------------------------------*/
@@ -84,28 +86,46 @@ class Alunos extends Component
         return view('livewire.alunos', ['alunos' => $alunos]);
     }
 
+    public function updatedFoto()
+    {
+       try{
+        if($this->foto){
+            $this->previaFoto = $this->foto->temporaryUrl();
+        }
+       }catch(Exception $e){
+            $this->addError('foto', '');
+       }
+
+        $this->validate([
+            'foto' => [ 
+                ($this->foto ? 'mimes:jpg,png' : 'nullable'),  
+                'dimensions:max_width=1000,max_height=1000',
+                'dimensions:min_width=700,min_height=700',
+             ],
+        ]);
+       
+       
+        
+    }
+
     /*--------------------------------------------------------------------------
     | Adiciona aluno no banco de dados
     |--------------------------------------------------------------------------*/
     public function store()
     { 
+
+        $this->updatedFoto();
+       
         //Valida os campos Obrigatórios.
         $this->validate([ 
-            'nome' => 'required',
-            'matricula' => 'required',
-            'data_nascimento' => 'required',
-            'sexo' => 'required',
+            'nome' => ['required', 'max:120'],
+            'matricula' => ['required', Rule::unique(Aluno::class, 'matricula')],
+            'data_nascimento' => ['required'],
+            'sexo' => ['required'],
         ]);
-        //Verifica se a matrícula informada já existe.
-        if(Aluno::where('matricula', $this->matricula)->exists()){
-            return session()->flash('attention', 'Essa matrícula já pertence a outro aluno.');     
-        }
+
         //Faz o upload da foto do aluno.
         if($this->foto){
-            //Valida a extensão da foto.
-            $this->validate([
-                'foto' => 'image|mimes:jpg,jpeg,png'
-            ]);
             //Renomeia o arquivo.
             $nomeArquivo = $this->matricula.'.'.$this->foto->getClientOriginalExtension();
             //Faz o upload no diretório.
