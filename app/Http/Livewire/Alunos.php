@@ -88,13 +88,13 @@ class Alunos extends Component
 
     public function updatedFoto()
     {
-       try{
-        if($this->foto){
-            $this->previaFoto = $this->foto->temporaryUrl();
+        try{
+            if($this->foto){
+                $this->previaFoto = $this->foto->temporaryUrl();
+                }
+        }catch(Exception $e){
+                $this->addError('foto', '');
         }
-       }catch(Exception $e){
-            $this->addError('foto', '');
-       }
 
         $this->validate([
             'foto' => [ 
@@ -103,9 +103,6 @@ class Alunos extends Component
                 'dimensions:min_width=700,min_height=700',
              ],
         ]);
-       
-       
-        
     }
 
     /*--------------------------------------------------------------------------
