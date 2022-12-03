@@ -20,6 +20,10 @@ body{
     width: 8em;
 }
 
+.btn-search-fixed-size{
+    width: 100%;
+}
+
 .admin-option :hover{
     border-color: #6c757d;
 }

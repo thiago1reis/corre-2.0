@@ -17,13 +17,8 @@ class Servidores extends Component
     private GetAllService $getAllService;
     public $search;
     protected $paginationTheme = 'bootstrap';
-    
-    //Monta o componente
-    public function mount(Servidor $servidor){
-        $this->servidor = $servidor;
-    }
 
-    //Inicializa a service
+    //Inicializa as services
     public function boot(
         CreateService $createService, 
         UpdateService $updateService,
@@ -38,17 +33,16 @@ class Servidores extends Component
     }
     
 
-    public function render()
+    public function render(Servidor $servidor)
     {
 
          //Campos que irão como parâmetro para retornar os dados
          $fields = [
             'nome',
             'tipo',
-            'observacao',
         ];
      
-        $servidores = $this->getAllService->getAll($this->servidor, $fields, $this->search); 
+        $servidores = $this->getAllService->getAll($servidor, $fields, $this->search); 
         return view('livewire.servidores.servidores', ['servidores' => $servidores ]);
     }
 }
