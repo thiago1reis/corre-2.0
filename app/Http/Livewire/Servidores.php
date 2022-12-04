@@ -103,7 +103,7 @@ class Servidores extends Component
         }
     }
 
-    //Edita daos no banco
+    //Edita dados no banco
     public function update(){
         $this->validate();
         $dados = [
@@ -122,8 +122,17 @@ class Servidores extends Component
         }
     }
 
+    //Deleta dados do banco
     public function delete(){
-
+        try{
+            $this->deleteService->delete($this->servidor);
+            $this->clearFields();
+            $this->dispatchBrowserEvent('close-modal');
+            session()->flash('success', 'Servidor deletado com sucesso!');
+        }catch(Exception $e){
+            //dd($e); 
+            session()->flash('error', 'Algo saiu errado, tente novamente mais tarde.');
+        }
     }
 
     //Renderiza componente
