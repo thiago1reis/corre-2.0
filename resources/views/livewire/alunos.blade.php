@@ -363,24 +363,7 @@
         </div>
     </div>
 </div>
-@push('scripts')
-    <script>
-        window.addEventListener('close-modal', event =>{
-            $('#showModal').modal('hide');
-            $('#editModal').modal('hide');
-            $('#deleteModal').modal('hide');
-        });
-        window.addEventListener('show-view-modal', event =>{
-            $('#showModal').modal('show');
-        });
-        window.addEventListener('show-edit-modal', event =>{
-            $('#editModal').modal('show');
-        });
-        window.addEventListener('show-delete-confirmation-modal', event =>{
-            $('#deleteModal').modal('show');
-        });
-    </script>
-@endpush
+
 
 
 

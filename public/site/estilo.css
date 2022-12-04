@@ -2,6 +2,10 @@ body{
     background-color: rgba(236, 243, 243, 0.781) !important;
 }
 
+.bg-modal{
+    background-color: rgba(236, 243, 243) !important;
+}
+
 .pagina-login{
     margin-top: 90px; 
     margin-bottom: 90px;
@@ -27,6 +31,8 @@ body{
 .admin-option :hover{
     border-color: #6c757d;
 }
+
+
   
 /* max-width  */
 @media screen and (max-width: 600px) {

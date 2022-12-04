@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 mb-2">
-        <button type="button" class="btn btn-primary float-end"><i class="icofont-ui-add"></i> Adicionar</button>
+        <button wire:click="showModal('Adicionar')" type="button" class="btn btn-primary float-end"><i class="icofont-ui-add"></i> Adicionar</button>
     </div>
     <fieldset class="border border-secondary p-3 mb-3">
         <legend  class="float-none w-auto">Servidores Adicionados</legend>
@@ -17,7 +17,7 @@
                 </div>
             </div>    
         </form>    
-        @include('layouts.alertas.alertasList') 
+        @include('layouts.alertas') 
         <div class="table-responsive">
             <table class="table">
                 <thead>
@@ -34,10 +34,10 @@
                         <tr class="text-nowrap bd-highlight">
                             <td class="align-middle">{{ $servidor->nome }}</td>
                             <td class="align-middle">{{ $servidor->tipo }}</td>
-                            <td class="align-middle">{{ $disciplina->observacao }}</td> 
+                            <td class="align-middle">{{ $servidor->observacao }}</td> 
                             <td class="align-middle"> 
-                                <a type="button" wire:click="selectEdit({{ $servidor->id }})" class="me-3 link-secondary text-decoration-none"><i title="Editar Dados" class="icofont-ui-edit"></i></a>
-                                <a type="button" wire:click="deleteConfirm({{ $servidor->id }})" class="me-3 link-secondary text-decoration-none"><i title="Deletar Registro" class="icofont-ui-delete"></i></a> 
+                                <a type="button" wire:click="showModal('Editar', {{ $servidor->id }})" class="me-3 link-secondary text-decoration-none"><i title="Editar Dados" class="icofont-ui-edit"></i></a>
+                                <a type="button" wire:click="deleteConfirm('Editar', {{ $servidor->id}})" class="me-3 link-secondary text-decoration-none"><i title="Deletar Registro" class="icofont-ui-delete"></i></a> 
                             </td> 
                         </tr>
                         @endforeach
@@ -57,4 +57,7 @@
             @endif 
         </div>
     </fieldset>
+    {{-- Modal Adicionar --}}
+    @include('livewire.servidores.modal-adicionar-servidor') 
+    @include('livewire.servidores.modal-editar-servidor') 
 </div>
