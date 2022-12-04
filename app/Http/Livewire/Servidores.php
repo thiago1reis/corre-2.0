@@ -20,6 +20,7 @@ class Servidores extends Component
     private DeleteService $deleteService;
     private GetAllService $getAllService;
     public Servidor $servidor;
+    public $modulo;
     public $modal;
     public $search;
     protected $paginationTheme = 'bootstrap';
@@ -64,8 +65,12 @@ class Servidores extends Component
         $this->modal = $modal;
         if($this->modal == 'Editar'){
             $this->servidor = $this->servidor->find($id);
-          
             $this->dispatchBrowserEvent('show-edit-modal');
+        }
+        elseif($this->modal == 'Deletar'){
+            $this->servidor = $this->servidor->find($id);
+            $this->modulo = 'Servidor';
+            $this->dispatchBrowserEvent('show-delete-modal');
         }
         else{
             $this->dispatchBrowserEvent('show-create-modal');
@@ -115,6 +120,10 @@ class Servidores extends Component
             //dd($e); 
             session()->flash('error', 'Algo saiu errado, tente novamente mais tarde.');
         }
+    }
+
+    public function delete(){
+
     }
 
     //Renderiza componente

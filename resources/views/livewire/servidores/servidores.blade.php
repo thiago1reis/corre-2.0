@@ -37,7 +37,7 @@
                             <td class="align-middle">{{ $servidor->observacao }}</td> 
                             <td class="align-middle"> 
                                 <a type="button" wire:click="showModal('Editar', {{ $servidor->id }})" class="me-3 link-secondary text-decoration-none"><i title="Editar Dados" class="icofont-ui-edit"></i></a>
-                                <a type="button" wire:click="deleteConfirm('Editar', {{ $servidor->id}})" class="me-3 link-secondary text-decoration-none"><i title="Deletar Registro" class="icofont-ui-delete"></i></a> 
+                                <a type="button" wire:click="showModal('Deletar', {{ $servidor->id}})" class="me-3 link-secondary text-decoration-none"><i title="Deletar Registro" class="icofont-ui-delete"></i></a> 
                             </td> 
                         </tr>
                         @endforeach
@@ -60,4 +60,5 @@
     {{-- Modal Adicionar --}}
     @include('livewire.servidores.modal-adicionar-servidor') 
     @include('livewire.servidores.modal-editar-servidor') 
+    @include('layouts.modal-deletar') 
 </div>
