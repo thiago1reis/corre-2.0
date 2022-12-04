@@ -16,7 +16,7 @@ class CreateServidorsTable extends Migration
         Schema::create('servidores', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->string('tipo');
+            $table->enum('tipo', ['Professor', 'Tec. Admin. Educacional']);
             $table->string('observacao')->nullable();
             $table->timestamps();
         });
