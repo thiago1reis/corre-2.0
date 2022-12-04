@@ -22,7 +22,7 @@ class Servidores extends Component
     public Servidor $servidor;
     public $modulo;
     public $modal;
-    public $search;
+    public $busca;
     protected $paginationTheme = 'bootstrap';
 
     //Valida os campos obrigatórios 
@@ -46,7 +46,7 @@ class Servidores extends Component
         CreateService $createService, 
         UpdateService $updateService,
         DeleteService $deleteService,
-        GetAllService $getAllService
+        GetAllService $getAllService,
         )
     {
         $this->createService = $createService;
@@ -65,7 +65,7 @@ class Servidores extends Component
         $this->modal = $modal;
         if($this->modal == 'Editar'){
             $this->servidor = $this->servidor->find($id);
-            $this->dispatchBrowserEvent('show-edit-modal');
+            $this->dispatchBrowserEvent('show-save-modal');
         }
         elseif($this->modal == 'Deletar'){
             $this->servidor = $this->servidor->find($id);
@@ -73,7 +73,8 @@ class Servidores extends Component
             $this->dispatchBrowserEvent('show-delete-modal');
         }
         else{
-            $this->dispatchBrowserEvent('show-create-modal');
+            $this->servidor->id = null;
+            $this->dispatchBrowserEvent('show-save-modal');
        }
     }
 
@@ -83,8 +84,8 @@ class Servidores extends Component
         $this->dispatchBrowserEvent('close-modal');
     }
 
-    //Salva dados no banco
-    public function store(){
+    //Adiciona ou atualiza servidor
+    public function save(){
         $this->validate();
         $dados = [
             'nome' => $this->servidor->nome,
@@ -92,32 +93,16 @@ class Servidores extends Component
             'observacao' => $this->servidor->observacao
         ];
         try{
-            $this->createService->create($this->servidor, $dados);
-            $this->clearFields();
+            if($this->servidor->id){
+                $this->updateService->update($this->servidor, $dados);
+            }else{
+                $this->createService->create($this->servidor, $dados);
+            }
             $this->closeModal();
             session()->flash('success', 'Servidor foi adicionada com sucesso.');
         }catch(Exception $e){
             //dd($e); 
             $this->closeModal();
-            session()->flash('error', 'Algo saiu errado, tente novamente mais tarde.');
-        }
-    }
-
-    //Edita dados no banco
-    public function update(){
-        $this->validate();
-        $dados = [
-            'nome' => $this->servidor->nome,
-            'tipo' => $this->servidor->tipo,
-            'observacao' => $this->servidor->observacao
-        ];
-        try{
-            $this->updateService->update($this->servidor, $dados);
-            $this->clearFields();
-            $this->dispatchBrowserEvent('close-modal');
-            session()->flash('success', 'Dados da servidor editados com sucesso!');
-        }catch(Exception $e){
-            //dd($e); 
             session()->flash('error', 'Algo saiu errado, tente novamente mais tarde.');
         }
     }
@@ -138,12 +123,14 @@ class Servidores extends Component
     //Renderiza componente
     public function render()
     {
-         //Campos que irão como parâmetro para retornar os dados
-         $fields = [
+        //Campos que irão como parâmetro para retornar os dados
+         $campos = [
             'nome',
             'tipo',
         ];
-        $servidores = $this->getAllService->getAll($this->servidor, $fields, $this->search); 
+        //Numero de páginas
+        $paginas = 10;
+        $servidores = $this->getAllService->getAll($this->servidor, $campos, $this->busca, $paginas); 
         return view('livewire.servidores.servidores', ['servidores' => $servidores ]);
     }
 }

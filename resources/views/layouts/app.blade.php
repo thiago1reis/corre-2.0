@@ -29,19 +29,15 @@
     <script src="{{ asset('site/bootstrap.js') }}"></script> 
     <script>
         window.addEventListener('close-modal', event =>{
-            $('#createModal').modal('hide');
+            $('#saveModal').modal('hide');
             $('#viewModal').modal('hide');
-            $('#editModal').modal('hide');
             $('#deleteModal').modal('hide');
         });
-        window.addEventListener('show-create-modal', event =>{
-            $('#createModal').modal('show');
+        window.addEventListener('show-save-modal', event =>{
+            $('#saveModal').modal('show');
         });
         window.addEventListener('show-view-modal', event =>{
             $('#viewModal').modal('show');
-        });
-        window.addEventListener('show-edit-modal', event =>{
-            $('#editModal').modal('show');
         });
         window.addEventListener('show-delete-modal', event =>{
             $('#deleteModal').modal('show');

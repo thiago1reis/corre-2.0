@@ -4,19 +4,7 @@
     </div>
     <fieldset class="border border-secondary p-3 mb-3">
         <legend  class="float-none w-auto">Servidores Adicionados</legend>
-        <form>
-            <div class="mb-3 g-3 row">
-                <div class="col-sm-6 col-md-10 col-lg-10 col-xl-10">
-                    <input type="text" class="form-control" id="search " name="search " wire:model="search" placeholder="Busque por nome ou tipo">
-                </div>
-                <div class="col-sm-6 col-md-1 col-lg-1 col-xl-1">
-                    <button type="submit" class="btn btn-primary btn-search-fixed-size" title="Filtrar"><i class="icofont-ui-search"></i></button>
-                </div>
-                <div class="col-sm-6 col-md-1 col-lg-1 col-xl-1">
-                    <button type="submit" class="btn btn-primary btn-search-fixed-size" title="Limpar Filtro"disabled><i class="icofont-ui-reply"></i></button>
-                </div>
-            </div>    
-        </form>    
+        @include('layouts.busca') 
         @include('layouts.alertas') 
         <div class="table-responsive">
             <table class="table">
@@ -57,8 +45,6 @@
             @endif 
         </div>
     </fieldset>
-    {{-- Modal Adicionar --}}
-    @include('livewire.servidores.modal-adicionar-servidor') 
-    @include('livewire.servidores.modal-editar-servidor') 
+    @include('livewire.servidores.modal-servidor') 
     @include('layouts.modal-deletar') 
 </div>

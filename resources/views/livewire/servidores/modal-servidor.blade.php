@@ -1,12 +1,12 @@
-<div wire:ignore.self class="modal fade" id="createModal" tabindex="-1" data-bs-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
+<div wire:ignore.self class="modal fade" id="saveModal" tabindex="-1" data-bs-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="saveModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl " role="document">
         <div class="modal-content bg-modal">
             <div class="modal-header">
-                <h5 class="modal-title">Adicionar Servidor</h5>
+                <h5 class="modal-title">{{ $modal }} Servidor</h5>
                 <button type="button" class="btn-close" wire:click="closeModal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" wire:submit.prevent="store">
+                <form method="POST" wire:submit.prevent="save">
                     <div class="row">
                         <div class="col-sm-6 my-2">
                             <label for="nome" class="form-label">Nome: <span class="text-danger fw-bold">*</span></label>
@@ -34,11 +34,11 @@
                             {{-- Efeito de carregamento quando o butão é acionado--}}
                             <span wire:click="closeModal" wire:loading.delay.shortest class="spinner-border spinner-border-sm text-danger" role="status"></span>
                         </button>
-                        <button wire:click="store" type="submit" class="btn btn-success btn-fixed-size" wire:loading.attr="disabled">
+                        <button wire:click="save" type="submit" class="btn btn-success btn-fixed-size" wire:loading.attr="disabled">
                             {{-- Texto padrão do botão--}}
-                            <span wire:click="store" wire:loading.remove.delay.shortest>Salvar</span>
+                            <span wire:click="save" wire:loading.remove.delay.shortest>Salvar</span>
                             {{-- Efeito de carregamento quando o butão é acionado--}}
-                            <span wire:click="store" wire:loading.delay.shortest class="spinner-border spinner-border-sm text-white" role="status"></span>
+                            <span wire:click="save" wire:loading.delay.shortest class="spinner-border spinner-border-sm text-white" role="status"></span>
                         </button>
                     </div>
                 </form> 
