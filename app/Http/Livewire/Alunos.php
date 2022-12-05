@@ -3,6 +3,10 @@
 namespace App\Http\Livewire;
 
 use App\Models\Aluno;
+use App\Services\CreateService;
+use App\Services\DeleteService;
+use App\Services\GetAllService;
+use App\Services\UpdateService;
 use Exception;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
@@ -16,59 +20,91 @@ class Alunos extends Component
     use WithPagination; 
     use WithFileUploads;
 
-    /*--------------------------------------------------------------------------
-    | Definição de atributos
-    |--------------------------------------------------------------------------*/
-    public $foto, $nome, $matricula, $data_nascimento, $sexo, $telefone , $email, $responsavel, $telefone_responsavel, $observacao;
-    
-    public $arquivo; 
-
-    public $show_foto, $show_nome, $show_matricula, $show_data_nascimento, $show_sexo, $show_telefone, $show_email, $show_responsavel, 
-    $show_telefone_responsavel, $show_observacao;
-
-    public $edit_id, $edit_foto, $edit_nome, $edit_matricula, $edit_data_nascimento, $edit_sexo, $edit_telefone,
-    $edit_email, $edit_responsavel, $edit_telefone_responsavel, $edit_observacao;
-
-    public $aluno_delete_id;
-
-    public $search;
-
-    public $previaFotoNova, $previaFoto; 
-
+    private CreateService $createService;
+    private UpdateService $updateService;
+    private DeleteService $deleteService;
+    private GetAllService $getAllService;
+    public Aluno $aluno;
+    public $modulo;
+    public $modal;
+    public $busca;
     protected $paginationTheme = 'bootstrap';
 
-    /*--------------------------------------------------------------------------
-    | Atualiza formularios
-    |--------------------------------------------------------------------------*/
-    // public function updated($field)
-	// { 
-    //     //Adiciona mascara aos campos dos formularios
-	// 	if ($field == 'telefone')
-	// 	{
-	// 		$this->telefone = Manny::mask($this->telefone, "(11) 11111-1111");
-	// 	}    
-    //     if ($field == 'telefone_responsavel')
-	// 	{
-	// 		$this->telefone_responsavel = Manny::mask($this->telefone_responsavel, "(11) 11111-1111");
-	// 	}
-    //     if ($field == 'edit_telefone')
-	// 	{
-	// 		$this->edit_telefone = Manny::mask($this->edit_telefone, "(11) 11111-1111");
-	// 	}
-    //     if ($field == 'edit_telefone_responsavel')
-	// 	{
-	// 		$this->edit_telefone_responsavel = Manny::mask($this->edit_telefone_responsavel, "(11) 11111-1111");
-	// 	}
-    //     //Cria previa da foto nos campos de imagens
-    //     // if($field == 'edit_foto'){
-    //     //     $this->previaFotoNova = $this->edit_foto->temporaryUrl();
-    //     // }
-    //     // if($field == 'foto'){
-    //     //     $this->previaFoto = $this->foto->temporaryUrl();
-    //     // }
-        
-	// }
+    //Valida os campos obrigatórios 
+    protected  function rules() {
+        return [
+            'aluno.foto' => '',
+            'aluno.nome' => 'required|min:6',
+            'aluno.matricula' => ['required', Rule::unique(Aluno::class, 'matricula')->ignore($this->aluno)],
+            'aluno.data_nascimento' => 'required',
+            'aluno.sexo' => 'required',
+            'aluno.telefone' => '',
+            'aluno.email' => '',
+            'aluno.responsavel' => '',
+            'aluno.telefone_responsavel' => '',
+            'aluno.observacao' => '',
+        ];
+    }
+
+    //Limpa os campos
+    protected function clearFields(){
+        $this->aluno->foto = '';
+        $this->aluno->nome = '';
+        $this->aluno->matricula = '';
+        $this->aluno->data_nascimento = '';
+        $this->aluno->sexo = '';
+        $this->aluno->telefone = '';
+        $this->aluno->email = '';
+        $this->aluno->responsavel = '';
+        $this->aluno->telefone_responsavel = '';
+        $this->aluno->observacao = '';
+    }
  
+    //Inicializa as services
+    public function boot(
+        CreateService $createService, 
+        UpdateService $updateService,
+        DeleteService $deleteService,
+        GetAllService $getAllService
+        )
+    {
+        $this->createService = $createService;
+        $this->updateService = $updateService;
+        $this->deleteService = $deleteService;
+        $this->getAllService = $getAllService;
+    }
+
+    //Monta o componente
+    public function mount(Aluno $aluno){
+        $this->aluno = $aluno;
+    }
+
+    //Abre modal
+    public function showModal($modal, $id = null){
+        $this->modal = $modal;
+        if($this->modal == 'Editar'){
+            $this->aluno = $this->aluno->find($id);
+            $this->dispatchBrowserEvent('show-save-modal');
+        }
+        elseif($this->modal == 'Deletar'){
+            $this->aluno = $this->aluno->find($id);
+            $this->modulo = 'Disciplina';
+            $this->dispatchBrowserEvent('show-delete-modal');
+        }
+        else{
+            $this->aluno->id = null;
+            $this->dispatchBrowserEvent('show-save-modal');
+       }
+    }
+
+    //Fecha modal
+    public function closeModal(){
+        $this->clearFields();
+        $this->dispatchBrowserEvent('close-modal');
+    }
+ 
+
+   
     /*--------------------------------------------------------------------------
     | Redefine a página para pagina 1 apos uma consulta apos acesser os elementos de outra página
     |--------------------------------------------------------------------------*/
@@ -77,14 +113,20 @@ class Alunos extends Component
         $this->resetPage();
     }
 
-    /*--------------------------------------------------------------------------
-    | Renderiza a página
-    |--------------------------------------------------------------------------*/
+    //Renderiza a página
     public function render()
     {   
-        $alunos = Aluno::where('nome', 'LIKE', "%{$this->search}%")->Orwhere('matricula', 'LIKE', "%{$this->search}%")->orderBy('id' , "DESC")->paginate(5); 
-        return view('livewire.alunos', ['alunos' => $alunos]);
+        //Campos que irão como parâmetro para retornar os dados
+        $campos = [
+            'nome',
+            'matricula',
+        ];
+        //Numero de páginas
+        $paginas = 10;
+        $alunos = $this->getAllService->getAll($this->aluno, $campos, $this->busca, $paginas);
+        return view('livewire.alunos.alunos', ['alunos' => $alunos ]);
     }
+
 
     public function updatedFoto()
     {
