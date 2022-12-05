@@ -136,8 +136,10 @@ class Servidores extends Component
         ];
         //Numero de páginas
         $paginas = 10;
+        //Tipo de servidores
+        $tipos = $this->servidor->tipos();
         $servidores = $this->getAllService->getAll($this->servidor, $campos, $this->busca, $paginas); 
-        return view('livewire.servidores.servidores', ['servidores' => $servidores ]);
+        return view('livewire.servidores.servidores', ['servidores' => $servidores, 'tipos' => $tipos ]);
     }
 }
  

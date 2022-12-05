@@ -17,9 +17,10 @@
                             <label for="tipo" class="form-label">Tipo: <span class="text-danger fw-bold">*</span></label>
                             <select class="form-select @error('servidor.tipo') is-invalid @enderror" aria-label="Default select example" wire:model.lazy="servidor.tipo">
                                 <option value="" selected>Selecione...</option>
-                                <option value="Professor">Professor</option>
-                                <option value="Tec. Admin. Educacional">Tec. Admin. Educacional</option>
-                              </select>
+                                @foreach($tipos as  $key => $valor )
+                                    <option value="{{ $key }}">{{ $valor }}</option>
+                                @endforeach 
+                            </select>
                             @error('servidor.tipo')<span class="text-danger">{{ $message }}</span>@enderror
                         </div>
                         <div class="col-sm-12 my-2">
