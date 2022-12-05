@@ -16,16 +16,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($disciplinas as $disciplina)
-                    <tr class="text-nowrap bd-highlight">
-                        <td class="align-middle"><span>{{ $disciplina->nome }}</span></td>
-                        <td class="align-middle">{{ $disciplina->observacao }}</td> 
-                        <td class="align-middle"> 
-                            <a type="button" wire:click="showModal('Editar', {{ $disciplina->id }})" class="me-3 link-secondary text-decoration-none"><i title="Editar Dados" class="icofont-ui-edit"></i></a>
-                            <a type="button" wire:click="showModal('Deletar', {{ $disciplina->id }})" class="me-3 link-secondary text-decoration-none"><i title="Deletar Registro" class="icofont-ui-delete"></i></a> 
-                        </td> 
-                    </tr>
-                    @endforeach
+                    @if($disciplinas->count() > 0)
+                        @foreach ($disciplinas as $disciplina)
+                        <tr class="text-nowrap bd-highlight">
+                            <td class="align-middle"><span>{{ $disciplina->nome }}</span></td>
+                            <td class="align-middle">{{ $disciplina->observacao }}</td> 
+                            <td class="align-middle"> 
+                                <a type="button" wire:click="showModal('Editar', {{ $disciplina->id }})" class="me-3 link-secondary text-decoration-none"><i title="Editar Dados" class="icofont-ui-edit"></i></a>
+                                <a type="button" wire:click="showModal('Deletar', {{ $disciplina->id }})" class="me-3 link-secondary text-decoration-none"><i title="Deletar Registro" class="icofont-ui-delete"></i></a> 
+                            </td> 
+                        </tr>
+                        @endforeach
+                    @else
+                        <tr class="text-nowrap bd-highlight">
+                            <td colspan="3"class="align-middle text-center">Nenhum registro encontrado.</td>
+                        </tr>
+                    @endif        
                 </tbody>
             </table>
         </div>

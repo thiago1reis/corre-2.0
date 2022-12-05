@@ -30,9 +30,9 @@
                         </tr>
                         @endforeach
                     @else
-                    <tr class="text-nowrap bd-highlight">
-                        <td colspan="4"class="align-middle text-center">Nenhum registro encontrado.</td>
-                    </tr>
+                        <tr class="text-nowrap bd-highlight">
+                            <td colspan="4"class="align-middle text-center">Nenhum registro encontrado.</td>
+                        </tr>
                     @endif
                 </tbody>
             </table>
