@@ -99,7 +99,7 @@ class Servidores extends Component
                 $this->createService->create($this->servidor, $dados);
             }
             $this->closeModal();
-            session()->flash('success', 'Servidor foi adicionada com sucesso.');
+            session()->flash('success', 'Dados do servidor salvos com sucesso.');
         }catch(Exception $e){
             //dd($e); 
             $this->closeModal();

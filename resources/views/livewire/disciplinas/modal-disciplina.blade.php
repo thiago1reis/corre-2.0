@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-xl " role="document">
         <div class="modal-content bg-modal">
             <div class="modal-header">
-                <h5 class="modal-title">{{ $modal }} Servidor</h5>
+                <h5 class="modal-title">{{ $modal }} Disciplina</h5>
                 <button type="button" class="btn-close" wire:click="closeModal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -10,21 +10,12 @@
                     <div class="row">
                         <div class="col-sm-6 my-2">
                             <label for="nome" class="form-label">Nome: <span class="text-danger fw-bold">*</span></label>
-                            <input type="text" class="form-control @error('servidor.nome') is-invalid @enderror" wire:model.lazy="servidor.nome" placeholder="Digite o nome do servidor">
-                            @error('servidor.nome')<span class="text-danger">{{ $message }}</span>@enderror
+                            <input type="text" class="form-control @error('disciplina.nome') is-invalid @enderror" wire:model.lazy="disciplina.nome" placeholder="Digite o nome da disciplina">
+                            @error('disciplina.nome')<span class="text-danger">{{ $message }}</span>@enderror
                         </div>
                         <div class="col-sm-6 my-2">
-                            <label for="tipo" class="form-label">Tipo: <span class="text-danger fw-bold">*</span></label>
-                            <select class="form-select @error('servidor.tipo') is-invalid @enderror" aria-label="Default select example" wire:model.lazy="servidor.tipo">
-                                <option value="" selected>Selecione...</option>
-                                <option value="Professor">Professor</option>
-                                <option value="Tec. Admin. Educacional">Tec. Admin. Educacional</option>
-                              </select>
-                            @error('servidor.tipo')<span class="text-danger">{{ $message }}</span>@enderror
-                        </div>
-                        <div class="col-sm-12 my-2">
                             <label for="observacao" class="form-label">Observações:</label>
-                            <input type="text" class="form-control" wire:model.lazy="servidor.observacao">
+                            <input type="text" class="form-control" wire:model.lazy="disciplina.observacao">
                         </div>
                     </div>
                     <div class=" my-3 float-end ">

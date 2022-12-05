@@ -20,25 +20,27 @@ class Disciplinas extends Component
     private UpdateService $updateService;
     private DeleteService $deleteService;
     private GetAllService $getAllService;
-    public $nome;
-    public $observacao;
-    public $search;
+    public Disciplina $disciplina;
+    public $modulo;
+    public $modal;
+    public $busca;
     protected $paginationTheme = 'bootstrap';
+
+    //Valida os campos obrigatórios 
+    protected  function rules() {
+        return [
+            'disciplina.nome' => ['required', Rule::unique(Disciplina::class, 'nome')->ignore($this->disciplina)],
+            'disciplina.observacao' => '',
+        ];
+    }
 
     //Limpa os campos
     protected function clearFields(){
-        $this->nome = '';
-        $this->observacao = '';
-        $this->editar_nome = '';
-        $this->editar_observacao = '';
+        $this->disciplina->nome = '';
+        $this->disciplina->observacao = '';
     }
-
-    //Monta o componente
-    public function mount(Disciplina $disciplina){
-        $this->disciplina = $disciplina;
-    }
-
-    //Inicializa a service
+    
+    //Inicializa as services
     public function boot(
         CreateService $createService, 
         UpdateService $updateService,
@@ -52,109 +54,87 @@ class Disciplinas extends Component
         $this->getAllService = $getAllService;
     }
 
-    //Redefine a página para pagina 1 usuario acessar os elementos de outra página
-    public function updatingSearch()
+    //Monta o componente
+    public function mount(Disciplina $disciplina){
+        $this->disciplina = $disciplina;
+    }
+
+    //Abre modal
+    public function showModal($modal, $id = null){
+        $this->modal = $modal;
+        if($this->modal == 'Editar'){
+            $this->disciplina = $this->disciplina->find($id);
+            $this->dispatchBrowserEvent('show-save-modal');
+        }
+        elseif($this->modal == 'Deletar'){
+            $this->disciplina = $this->disciplina->find($id);
+            $this->modulo = 'Disciplina';
+            $this->dispatchBrowserEvent('show-delete-modal');
+        }
+        else{
+            $this->disciplina->id = null;
+            $this->dispatchBrowserEvent('show-save-modal');
+       }
+    }
+
+    //Fecha modal
+    public function closeModal(){
+        $this->clearFields();
+        $this->dispatchBrowserEvent('close-modal');
+    }
+
+    //Adiciona ou atualiza disciplina
+    public function save(){
+        $this->validate();
+        $dados = [
+            'nome' => $this->disciplina->nome,
+            'observacao' => $this->disciplina->observacao
+        ];
+        try{
+            if($this->disciplina->id){
+                $this->updateService->update($this->disciplina, $dados);
+            }else{
+                $this->createService->create($this->disciplina, $dados);
+            }
+            $this->closeModal();
+            session()->flash('success', 'Dados da disciplina salvos com sucesso.');
+        }catch(Exception $e){
+            //dd($e); 
+            $this->closeModal();
+            session()->flash('error', 'Algo saiu errado, tente novamente mais tarde.');
+        }
+    }
+
+    //Redefine a páginação
+    public function updatingBusca()
     {
         $this->resetPage();
     }
 
-    //Salva os dados
-    public function store()
-    { 
-        //Valida campos obirgatórios
-        $this->validate([
-            'nome' => ['required', Rule::unique(Disciplina::class, 'nome')]
-        ]);
-        
-        $dados = [
-            'nome' => $this->nome,
-            'observacao' => $this->observacao
-        ];
-
+    //Deleta dados do banco
+    public function delete(){
         try{
-            $this->createService->create($this->disciplina, $dados);
+            $this->deleteService->delete($this->disciplina);
             $this->clearFields();
-            session()->flash('success', 'Disciplina foi adicionada com sucesso.');
+            $this->dispatchBrowserEvent('close-modal');
+            session()->flash('success', 'Disciplina deletada com sucesso!');
         }catch(Exception $e){
             //dd($e); 
             session()->flash('error', 'Algo saiu errado, tente novamente mais tarde.');
         }
     }
 
-    //Seleciona disciplina a ser editada
-    public function selectEdit($id)
+    //Renderiza a página
+    public function render()
     {
-        $this->disciplina = $this->disciplina->find($id);
-        $this->editar_id = $this->disciplina->id;
-        $this->editar_nome = $this->disciplina->nome;
-        $this->editar_observacao = $this->disciplina->observacao;
-        $this->dispatchBrowserEvent('show-edit-modal');
-    }
-
-    //Edita os dados.
-    public function edit(){
-        
-        //Valida campos obirgatórios
-        $this->validate([
-            'editar_nome' => ['required', Rule::unique(Disciplina::class, 'nome')->ignore($this->disciplina)]
-        ]);
-
-        $dados = [
-            'nome' => $this->editar_nome,
-            'observacao' => $this->editar_observacao
-        ];
-         
-        try{
-            $this->updateService->update($this->disciplina, $dados);
-            $this->clearFields();
-            $this->dispatchBrowserEvent('close-modal');
-            session()->flash('successList', 'Dados da disciplina editado com sucesso!');
-        }catch(Exception $e){
-            //dd($e); 
-            session()->flash('errorModal', 'Algo saiu errado, tente novamente mais tarde.');
-        }
-    }
-
-    //Cancela edição
-    public function cancelEdit()
-    {   
-        $this->clearFields();
-        $this->dispatchBrowserEvent('close-modal');
-    }
-
-    //Seleciona disciplina para ser deletada
-    public function deleteConfirm($id)
-    {
-        $this->disciplina = $this->disciplina->find($id);
-        $this->dispatchBrowserEvent('show-delete-confirmation-modal');
-    }
-
-    //Deleta disciplina
-    public function destroy()
-    {
-        $this->deleteService->delete($this->disciplina);
-        $this->clearFields();
-        $this->dispatchBrowserEvent('close-modal');
-        session()->flash('successList', 'Disciplina deletada com sucesso!');
-    }
-
-    //Cancela a seleção da disciplina que ia ter os dados deletados
-    public function cancelDelete()
-    {
-        $this->clearFields();
-        $this->dispatchBrowserEvent('close-modal');
-    }
-
-     //Renderiza a página
-     public function render()
-     {
         //Campos que irão como parâmetro para retornar os dados
-        $fields = [
+        $campos = [
             'nome',
             'observacao',
         ];
-
-        $disciplinas = $this->getAllService->getAll($this->disciplina, $fields, $this->search); 
+        //Numero de páginas
+        $paginas = 10;
+        $disciplinas = $this->getAllService->getAll($this->disciplina, $campos, $this->busca, $paginas);
         return view('livewire.disciplinas.disciplinas', ['disciplinas' => $disciplinas ]);
-     }
+    }
 }
