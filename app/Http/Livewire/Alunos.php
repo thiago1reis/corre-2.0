@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
-use Manny;
+
 
 class Alunos extends Component
 {   
@@ -40,34 +40,34 @@ class Alunos extends Component
     /*--------------------------------------------------------------------------
     | Atualiza formularios
     |--------------------------------------------------------------------------*/
-    public function updated($field)
-	{ 
-        //Adiciona mascara aos campos dos formularios
-		if ($field == 'telefone')
-		{
-			$this->telefone = Manny::mask($this->telefone, "(11) 11111-1111");
-		}    
-        if ($field == 'telefone_responsavel')
-		{
-			$this->telefone_responsavel = Manny::mask($this->telefone_responsavel, "(11) 11111-1111");
-		}
-        if ($field == 'edit_telefone')
-		{
-			$this->edit_telefone = Manny::mask($this->edit_telefone, "(11) 11111-1111");
-		}
-        if ($field == 'edit_telefone_responsavel')
-		{
-			$this->edit_telefone_responsavel = Manny::mask($this->edit_telefone_responsavel, "(11) 11111-1111");
-		}
-        //Cria previa da foto nos campos de imagens
-        // if($field == 'edit_foto'){
-        //     $this->previaFotoNova = $this->edit_foto->temporaryUrl();
-        // }
-        // if($field == 'foto'){
-        //     $this->previaFoto = $this->foto->temporaryUrl();
-        // }
+    // public function updated($field)
+	// { 
+    //     //Adiciona mascara aos campos dos formularios
+	// 	if ($field == 'telefone')
+	// 	{
+	// 		$this->telefone = Manny::mask($this->telefone, "(11) 11111-1111");
+	// 	}    
+    //     if ($field == 'telefone_responsavel')
+	// 	{
+	// 		$this->telefone_responsavel = Manny::mask($this->telefone_responsavel, "(11) 11111-1111");
+	// 	}
+    //     if ($field == 'edit_telefone')
+	// 	{
+	// 		$this->edit_telefone = Manny::mask($this->edit_telefone, "(11) 11111-1111");
+	// 	}
+    //     if ($field == 'edit_telefone_responsavel')
+	// 	{
+	// 		$this->edit_telefone_responsavel = Manny::mask($this->edit_telefone_responsavel, "(11) 11111-1111");
+	// 	}
+    //     //Cria previa da foto nos campos de imagens
+    //     // if($field == 'edit_foto'){
+    //     //     $this->previaFotoNova = $this->edit_foto->temporaryUrl();
+    //     // }
+    //     // if($field == 'foto'){
+    //     //     $this->previaFoto = $this->foto->temporaryUrl();
+    //     // }
         
-	}
+	// }
  
     /*--------------------------------------------------------------------------
     | Redefine a página para pagina 1 apos uma consulta apos acesser os elementos de outra página
@@ -395,3 +395,5 @@ class Alunos extends Component
         $this->dispatchBrowserEvent('close-modal');
     }
 }
+
+//398 linhas de código !------>> diminuir 50%.
