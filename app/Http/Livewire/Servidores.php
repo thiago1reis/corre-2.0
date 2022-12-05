@@ -120,6 +120,12 @@ class Servidores extends Component
         }
     }
 
+    //Redefine a páginação
+    public function updatingBusca()
+    {
+        $this->resetPage();
+    }
+
     //Renderiza componente
     public function render()
     {
