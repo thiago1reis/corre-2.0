@@ -7,82 +7,97 @@
             </div>
             <div class="modal-body">
                 @include('layouts.alertas.alertasModal')
-                <form method="POST" wire:submit.prevent="edit">
+                <form method="POST" wire:submit.prevent="save">
                     <div class="row">
                         <div class="col-sm-2">
-                           
+                         
                             <div class="my-2">
-                                <label for="aluno.foto" class="form-label">Foto:</label>
-                                <input class="form-control" type="file" id="aluno.foto" wire:model="aluno.foto" >
-                                
-                                @error('aluno.foto')<span class="text-danger" >{{$message}}</span>@enderror
-                                
-                                @if($this->aluno->id)  
-                                    
-                                        <img class="figure-img img-fluid rounded border mt-4" alt="{{ $aluno->nome }}" src="{{ url("storage/{$this->aluno->foto}") }}">
-                                          
-                                @else
+                                <label for="foto" class="form-label">Foto: <span class="text-danger fw-bold">*</span></label>
+                                @if(!$foto)
+                                    <input class="form-control @error('foto') is-invalid @enderror" type="file" id="foto" wire:model="foto"  accept="image/*">
+                               @endif
+                               
+{{--                                
+                                @if($foto && !$_id) 
+                                    <img class="figure-img img-fluid rounded border mt-4" alt="Prévia da foto" src="{{ $foto->temporaryUrl() }}">
+                                @elseif()
+                                    <img class="figure-img img-fluid rounded border mt-4" alt="{{ $nome }}" src="{{ url("storage/{$foto}") }}">
+                                    {{$_id}}
+                                @endif --}}
+                               
+                               
+                               
+                               
+                                @if($_id) 
+                                    <img class="figure-img img-fluid rounded border mt-4" alt="{{ $this->nome }}" src="{{ url("storage/{$foto}") }}">
+                                @elseif($_id && $foto)
+                                    <img class="figure-img img-fluid rounded border mt-4" alt="aa" src="{{ $foto->temporaryUrl() }}">
+                                @elseif(!$foto)
                                     <img class="figure-img img-fluid rounded border mt-4 bg-white" alt="Foto do Aluno" src="{{ asset('imagens/aluno.png') }}">
-                                @endif
+                                @elseif($foto && !$_id)
+                                    <img class="figure-img img-fluid rounded border mt-4" alt="Prévia da foto" src="{{ $foto->temporaryUrl() }}">
 
+                                @endif
+                                
+                                @error('foto')<span class="text-danger" >{{$message}}</span>@enderror
                             </div>
                         </div>
                         <div class="col-sm-10">
                             <div class="row">
                                 <div class="col-sm-4 my-2">
-                                    <label for="aluno.nome" class="form-label">Nome: <span class="text-danger fw-bold">*</span></label>
-                                    <input type="text" class="form-control" id="aluno.nome" wire:model="aluno.nome" placeholder="Digite o nome do aluno">
-                                    @error('aluno.nome')<span class="text-danger" >{{$message}}</span>@enderror
+                                    <label for="nome" class="form-label">Nome: <span class="text-danger fw-bold">*</span></label>
+                                    <input type="text" class="form-control" id="nome" wire:model="nome" placeholder="Digite o nome do aluno">
+                                    @error('nome')<span class="text-danger" >{{$message}}</span>@enderror
                                 </div>
                                 <div class="col-sm-4 my-2">
-                                    <label for="aluno.matricula" class="form-label">Matrícula: <span class="text-danger fw-bold">*</span></label>
-                                    <input type="number" class="form-control" id="aluno.matricula" wire:model="aluno.matricula" placeholder="Digite a matrícula do aluno">
-                                    @error('aluno.matricula')<span class="text-danger" >{{$message}}</span>@enderror
+                                    <label class="form-label">Matrícula: <span class="text-danger fw-bold">*</span></label>
+                                    <input type="text" class="form-control" wire:model="matricula" placeholder="Digite a matrícula do aluno">
+                                    @error('matricula')<span class="text-danger" >{{$message}}</span>@enderror
                                 </div>
                                 <div class="col-sm-4 my-2">
-                                    <label for="aluno.data_nascimento" class="form-label">Data de Nascimento: <span class="text-danger fw-bold">*</span></label>
-                                    <input type="date" class="form-control" id="aluno.data_nascimento"  wire:model="aluno.data_nascimento">
-                                    @error('aluno.data_nascimento')<span class="text-danger" >{{$message}}</span>@enderror
+                                    <label for="data_nascimento" class="form-label">Data de Nascimento: <span class="text-danger fw-bold">*</span></label>
+                                    <input type="date" class="form-control" id="data_nascimento"  wire:model="data_nascimento">
+                                    @error('data_nascimento')<span class="text-danger" >{{$message}}</span>@enderror
                                 </div>
                                 <div class="col-sm-5 my-2">
-                                    <label for="aluno.sexo" class="form-label">Sexo: <span class="text-danger fw-bold">*</span></label><br>
+                                    <label for="sexo" class="form-label">Sexo: <span class="text-danger fw-bold">*</span></label><br>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" id="inlineRadio1" wire:model="aluno.sexo" value="Feminino">
+                                        <input class="form-check-input" type="radio" id="inlineRadio1" wire:model="sexo" value="Feminino">
                                         <label class="form-check-label" for="inlineRadio1">Feminino</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" id="inlineRadio2" wire:model="aluno.sexo" value="Masculino">
+                                        <input class="form-check-input" type="radio" id="inlineRadio2" wire:model="sexo" value="Masculino">
                                         <label class="form-check-label" for="inlineRadio2">Masculino</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" id="inlineRadio3" wire:model="aluno.sexo" value="Outros" >
+                                        <input class="form-check-input" type="radio" id="inlineRadio3" wire:model="sexo" value="Outros" >
                                         <label class="form-check-label" for="inlineRadio3">Outros</label>
                                     </div><br>
-                                    @error('aluno.sexo')<span class="text-danger" >{{$message}}</span>@enderror    
+                                    @error('sexo')<span class="text-danger" >{{$message}}</span>@enderror    
                                 </div>
                                 <div class="col-sm-3 my-2">
-                                    <label for="aluno.telefone" class="form-label">Telefone:</label>
-                                    <input type="text" class="form-control" id="aluno.telefone" wire:model="aluno.telefone" maxlength="15" placeholder="(00) 00000-0000">
+                                    <label for="telefone" class="form-label">Telefone:</label>
+                                    <input type="text" class="form-control" id="telefone" wire:model="telefone" maxlength="15" placeholder="(00) 00000-0000">
                                 </div>
                                 <div class="col-sm-4 my-2">
-                                    <label for="aluno.email" class="form-label">Email:</label>
-                                    <input type="email" class="form-control" id="aluno.email" wire:model="aluno.email" placeholder="nome@email.com">
+                                    <label for="email" class="form-label">Email:</label>
+                                    <input type="email" class="form-control" id="email" wire:model="email" placeholder="nome@email.com">
                                 </div>
                                 <div class="col-sm-4 my-2">
-                                    <label for="aluno.responsavel" class="form-label">Responsável:</label>
-                                    <input type="text" class="form-control" id="aluno.responsavel" wire:model="aluno.responsavel" placeholder="Digite o nome do responsável pelo aluno">
+                                    <label for="responsavel" class="form-label">Responsável:</label>
+                                    <input type="text" class="form-control" id="responsavel" wire:model="responsavel" placeholder="Digite o nome do responsável pelo aluno">
                                 </div>
                                 <div class="col-sm-4 my-2">
-                                    <label for="aluno.telefone_responsavel" class="form-label">Telefone do Responsável:</label>
-                                    <input type="text" class="form-control" id="aluno.telefone_responsavel" maxlength="15" wire:model="aluno.telefone_responsavel" placeholder="(00) 00000-0000">
+                                    <label for="telefone_responsavel" class="form-label">Telefone do Responsável:</label>
+                                    <input type="text" class="form-control" id="telefone_responsavel" maxlength="15" wire:model="telefone_responsavel" placeholder="(00) 00000-0000">
                                 </div>
                                 <div class="col-sm-12 my-2">
-                                    <label for="aluno.observacao" class="form-label">Observações:</label>
-                                    <textarea class="form-control" id="aluno.observacao"  wire:model="aluno.observacao" style="height: 100px"></textarea>
+                                    <label for="observacao" class="form-label">Observações:</label>
+                                    <textarea class="form-control" id="observacao"  wire:model="observacao" style="height: 100px"></textarea>
                                 </div>
                             </div>
                             <div class=" my-3 float-end ">
-                                <button wire:click="closeModal" type="button" class="btn  btn-outline-danger btn-fixed-size" wire:loading.attr="disabled">
+                                <button wire:click="closeModal" type="button" class="btn  btn-outline-danger btn-fixed-size" wire:loading.attr="disabled" >
                                     {{-- Texto padrão do botão--}}
                                     <span wire:click="closeModal" wire:loading.remove.delay.shortest>Cancelar</span>
                                     {{-- Efeito de carregamento quando o butão é acionado--}}

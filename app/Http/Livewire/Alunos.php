@@ -24,40 +24,55 @@ class Alunos extends Component
     private UpdateService $updateService;
     private DeleteService $deleteService;
     private GetAllService $getAllService;
-    public Aluno $aluno;
+
+    public $_id;
+    public $foto;
+    public $nome;
+    public $matricula;
+    public $data_nascimento;
+    public $sexo;
+    public $telefone;
+    public $email;
+    public $responsavel;
+    public $telefone_responsavel;
+    public $observacao;
+
+    public $previaFoto;
     public $modulo;
     public $modal;
     public $busca;
     protected $paginationTheme = 'bootstrap';
 
+
+
     //Valida os campos obrigatórios 
+
+
     protected  function rules() {
         return [
-            'aluno.foto' => '',
-            'aluno.nome' => 'required|min:6',
-            'aluno.matricula' => ['required', Rule::unique(Aluno::class, 'matricula')->ignore($this->aluno)],
-            'aluno.data_nascimento' => 'required',
-            'aluno.sexo' => 'required',
-            'aluno.telefone' => '',
-            'aluno.email' => '',
-            'aluno.responsavel' => '',
-            'aluno.telefone_responsavel' => '',
-            'aluno.observacao' => '',
+            'nome' => 'required|min:6',
+            'matricula' => ['required', Rule::unique('alunos')->ignore($this->aluno)],
+            'data_nascimento' => 'required',
+            'sexo' => 'required',
+            //'foto' => ['required', Rule::unique('alunos')->ignore($this->aluno)],
         ];
     }
 
     //Limpa os campos
     protected function clearFields(){
-        $this->aluno->foto = '';
-        $this->aluno->nome = '';
-        $this->aluno->matricula = '';
-        $this->aluno->data_nascimento = '';
-        $this->aluno->sexo = '';
-        $this->aluno->telefone = '';
-        $this->aluno->email = '';
-        $this->aluno->responsavel = '';
-        $this->aluno->telefone_responsavel = '';
-        $this->aluno->observacao = '';
+
+        $this->_id = '';
+        $this->foto = '';
+        $this->nome = '';
+        $this->matricula = '';
+        $this->data_nascimento = '';
+        $this->sexo = '';
+        $this->telefone = '';
+        $this->email = '';
+        $this->responsavel = '';
+        $this->telefone_responsavel = '';
+        $this->observacao = '';
+        $this->previaFoto = '';
     }
  
     //Inicializa as services
@@ -65,13 +80,15 @@ class Alunos extends Component
         CreateService $createService, 
         UpdateService $updateService,
         DeleteService $deleteService,
-        GetAllService $getAllService
+        GetAllService $getAllService,
+        //Aluno $aluno
         )
     {
         $this->createService = $createService;
         $this->updateService = $updateService;
         $this->deleteService = $deleteService;
         $this->getAllService = $getAllService;
+        //$this->aluno = $aluno;
     }
 
     //Monta o componente
@@ -79,20 +96,39 @@ class Alunos extends Component
         $this->aluno = $aluno;
     }
 
+    public function selectAluno($id){
+         $this->aluno = Aluno::find($id);
+         $this->_id = $this->aluno->id;
+         $this->foto = $this->aluno->foto;
+         $this->nome = $this->aluno->nome;
+         $this->matricula = $this->aluno->matricula;
+         $this->data_nascimento = $this->aluno->data_nascimento;
+         $this->sexo = $this->aluno->sexo;
+         $this->telefone = $this->aluno->telefone;
+         $this->email = $this->aluno->email;
+         $this->responsavel = $this->aluno->responsavel;
+         $this->telefone_responsavel = $this->aluno->fotelefone_responsavelto;
+         $this->observacao = $this->aluno->observacao;
+    }
+
     //Abre modal
     public function showModal($modal, $id = null){
+        
         $this->modal = $modal;
+        
         if($this->modal == 'Editar'){
-            $this->aluno = $this->aluno->find($id);
+            $this->selectAluno($id);
             $this->dispatchBrowserEvent('show-save-modal');
         }
+        
         elseif($this->modal == 'Deletar'){
-            $this->aluno = $this->aluno->find($id);
+            $this->selectAluno($id);
             $this->modulo = 'Disciplina';
             $this->dispatchBrowserEvent('show-delete-modal');
         }
+        
         else{
-            $this->aluno->id = null;
+            $this->id = null;
             $this->dispatchBrowserEvent('show-save-modal');
        }
     }
@@ -101,16 +137,6 @@ class Alunos extends Component
     public function closeModal(){
         $this->clearFields();
         $this->dispatchBrowserEvent('close-modal');
-    }
- 
-
-   
-    /*--------------------------------------------------------------------------
-    | Redefine a página para pagina 1 apos uma consulta apos acesser os elementos de outra página
-    |--------------------------------------------------------------------------*/
-    public function updatingSearch()
-    {
-        $this->resetPage();
     }
 
     //Renderiza a página
@@ -124,37 +150,77 @@ class Alunos extends Component
         //Numero de páginas
         $paginas = 10;
         $alunos = $this->getAllService->getAll($this->aluno, $campos, $this->busca, $paginas);
+       //$alunos = Aluno::paginate();
+    
         return view('livewire.alunos.alunos', ['alunos' => $alunos ]);
+       
     }
 
 
     public function updatedFoto()
     {
-        try{
-            if($this->foto){
-                $this->previaFoto = $this->foto->temporaryUrl();
-                }
-        }catch(Exception $e){
-                $this->addError('foto', '');
+        // dd($this->foto->temporaryUrl());
+        // dd($this->foto->path());
+            
+            // if(!$this->_id){
+                   
+                
+                // }
+              
+                
+        if($this->foto && !$this->_id){
+
+            $this->validate([
+                'foto' => [ 
+                    'required' => 'mimes:jpg,png', 'dimensions:max_width=1000,max_height=1000', 'dimensions:min_width=700,min_height=700'
+                ]
+            ]);
+            dd('1');
+            $this->previaFoto = true;
+        }   
+
+        elseif($this->foto && $this->_id && $this->novaFoto){
+            dd('2');
+           return true;
         }
 
-        $this->validate([
-            'foto' => [ 
-                ($this->foto ? 'mimes:jpg,png' : 'nullable'),  
-                'dimensions:max_width=1000,max_height=1000',
-                'dimensions:min_width=700,min_height=700',
-             ],
-        ]);
+        elseif($this->foto && $this->_id){
+
+            dd('3');
+            $this->validate([
+                'foto' => [ 
+                    'required' => 'mimes:jpg,png', 'dimensions:max_width=1000,max_height=1000', 'dimensions:min_width=700,min_height=700'
+                ]
+            ]);
+
+            $this->previaFoto = true;
+
+        }
+
+       
+        
+       
+           
+            
     }
 
-    /*--------------------------------------------------------------------------
-    | Adiciona aluno no banco de dados
-    |--------------------------------------------------------------------------*/
+    //Adiciona ou atualiza disciplina
+    public function save(){
+        $this->validate();
+        
+        $this->updatedFoto();
+
+       dd('passei');
+    }
+   
+
     public function store()
     { 
 
-        $this->updatedFoto();
+
+    
        
+
         //Valida os campos Obrigatórios.
         $this->validate([ 
             'nome' => ['required', 'max:120'],
@@ -163,7 +229,8 @@ class Alunos extends Component
             'sexo' => ['required'],
         ]);
 
-        //Faz o upload da foto do aluno.
+
+        //Faz o upload da foto do 
         if($this->foto){
             //Renomeia o arquivo.
             $nomeArquivo = $this->matricula.'.'.$this->foto->getClientOriginalExtension();
@@ -174,39 +241,7 @@ class Alunos extends Component
                 return session()->flash('error', 'Não foi possível fazer o upload da foto.'); 
             }
         }
-        else{
-            $upload = '';
-        }
-        //Salva os dados.
-        try{
-            Aluno::create([
-                'foto' => $upload,
-                'nome' => $this->nome,
-                'matricula' => $this->matricula,
-                'data_nascimento' => $this->data_nascimento,
-                'sexo' => $this->sexo,
-                'telefone' => $this->telefone,
-                'email' => $this->email,
-                'responsavel' => $this->responsavel,
-                'telefone_responsavel' => $this->telefone_responsavel,
-                'observacao' => $this->observacao
-            ]);  
-            session()->flash('success', 'Aluno foi adicionado com sucesso.');
-            //Limpa os campos
-            $this->foto = '';
-            $this->nome = '';
-            $this->matricula = '';
-            $this->data_nascimento = '';
-            $this->sexo = '';
-            $this->telefone = '';
-            $this->email = '';
-            $this->responsavel = '';
-            $this->telefone_responsavel = '';
-            $this->observacao = '';
-            $this->previaFoto = '';
-         }catch(Exception $e){
-           session()->flash('error', $e);
-         }
+
     }
 
     /*--------------------------------------------------------------------------
@@ -258,166 +293,7 @@ class Alunos extends Component
         }
     }
 
-    /*--------------------------------------------------------------------------
-    | Abre modal para mostrar dados do aluno 
-    |--------------------------------------------------------------------------*/
-    public function show($id)
-    {
-        $aluno = Aluno::find($id);
-        $this->show_foto = $aluno->foto;
-        $this->show_nome = $aluno->nome; 
-        $this->show_matricula = $aluno->matricula;
-        $this->show_data_nascimento = $aluno->data_nascimento; 
-        $this->show_sexo = $aluno->sexo; 
-        $this->show_telefone = $aluno->telefone; 
-        $this->show_email = $aluno->email; 
-        $this->show_responsavel = $aluno->responsavel; 
-        $this->show_telefone_responsavel = $aluno->telefone_responsavel;
-        $this->show_observacao = $aluno->observacao;
-        $this->dispatchBrowserEvent('show-view-modal');
-    }
 
-    /*--------------------------------------------------------------------------
-    | Fecha modal que exibe dados do aluno
-    |--------------------------------------------------------------------------*/
-    public function closeShow()
-    {
-        $this->show_foto = '';
-        $this->show_nome = ''; 
-        $this->show_matricula = '';
-        $this->show_data_nascimento = ''; 
-        $this->show_sexo = ''; 
-        $this->show_telefone = ''; 
-        $this->show_email = ''; 
-        $this->show_responsavel = ''; 
-        $this->show_telefone_responsavel = '';
-        $this->show_observacao = '';
-        $this->dispatchBrowserEvent('close-modal');
-    }
-
-    /*--------------------------------------------------------------------------
-    | Seleciona aluno que vai ter dados editado e abre a modal de edição
-    |--------------------------------------------------------------------------*/
-    public function selectEdit($id)
-    {
-        $aluno = Aluno::find($id);
-        $this->edit_id = $aluno->id;
-        $this->edit_foto = $aluno->foto;
-        $this->edit_nome = $aluno->nome; 
-        $this->edit_matricula = $aluno->matricula;
-        $this->edit_data_nascimento = $aluno->data_nascimento; 
-        $this->edit_sexo = $aluno->sexo; 
-        $this->edit_telefone = $aluno->telefone; 
-        $this->edit_email = $aluno->email; 
-        $this->edit_responsavel = $aluno->responsavel; 
-        $this->edit_telefone_responsavel = $aluno->telefone_responsavel;
-        $this->edit_observacao = $aluno->observacao;
-        $this->dispatchBrowserEvent('show-edit-modal');
-    }
-
-    /*--------------------------------------------------------------------------
-    | Edita os dados do aluno no banco e fecha modal de edição
-    |--------------------------------------------------------------------------*/
-    public function edit(){
-       //Valida os campos Obrigatórios.
-       $this->validate([ 
-            'edit_nome' => 'required',
-            'edit_matricula' => 'required',
-            'edit_data_nascimento' => 'required',
-            'edit_sexo' => 'required',
-        ]);
-        $aluno = Aluno::find($this->edit_id);
-        //Verifica se a matrícula informada já existe.
-        if($this->edit_matricula == $aluno->matricula){
-            ##continua código## 
-        }elseif(Aluno::where('matricula', $this->edit_matricula)->exists()){
-             return session()->flash('attentionModal', 'Essa matrícula já pertence a outro aluno.');   
-        }
-        //Faz o upload da foto do aluno.
-        if($this->previaFotoNova){
-            //Valida a extensão da foto.
-            $this->validate([
-                'edit_foto' => 'image|mimes:jpg,jpeg,png'
-            ]);
-            //Remove foto atual 
-            Storage::disk('public')->delete($aluno->foto);
-            //Renomeia o arquivo.
-            $nomeArquivo = $this->edit_matricula.'.'.$this->edit_foto->getClientOriginalExtension();
-            //Faz o upload no diretório.
-            $upload = $this->edit_foto->storeAS('Alunos', $nomeArquivo, 'public');
-            //Verifica se o upload da foto foi feito.
-            if(!$upload){
-                return session()->flash('errorModal', 'Não foi possível fazer o upload da foto.'); 
-            }
-        }
-        else{
-            //Se não foi selecionado uma nova foto para o aluno, a foto atual permanecerá
-            $upload =  $aluno->foto;
-        }
-        //Edita os dados.
-        try{
-            $aluno->update([
-                'foto' => $upload,
-                'nome' => $this->edit_nome,
-                'matricula' => $this->edit_matricula,
-                'data_nascimento' => $this->edit_data_nascimento,
-                'sexo' => $this->edit_sexo,
-                'telefone' => $this->edit_telefone,
-                'email' => $this->edit_email,
-                'responsavel' => $this->edit_responsavel,
-                'telefone_responsavel' => $this->edit_telefone_responsavel,
-                'observacao' => $this->edit_observacao
-            ]);
-            session()->flash('successList', 'Dados do aluno editado com sucesso!');
-            //Limpa os campos
-            $this->edit_foto = '';
-            $this->edit_nome = '';
-            $this->edit_matricula = '';
-            $this->edit_data_nascimento = '';
-            $this->edit_sexo = '';
-            $this->edit_telefone = '';
-            $this->edit_email = '';
-            $this->edit_responsavel = '';
-            $this->edit_telefone_responsavel = '';
-            $this->edit_observacao = '';
-            $this->previaFotoNova = '';
-            $this->dispatchBrowserEvent('close-modal');
-        }catch(Exception $e){
-            session()->flash('errorModal', $e);
-        }
-    }
-
-    /*--------------------------------------------------------------------------
-    | Cancela edição do dados do aluno
-    |--------------------------------------------------------------------------*/
-    public function cancelEdit()
-    {
-        $this->edit_foto = '';
-        $this->edit_nome = ''; 
-        $this->edit_matricula = '';
-        $this->edit_data_nascimento = ''; 
-        $this->edit_sexo = ''; 
-        $this->edit_telefone = ''; 
-        $this->edit_email = ''; 
-        $this->edit_responsavel = ''; 
-        $this->edit_telefone_responsavel = '';
-        $this->edit_observacao = '';
-        $this->previaFotoNova = '';
-        $this->dispatchBrowserEvent('close-modal');
-    }
-
-    /*--------------------------------------------------------------------------
-    | Abre modal para confirmar exclusão dos dados do aluno
-    |--------------------------------------------------------------------------*/
-    public function deleteConfirm($id)
-    {
-        $this->aluno_delete_id = $id; 
-        $this->dispatchBrowserEvent('show-delete-confirmation-modal');
-    }
-
-    /*--------------------------------------------------------------------------
-    | Deleta os dados do aluno do banco de dados
-    |--------------------------------------------------------------------------*/
     public function destroy()
     {
         $aluno = Aluno::find($this->aluno_delete_id);
@@ -428,14 +304,10 @@ class Alunos extends Component
         $this->aluno_delete_id = '';
     }
 
-    /*--------------------------------------------------------------------------
-    | Cancela a seleção do aluno que ia ter os dados deletados
-    |--------------------------------------------------------------------------*/
-    public function cancelDelete()
-    {
-        $this->aluno_delete_id = '';
-        $this->dispatchBrowserEvent('close-modal');
-    }
-}
 
-//398 linhas de código !------>> diminuir 50%.
+    public function deleteFoto(){
+        
+    }
+}    
+
+    //398 linhas de código !------>> diminuir 50%.
