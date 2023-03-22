@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class CreateService
 {
     public function create(Model $model, $dados){
-       return $model->create($dados);  
+       return $model->create($dados);
     }
 }
