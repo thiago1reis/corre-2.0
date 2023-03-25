@@ -25,6 +25,7 @@ class Alunos extends Component
     private DeleteService $deleteService;
     private GetAllService $getAllService;
     public Aluno $aluno;
+    public $foto;
     public $modulo;
     public $modal;
     public $busca;
@@ -33,11 +34,18 @@ class Alunos extends Component
     //Valida os campos obrigatórios
     protected  function rules() {
         return [
-            'aluno.foto' => '',
-            'aluno.nome' => 'required|min:6',
-            'aluno.matricula' => 'required|min:14|max:14',
-            'aluno.data_nascimento' => 'required',
-            'aluno.sexo' => 'required',
+            'foto' => [
+                'nullable', 'mimes:jpg,bmp,png', 'max:1024',
+                Rule::dimensions()
+                    ->maxWidth(1000)
+                    ->minWidth(800)
+                    ->maxHeight(1000)
+                    ->minHeight(800)
+            ],
+            'aluno.nome' => ['required', 'string', 'min:6', 'max:255'],
+            'aluno.matricula' => ['required', 'min:14', 'max:14',  Rule::unique(Aluno::class, 'matricula')->ignore($this->aluno)],
+            'aluno.data_nascimento' => ['required'],
+            'aluno.sexo' => ['required'],
             'aluno.telefone' => '',
             'aluno.email' => '',
             'aluno.responsavel' => '',
@@ -48,6 +56,8 @@ class Alunos extends Component
 
     //Limpa os campos
     protected function clearFields(){
+
+        $this->foto = '';
         $this->aluno->foto = '';
         $this->aluno->nome = '';
         $this->aluno->matricula = '';
@@ -66,16 +76,19 @@ class Alunos extends Component
         UpdateService $updateService,
         DeleteService $deleteService,
         GetAllService $getAllService,
+        Aluno $aluno,
         )
     {
         $this->createService = $createService;
         $this->updateService = $updateService;
         $this->deleteService = $deleteService;
         $this->getAllService = $getAllService;
+        $this->aluno = $aluno;
     }
 
     //Monta o componente
-    public function mount(Aluno $aluno){
+    public function mount(Aluno $aluno)
+    {
         $this->aluno = $aluno;
     }
 
@@ -105,9 +118,17 @@ class Alunos extends Component
 
     //Adiciona ou atualiza aluno
     public function save(){
+
         $this->validate();
+
+        if ($this->foto) {
+            //Renomeia o arquivo.
+            $nomeArquivo = $this->aluno->matricula . '.' . $this->foto->getClientOriginalExtension();
+            //Faz o upload no diretório.
+            $upload = $this->foto->storeAS('Alunos', $nomeArquivo, 'public');
+        }
+
         $dados = [
-            'foto' => $this->aluno->foto,
             'nome' => $this->aluno->nome,
             'matricula' => $this->aluno->matricula,
             'data_nascimento' => $this->aluno->data_nascimento,
@@ -118,6 +139,11 @@ class Alunos extends Component
             'matritelefone_responsavelcula' => $this->aluno->telefone_responsavel,
             'observacao' => $this->aluno->observacao,
         ];
+
+        if (isset($upload)) {
+            $dados['foto'] = $upload;
+        }
+
         try{
             if($this->aluno->id){
                 $this->updateService->update($this->aluno, $dados);
@@ -148,93 +174,80 @@ class Alunos extends Component
     }
 
 
-    public function store()
-    {
-        //Valida os campos Obrigatórios.
-        $this->validate([
-            'nome' => ['required', 'max:120'],
-            'matricula' => ['required', Rule::unique(Aluno::class, 'matricula')],
-            'data_nascimento' => ['required'],
-            'sexo' => ['required'],
-        ]);
-
-
-        //Faz o upload da foto do
-        if($this->foto){
-            //Renomeia o arquivo.
-            $nomeArquivo = $this->matricula.'.'.$this->foto->getClientOriginalExtension();
-            //Faz o upload no diretório.
-            $upload = $this->foto->storeAS('Alunos', $nomeArquivo, 'public');
-            //Verifica se o upload da foto foi feito.
-            if(!$upload){
-                return session()->flash('error', 'Não foi possível fazer o upload da foto.');
-            }
-        }
-
-    }
-
     /*--------------------------------------------------------------------------
     | Importa dados de alunos para o banco de dados
     |--------------------------------------------------------------------------*/
-    public function import(){
-        //Valida os campos Obrigatórios.
-        $this->validate([
-            'arquivo' => 'required|mimes:csv,txt',
-        ]);
-        try{
-            //coloca o arquivo em uma pasta temporaria e trasforma em array sting
-            $alunos = file($this->arquivo->path());
-            $addAluno = '';
-            foreach($alunos as $aluno){
-                //Retira os espaços e os ";" da string
-                $valor = explode(';', $aluno = trim($aluno));
-                //Elimina os dado do aluno caso ele ja esteja cadastrado.
-                if($verificaMat = Aluno::where('matricula', $valor[1])->exists()){
-                    unset($aluno);
-                }
-                //Salva dados do aluno no banco caso seu cadastro não tenha sido feito anteriormente.
-                if(!$verificaMat){
-                    $addAluno = Aluno::create([
-                        'nome' => $valor[0],
-                        'matricula' => $valor[1],
-                        'data_nascimento' => $valor[2],
-                        'sexo' => $valor[3],
-                    ]);
-                }
-            }
-            //Retorna caso nenhum aluno vindo do arquivo exista antes no banco.
-            if(!$verificaMat && $addAluno){
-                return session()->flash('successModal', 'Dados dos alunos foram importados com sucesso.');
-                $this->arquivo = '';
-            }
-            //Retorna caso todos os alunos do arquivo existam no banco
-            if($verificaMat && !$addAluno){
-                return session()->flash('errorModal', 'Esses alunos já foram adicionados.');
-                $this->arquivo = '';
-            }
-            //Retorna caso alguns alunos do arquivo existam no banco e outros não.
-            if($verificaMat &&  $addAluno){
-                return session()->flash('attentionModal', 'Dados dos alunos importados com sucesso, alguns alunos foram ingnorados pois seus dados já havim sido adicionado anteriormente.');
-                $this->arquivo = '';
-            }
-        }catch(Exception $e){
-            session()->flash('errorModal', $e);
-        }
-    }
+    // public function import(){
+    //     //Valida os campos Obrigatórios.
+    //     $this->validate([
+    //         'arquivo' => 'required|mimes:csv,txt',
+    //     ]);
+    //     try{
+    //         //coloca o arquivo em uma pasta temporaria e trasforma em array sting
+    //         $alunos = file($this->arquivo->path());
+    //         $addAluno = '';
+    //         foreach($alunos as $aluno){
+    //             //Retira os espaços e os ";" da string
+    //             $valor = explode(';', $aluno = trim($aluno));
+    //             //Elimina os dado do aluno caso ele ja esteja cadastrado.
+    //             if($verificaMat = Aluno::where('matricula', $valor[1])->exists()){
+    //                 unset($aluno);
+    //             }
+    //             //Salva dados do aluno no banco caso seu cadastro não tenha sido feito anteriormente.
+    //             if(!$verificaMat){
+    //                 $addAluno = Aluno::create([
+    //                     'nome' => $valor[0],
+    //                     'matricula' => $valor[1],
+    //                     'data_nascimento' => $valor[2],
+    //                     'sexo' => $valor[3],
+    //                 ]);
+    //             }
+    //         }
+    //         //Retorna caso nenhum aluno vindo do arquivo exista antes no banco.
+    //         if(!$verificaMat && $addAluno){
+    //             return session()->flash('successModal', 'Dados dos alunos foram importados com sucesso.');
+    //             $this->arquivo = '';
+    //         }
+    //         //Retorna caso todos os alunos do arquivo existam no banco
+    //         if($verificaMat && !$addAluno){
+    //             return session()->flash('errorModal', 'Esses alunos já foram adicionados.');
+    //             $this->arquivo = '';
+    //         }
+    //         //Retorna caso alguns alunos do arquivo existam no banco e outros não.
+    //         if($verificaMat &&  $addAluno){
+    //             return session()->flash('attentionModal', 'Dados dos alunos importados com sucesso, alguns alunos foram ingnorados pois seus dados já havim sido adicionado anteriormente.');
+    //             $this->arquivo = '';
+    //         }
+    //     }catch(Exception $e){
+    //         session()->flash('errorModal', $e);
+    //     }
+    // }
 
 
-    public function destroy()
+    //Deleta dados do banco
+    public function delete()
     {
-        $aluno = Aluno::find($this->aluno_delete_id);
-        Storage::disk('public')->delete($aluno->foto);
-        $aluno->delete();
-        session()->flash('successList', 'Aluno deletado com sucesso!');
-        $this->dispatchBrowserEvent('close-modal');
-        $this->aluno_delete_id = '';
+        try {
+            Storage::disk('public')->delete($this->aluno->foto);
+            $this->deleteService->delete($this->aluno);
+            $this->clearFields();
+            $this->dispatchBrowserEvent('close-modal');
+            session()->flash('success', 'Aluno deletado com sucesso!');
+        } catch (Exception $e) {
+            //dd($e);
+            session()->flash('error', 'Algo saiu errado, tente novamente mais tarde.');
+        }
     }
 
 
     public function deleteFoto(){
+        Storage::disk('public')->delete($this->aluno->foto);
+
+        $dados = [
+            'foto' => "",
+        ];
+
+        $this->updateService->update($this->aluno, $dados);
 
     }
 }
