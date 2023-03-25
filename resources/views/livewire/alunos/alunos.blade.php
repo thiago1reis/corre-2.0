@@ -10,12 +10,12 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th width="100">Foto</th>
-                        <th width="300">Nome</th>
-                        <th width="200">Matrícula</th>
-                        <th width="200">Telefone</th>
-                        <th width="300">E-mail</th>
-                        <th width="100">Ações</th>
+                        <th width="07%">Foto</th>
+                        <th width="30%">Nome</th>
+                        <th width="20%">Matrícula</th>
+                        <th width="17%">Telefone</th>
+                        <th width="20%">E-mail</th>
+                        <th width="06%" >Ações</th>
                     </tr>
                 </thead>
                 <tbody>
