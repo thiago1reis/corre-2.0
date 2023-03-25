@@ -1,5 +1,6 @@
 <div class="container-fluid">
     <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 mb-2">
+        <button wire:click="showModal('Importar')" type="button" class="btn btn-outline-primary float-end"><i class="icofont-ui-copy"></i> Importar</button>
         <button wire:click="showModal('Adicionar')" type="button" class="btn btn-primary float-end"><i class="icofont-ui-add"></i> Adicionar</button>
     </div>
     <fieldset class="border border-secondary p-3 mb-3">
@@ -52,5 +53,6 @@
         </div>
     </fieldset>
     @include('livewire.alunos.modal-aluno')
+    @include('livewire.alunos.modal-importar-alunos')
     @include('layouts.modal-deletar')
 </div>

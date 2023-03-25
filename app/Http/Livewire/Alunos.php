@@ -76,14 +76,12 @@ class Alunos extends Component
         UpdateService $updateService,
         DeleteService $deleteService,
         GetAllService $getAllService,
-        Aluno $aluno,
         )
     {
         $this->createService = $createService;
         $this->updateService = $updateService;
         $this->deleteService = $deleteService;
         $this->getAllService = $getAllService;
-        $this->aluno = $aluno;
     }
 
     //Monta o componente
@@ -106,6 +104,9 @@ class Alunos extends Component
             $this->modulo = 'Aluno';
             $this->aluno = $this->aluno->find($id);
             $this->dispatchBrowserEvent('show-delete-modal');
+        } elseif ($this->modal == 'Importar') {
+            $this->aluno->id = null;
+            $this->dispatchBrowserEvent('show-import-modal');
         } else {
             $this->aluno->id = null;
             $this->dispatchBrowserEvent('show-save-modal');

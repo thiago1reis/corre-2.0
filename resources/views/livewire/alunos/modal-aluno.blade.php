@@ -98,7 +98,7 @@
                                     <span wire:click="save" wire:loading.delay.shortest class="spinner-border spinner-border-sm text-white" role="status"></span>
                                 </button>
                                 @elseif(!empty($field))
-                                <button wire:click="closeModal" type="button" class="btn  btn-outline-primary btn-fixed-size" wire:loading.attr="disabled" >
+                                <button wire:click="closeModal" type="button" class="btn btn-outline-primary btn-fixed-size" wire:loading.attr="disabled" >
                                     {{-- Texto padrão do botão--}}
                                     <span wire:click="closeModal" wire:loading.remove.delay.shortest>Fechar</span>
                                     {{-- Efeito de carregamento quando o butão é acionado--}}

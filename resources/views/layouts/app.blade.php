@@ -13,31 +13,31 @@
 </head>
 <body>
     {{--Acopla o cabeçalho no app--}}
-    @include('layouts.cabecalho') 
+    @include('layouts.cabecalho')
 
     {{--Acopla o menu no app caso seja feita a autenticação --}}
-    @if(Auth::check() == true)  
-        @include('layouts.menu') 
+    @if(Auth::check() == true)
+        @include('layouts.menu')
     @endif
 
     {{--Renderiza o componente Livewire--}}
-    {{ $slot }} 
+    {{ $slot }}
 
     {{--Acopla o rodapé no app--}}
-    @include('layouts.rodape') 
-    <script src="{{ asset('site/jquery.js') }}"></script> 
-    <script src="{{ asset('site/bootstrap.js') }}"></script> 
+    @include('layouts.rodape')
+    <script src="{{ asset('site/jquery.js') }}"></script>
+    <script src="{{ asset('site/bootstrap.js') }}"></script>
     <script>
         window.addEventListener('close-modal', event =>{
             $('#saveModal').modal('hide');
-            $('#viewModal').modal('hide');
+            $('#importModal').modal('hide');
             $('#deleteModal').modal('hide');
         });
         window.addEventListener('show-save-modal', event =>{
             $('#saveModal').modal('show');
         });
-        window.addEventListener('show-view-modal', event =>{
-            $('#viewModal').modal('show');
+        window.addEventListener('show-import-modal', event =>{
+            $('#importModal').modal('show');
         });
         window.addEventListener('show-delete-modal', event =>{
             $('#deleteModal').modal('show');
