@@ -14,7 +14,6 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
-
 class Alunos extends Component
 {
     use WithPagination;
@@ -25,6 +24,7 @@ class Alunos extends Component
     private DeleteService $deleteService;
     private GetAllService $getAllService;
     public Aluno $aluno;
+    public $field;
     public $foto;
     public $modulo;
     public $modal;
@@ -55,8 +55,8 @@ class Alunos extends Component
     }
 
     //Limpa os campos
-    protected function clearFields(){
-
+    protected function clearFields()
+    {
         $this->foto = '';
         $this->aluno->foto = '';
         $this->aluno->nome = '';
@@ -98,13 +98,15 @@ class Alunos extends Component
         if($this->modal == 'Editar'){
             $this->aluno = $this->aluno->find($id);
             $this->dispatchBrowserEvent('show-save-modal');
-        }
-        elseif($this->modal == 'Deletar'){
+        } elseif ($this->modal == 'Vizualizar') {
             $this->aluno = $this->aluno->find($id);
+            $this->field = 'disabled';
+            $this->dispatchBrowserEvent('show-save-modal');
+        } elseif ($this->modal == 'Deletar') {
             $this->modulo = 'Aluno';
+            $this->aluno = $this->aluno->find($id);
             $this->dispatchBrowserEvent('show-delete-modal');
-        }
-        else{
+        } else {
             $this->aluno->id = null;
             $this->dispatchBrowserEvent('show-save-modal');
        }
@@ -173,7 +175,6 @@ class Alunos extends Component
         return view('livewire.alunos.alunos', ['alunos' => $alunos ]);
     }
 
-
     /*--------------------------------------------------------------------------
     | Importa dados de alunos para o banco de dados
     |--------------------------------------------------------------------------*/
@@ -223,7 +224,6 @@ class Alunos extends Component
     //     }
     // }
 
-
     //Deleta dados do banco
     public function delete()
     {
@@ -239,7 +239,7 @@ class Alunos extends Component
         }
     }
 
-
+    //Deleta foto do aluno
     public function deleteFoto(){
         Storage::disk('public')->delete($this->aluno->foto);
 
@@ -251,5 +251,4 @@ class Alunos extends Component
 
     }
 }
-
     //398 linhas de código !------>> diminuir 50%.

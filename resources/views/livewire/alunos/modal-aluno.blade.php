@@ -12,12 +12,14 @@
                         <div class="col-sm-2">
                             <div class="my-2">
                                 <label for="foto" class="form-label">Foto:</label>
-                                <input class="form-control mb-4 {{ $this->aluno->foto ? 'd-none' : '' }}" type="file" wire:model.lazy="foto" accept="image/*">
+                                <input class="form-control mb-4 {{ $this->aluno->foto ? 'd-none' : '' }}" type="file" wire:model.lazy="foto" accept="image/*" {{($field)}}>
                                 <span class="mb-4 {{ $this->aluno->foto ? 'd-none' : '' }}" style="font-size: 11.5px">Dimenssão: 1000x1000 pixels</span>
                                 @if($this->aluno->foto)
                                     <div class="position-relative">
                                         <img class="figure-img img-fluid rounded border"  alt="{{ $aluno->nome }}"  src="{{ url("storage/{$aluno->foto}") }}">
+                                        @if(empty($field))
                                         <a type="button" wire:click="deleteFoto()" title="Remover Foto"><span class="position-absolute top-0 end-0 badge bg-danger">X</span></a>
+                                        @endif
                                     </div>
                                 @elseif($foto)
                                     <img class="figure-img img-fluid rounded border" alt="{{ $foto->temporaryUrl() }}" src="{{ $foto->temporaryUrl() }}">
@@ -31,57 +33,58 @@
                             <div class="row">
                                 <div class="col-sm-4 my-2">
                                     <label for="nome" class="form-label">Nome: <span class="text-danger fw-bold">*</span></label>
-                                    <input type="text" class="form-control  @error('aluno.nome') is-invalid @enderror" wire:model.lazy="aluno.nome" placeholder="Digite o nome do aluno">
+                                    <input type="text" class="form-control  @error('aluno.nome') is-invalid @enderror" wire:model.lazy="aluno.nome" placeholder="Digite o nome do aluno" {{($field)}}>
                                     @error('aluno.nome')<span class="text-danger" >{{$message}}</span>@enderror
                                 </div>
                                 <div class="col-sm-4 my-2">
                                     <label class="form-label">Matrícula: <span class="text-danger fw-bold">*</span></label>
-                                    <input type="text" class="form-control @error('aluno.matricula') is-invalid @enderror" wire:model.lazy="aluno.matricula"  maxLength="14" placeholder="Digite a matrícula do aluno">
+                                    <input type="text" class="form-control @error('aluno.matricula') is-invalid @enderror" wire:model.lazy="aluno.matricula"  maxLength="14" placeholder="Digite a matrícula do aluno" {{($field)}}>
                                     @error('aluno.matricula')<span class="text-danger" >{{$message}}</span>@enderror
                                 </div>
                                 <div class="col-sm-4 my-2">
                                     <label for="data_nascimento" class="form-label">Data de Nascimento: <span class="text-danger fw-bold">*</span></label>
-                                    <input type="date" class="form-control  @error('aluno.data_nascimento') is-invalid @enderror" wire:model.lazy="aluno.data_nascimento">
+                                    <input type="date" class="form-control  @error('aluno.data_nascimento') is-invalid @enderror" wire:model.lazy="aluno.data_nascimento" {{($field)}}>
                                     @error('aluno.data_nascimento')<span class="text-danger" >{{$message}}</span>@enderror
                                 </div>
                                 <div class="col-sm-5 my-2">
                                     <label for="sexo" class="form-label">Sexo: <span class="text-danger fw-bold">*</span></label><br>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input @error('aluno.sexo') is-invalid @enderror" type="radio" id="inlineRadio1" wire:model.lazy="aluno.sexo" value="Feminino">
+                                        <input class="form-check-input @error('aluno.sexo') is-invalid @enderror" type="radio" id="inlineRadio1" wire:model.lazy="aluno.sexo" value="Feminino" {{($field)}}>
                                         <label class="form-check-label" for="inlineRadio1">Feminino</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input @error('aluno.sexo') is-invalid @enderror" type="radio" id="inlineRadio2" wire:model.lazy="aluno.sexo" value="Masculino">
+                                        <input class="form-check-input @error('aluno.sexo') is-invalid @enderror" type="radio" id="inlineRadio2" wire:model.lazy="aluno.sexo" value="Masculino" {{($field)}}>
                                         <label class="form-check-label" for="inlineRadio2">Masculino</label>
                                     </div>
                                     <div class="form-check form-check-inline ">
-                                        <input class="form-check-input @error('aluno.sexo') is-invalid @enderror" type="radio" id="inlineRadio3" wire:model.lazy="aluno.sexo" value="Outros" >
+                                        <input class="form-check-input @error('aluno.sexo') is-invalid @enderror" type="radio" id="inlineRadio3" wire:model.lazy="aluno.sexo" value="Outros" {{($field)}}>
                                         <label class="form-check-label" for="inlineRadio3">Outros</label>
                                     </div><br>
                                     @error('aluno.sexo')<span class="text-danger" >{{$message}}</span>@enderror
                                 </div>
                                 <div class="col-sm-3 my-2">
                                     <label for="telefone" class="form-label">Telefone:</label>
-                                    <input type="text" class="form-control" wire:model="aluno.telefone" maxlength="15" placeholder="(00) 00000-0000">
+                                    <input type="text" class="form-control" wire:model="aluno.telefone" maxlength="15" placeholder="(00) 00000-0000" {{($field)}}>
                                 </div>
                                 <div class="col-sm-4 my-2">
                                     <label for="email" class="form-label">Email:</label>
-                                    <input type="email" class="form-control"  wire:model="aluno.email" placeholder="nome@email.com">
+                                    <input type="email" class="form-control"  wire:model="aluno.email" placeholder="nome@email.com" {{($field)}}>
                                 </div>
                                 <div class="col-sm-4 my-2">
                                     <label for="responsavel" class="form-label">Responsável:</label>
-                                    <input type="text" class="form-control"  wire:model.lazy="aluno.responsavel" placeholder="Digite o nome do responsável pelo aluno">
+                                    <input type="text" class="form-control"  wire:model.lazy="aluno.responsavel" placeholder="Digite o nome do responsável pelo aluno" {{($field)}}>
                                 </div>
                                 <div class="col-sm-4 my-2">
                                     <label for="telefone_responsavel" class="form-label">Telefone do Responsável:</label>
-                                    <input type="text" class="form-control" wire:model.lazy="aluno.telefone_responsavel" maxlength="15" placeholder="(00) 00000-0000">
+                                    <input type="text" class="form-control" wire:model.lazy="aluno.telefone_responsavel" maxlength="15" placeholder="(00) 00000-0000" {{($field)}}>
                                 </div>
                                 <div class="col-sm-12 my-2">
                                     <label for="observacao" class="form-label">Observações:</label>
-                                    <textarea class="form-control" id="observacao"  wire:model.lazy="aluno.observacao" style="height: 100px"></textarea>
+                                    <textarea class="form-control" id="observacao"  wire:model.lazy="aluno.observacao" style="height: 100px"{{($field)}}></textarea>
                                 </div>
                             </div>
                             <div class=" my-3 float-end ">
+                                @if(empty($field))
                                 <button wire:click="closeModal" type="button" class="btn  btn-outline-danger btn-fixed-size" wire:loading.attr="disabled" >
                                     {{-- Texto padrão do botão--}}
                                     <span wire:click="closeModal" wire:loading.remove.delay.shortest>Cancelar</span>
@@ -94,6 +97,14 @@
                                     {{-- Efeito de carregamento quando o butão é acionado--}}
                                     <span wire:click="save" wire:loading.delay.shortest class="spinner-border spinner-border-sm text-white" role="status"></span>
                                 </button>
+                                @elseif(!empty($field))
+                                <button wire:click="closeModal" type="button" class="btn  btn-outline-primary btn-fixed-size" wire:loading.attr="disabled" >
+                                    {{-- Texto padrão do botão--}}
+                                    <span wire:click="closeModal" wire:loading.remove.delay.shortest>Fechar</span>
+                                    {{-- Efeito de carregamento quando o butão é acionado--}}
+                                    <span wire:click="closeModal" wire:loading.delay.shortest class="spinner-border spinner-border-sm text-danger" role="status"></span>
+                                </button>
+                                @endif
                             </div>
                         </div>
                     </div>

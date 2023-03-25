@@ -33,7 +33,8 @@
                         <td class="align-middle">{{ $aluno->telefone }}</td>
                         <td class="align-middle">{{ $aluno->email }}</td>
                         <td class="align-middle">
-                            <a type="button" wire:click="show({{ $aluno->id }})" class="mx-2 link-secondary text-decoration-none"><i title="Visualizar Dados" class="icofont-ui-file"></i></a>
+                            <a type="button" wire:click="showModal('Vizualizar', {{ $aluno->id }})" class="mx-2 link-secondary text-decoration-none"><i title="Visualizar Dados" class="icofont-ui-file"></i></a>
+
                             <a type="button" wire:click="showModal('Editar', {{ $aluno->id }})" class="mx-2 link-secondary text-decoration-none"><i title="Editar Dados" class="icofont-ui-edit"></i></a>
                             <a type="button" wire:click="showModal('Deletar', {{ $aluno->id}})" class="mx-2 link-secondary text-decoration-none"><i title="Deletar Registro" class="icofont-ui-delete"></i></a>
                         </td>
