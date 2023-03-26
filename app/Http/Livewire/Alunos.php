@@ -24,6 +24,7 @@ class Alunos extends Component
     private DeleteService $deleteService;
     private GetAllService $getAllService;
     public Aluno $aluno;
+    public $arquivo;
     public $field;
     public $foto;
     public $modulo;
@@ -176,27 +177,24 @@ class Alunos extends Component
         return view('livewire.alunos.alunos', ['alunos' => $alunos ]);
     }
 
-    /*--------------------------------------------------------------------------
-    | Importa dados de alunos para o banco de dados
-    |--------------------------------------------------------------------------*/
-    // public function import(){
-    //     //Valida os campos Obrigatórios.
-    //     $this->validate([
-    //         'arquivo' => 'required|mimes:csv,txt',
-    //     ]);
-    //     try{
+    //Importa dados  para o banco
+    // public function import()
+    // {
+    //     dd('passei');
+
+    //     try {
     //         //coloca o arquivo em uma pasta temporaria e trasforma em array sting
     //         $alunos = file($this->arquivo->path());
     //         $addAluno = '';
-    //         foreach($alunos as $aluno){
+    //         foreach ($alunos as $aluno) {
     //             //Retira os espaços e os ";" da string
     //             $valor = explode(';', $aluno = trim($aluno));
     //             //Elimina os dado do aluno caso ele ja esteja cadastrado.
-    //             if($verificaMat = Aluno::where('matricula', $valor[1])->exists()){
+    //             if ($verificaMat = Aluno::where('matricula', $valor[1])->exists()) {
     //                 unset($aluno);
     //             }
     //             //Salva dados do aluno no banco caso seu cadastro não tenha sido feito anteriormente.
-    //             if(!$verificaMat){
+    //             if (!$verificaMat) {
     //                 $addAluno = Aluno::create([
     //                     'nome' => $valor[0],
     //                     'matricula' => $valor[1],
@@ -206,21 +204,21 @@ class Alunos extends Component
     //             }
     //         }
     //         //Retorna caso nenhum aluno vindo do arquivo exista antes no banco.
-    //         if(!$verificaMat && $addAluno){
+    //         if (!$verificaMat && $addAluno) {
     //             return session()->flash('successModal', 'Dados dos alunos foram importados com sucesso.');
     //             $this->arquivo = '';
     //         }
     //         //Retorna caso todos os alunos do arquivo existam no banco
-    //         if($verificaMat && !$addAluno){
+    //         if ($verificaMat && !$addAluno) {
     //             return session()->flash('errorModal', 'Esses alunos já foram adicionados.');
     //             $this->arquivo = '';
     //         }
     //         //Retorna caso alguns alunos do arquivo existam no banco e outros não.
-    //         if($verificaMat &&  $addAluno){
+    //         if ($verificaMat &&  $addAluno) {
     //             return session()->flash('attentionModal', 'Dados dos alunos importados com sucesso, alguns alunos foram ingnorados pois seus dados já havim sido adicionado anteriormente.');
     //             $this->arquivo = '';
     //         }
-    //     }catch(Exception $e){
+    //     } catch (Exception $e) {
     //         session()->flash('errorModal', $e);
     //     }
     // }
