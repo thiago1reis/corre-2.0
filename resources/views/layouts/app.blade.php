@@ -7,7 +7,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ config('app.name', 'Laravel') }}</title>
     <link rel="icon" href="{{ asset('imagens/icone_corre.png') }}">
-    <link rel="stylesheet" href="{{ asset('site/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ asset('site/estilo.css') }}">
     <link rel="stylesheet" href="{{ asset('site/icofont/icofont.min.css') }}">
     @livewireStyles
@@ -20,14 +19,11 @@
         @include('layouts.menu')
     @endif
 
-    @yield('content')
+    {{-- @yield('content') --}}
 
-    {{-- {{ $slot }} --}}
+    {{ $slot }}
 
     @include('layouts.rodape')
-
-    <script src="{{ asset('site/jquery.js') }}"></script>
-    <script src="{{ asset('site/bootstrap.js') }}"></script>
 
     <livewire:modals />
     <livewire:scripts />
