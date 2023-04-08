@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,38 +12,25 @@
     <link rel="stylesheet" href="{{ asset('site/icofont/icofont.min.css') }}">
     @livewireStyles
 </head>
+
 <body>
-    {{--Acopla o cabeçalho no app--}}
     @include('layouts.cabecalho')
 
-    {{--Acopla o menu no app caso seja feita a autenticação --}}
-    @if(Auth::check() == true)
+    @if (Auth::check() == true)
         @include('layouts.menu')
     @endif
 
-    {{--Renderiza o componente Livewire--}}
-    {{ $slot }}
+    @yield('content')
 
-    {{--Acopla o rodapé no app--}}
+    {{-- {{ $slot }} --}}
+
     @include('layouts.rodape')
+
     <script src="{{ asset('site/jquery.js') }}"></script>
     <script src="{{ asset('site/bootstrap.js') }}"></script>
-    <script>
-        window.addEventListener('close-modal', event =>{
-            $('#saveModal').modal('hide');
-            $('#importModal').modal('hide');
-            $('#deleteModal').modal('hide');
-        });
-        window.addEventListener('show-save-modal', event =>{
-            $('#saveModal').modal('show');
-        });
-        window.addEventListener('show-import-modal', event =>{
-            $('#importModal').modal('show');
-        });
-        window.addEventListener('show-delete-modal', event =>{
-            $('#deleteModal').modal('show');
-        });
-    </script>
-    @livewireScripts
+
+    <livewire:modals />
+    <livewire:scripts />
 </body>
+
 </html>
