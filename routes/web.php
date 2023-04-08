@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Login\LoginController;
+use App\Http\Controllers\TurmaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\{Alunos, Disciplinas, Login, Painel, Servidores};
 
@@ -25,5 +26,7 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['auth']], function(){
     Route::get('alunos', Alunos::class, 'render')->name('alunos');
     Route::get('disciplinas', Disciplinas::class, 'render')->name('disciplinas');
     Route::get('servidores', Servidores::class, 'render')->name('servidores');
+
+
+    Route::get('turma', [TurmaController::class, 'index'])->name('turma.index');
 });
- 
