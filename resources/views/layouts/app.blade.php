@@ -27,10 +27,10 @@
 
     @include('layouts.rodape')
 
-    <script src="{{ asset('assets/jquery.js') }}"></script>
-    <script src="{{ asset('assets/app.js') }}"></script>
     <livewire:modals />
     <livewire:scripts />
+    <script src="{{ asset('assets/jquery.js') }}"></script>
+    <script src="{{ asset('assets/app.js') }}"></script>
 </body>
 
 </html>
