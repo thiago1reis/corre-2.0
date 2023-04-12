@@ -9,6 +9,8 @@
     <link rel="icon" href="{{ asset('imagens/icone_corre.png') }}">
     <link rel="stylesheet" href="{{ asset('site/estilo.css') }}">
     <link rel="stylesheet" href="{{ asset('site/icofont/icofont.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/app.css') }}">
+
     @livewireStyles
 </head>
 
@@ -19,12 +21,14 @@
         @include('layouts.menu')
     @endif
 
-    {{-- @yield('content') --}}
+    @yield('content')
 
-    {{ $slot }}
+    {{-- {{ $slot }} --}}
 
     @include('layouts.rodape')
 
+    <script src="{{ asset('assets/jquery.js') }}"></script>
+    <script src="{{ asset('assets/app.js') }}"></script>
     <livewire:modals />
     <livewire:scripts />
 </body>

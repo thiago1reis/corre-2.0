@@ -1,3 +1,5 @@
+import 'bootstrap/dist/js/bootstrap.bundle.js';
+
 window._ = require('lodash');
 
 /**
