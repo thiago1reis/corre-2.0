@@ -1,2 +1,2 @@
-require('./bootstrap');
-//require('../../vendor/aliqasemzadeh/livewire-bootstrap-modal/resources/js/modals');
+import './bootstrap';
+import '../../vendor/aliqasemzadeh/livewire-bootstrap-modal/resources/js/modals';
