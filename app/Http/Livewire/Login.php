@@ -10,9 +10,14 @@ class Login extends Component
     public $email;
     public $password;
 
-    //Efetua login do usuário
-    public function login(){
 
+    /**
+     * login
+     *
+     * @return void
+     */
+    public function login()
+    {
         //Valida campos obirgatórios
          $this->validate([
             'email' => ['required'],
@@ -37,7 +42,12 @@ class Login extends Component
         return false;
     }
 
-    //Renderiza a página de login
+
+    /**
+     * render
+     *
+     * @return void
+     */
     public function render()
     {
         return view('login.fomulario-login');
