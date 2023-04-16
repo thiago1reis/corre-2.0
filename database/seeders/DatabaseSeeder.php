@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
                 ServidorSeeder::class,
                 DisciplinaSeeder::class,
                 TurmaSeeder::class,
-        ]);
+                UserSeeder::class,
             ]
         );
     }
