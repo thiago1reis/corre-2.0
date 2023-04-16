@@ -9,17 +9,17 @@ class Login extends Component
 {
     public $email;
     public $password;
-   
+
     //Efetua login do usuário
     public function login(){
-         
+
         //Valida campos obirgatórios
          $this->validate([
             'email' => ['required'],
             'password' => ['required']
         ]);
 
-        //Inicia a seção se existir o usuário 
+        //Inicia a seção se existir o usuário
         if(Auth::attempt(['email' => $this->email,'password' => $this->password]))
         {
             //Redireciona ao painel se usuário estiver ativo
@@ -40,6 +40,6 @@ class Login extends Component
     //Renderiza a página de login
     public function render()
     {
-        return view('livewire.login'); 
+        return view('login.fomulario-login');
     }
 }

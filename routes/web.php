@@ -17,7 +17,7 @@ use App\Http\Livewire\{Alunos, Disciplinas, Login, Painel, Servidores};
 */
 
 
-Route::get('/', Login::class)->name('login');
+Route::get('/', [LoginController::class, 'index'])->name('login');
 Route::get('/check-auth', [LoginController::class, 'checkAuth'])->name('checkAuth');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
