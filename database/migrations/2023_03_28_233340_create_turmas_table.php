@@ -15,9 +15,9 @@ class CreateTurmasTable extends Migration
     {
         Schema::create('turmas', function (Blueprint $table) {
             $table->id();
-            $table->string('etapa_modalidade')->nullable();
-            $table->string('modulo_serie')->nullable();
-            $table->string('curso')->nullable();
+            $table->string('etapa_modalidade');
+            $table->string('modulo_serie');
+            $table->string('curso');
             $table->string('observacao')->nullable();
             $table->timestamps();
         });

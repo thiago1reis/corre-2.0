@@ -29,4 +29,5 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['auth']], function(){
 
 
     Route::get('turma', [TurmaController::class, 'index'])->name('turma.index');
+    Route::delete('turma/deletar/{turma}', [TurmaController::class, 'destroy'])->name('turma.destroy');
 });

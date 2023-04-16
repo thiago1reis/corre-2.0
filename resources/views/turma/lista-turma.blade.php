@@ -1,4 +1,7 @@
 @extends('layouts.app')
+
+@section('titulo', 'TURMAS')
+
 @section('content')
     <div class="container-fluid">
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 mb-2">
@@ -11,7 +14,8 @@
             <form action="{{ route('turma.index') }}" method="GET">
                 <div class="row mb-3 gap-2">
                     <div class="col-sm-8 col-md-6 col-lg-6 col-xl-4">
-                        <input type="text" class="form-control" name="busca " placeholder="Digite o que deseja buscar">
+                        <input type="text" class="form-control" name="busca" value="{{ $busca }}"
+                            placeholder="Digite o que deseja buscar">
                     </div>
                     <div class="col-sm-2 col-md-1 col-lg-1 col-xl-1 d-grid ">
                         <button type="submit" class="btn btn-primary">Buscar</button>
@@ -26,8 +30,8 @@
                             <th width="20%">Modalidade / Etapa de ensino</th>
                             <th width="20%">Módulo/Série</th>
                             <th width="20%">Curso</th>
-                            <th width="34%">Observações</th>
-                            <th width="06%">Ações</th>
+                            <th width="36%">Observações</th>
+                            <th width="04%">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -39,10 +43,12 @@
                                     <td class="align-middle">{{ $item->curso }}</td>
                                     <td class="align-middle">{{ $item->observacao }}</td>
                                     <td class="align-middle">
-                                        <a type="button" wire:click="showModal('Editar', {{ $item->id }})"
+                                        <a type="button"
+                                            onclick="Livewire.emit('showModal', 'turmas', {{ $item->id }})"
                                             class="me-3 link-secondary text-decoration-none"><i title="Editar Dados"
                                                 class="icofont-ui-edit"></i></a>
-                                        <a type="button" wire:click="showModal('Deletar', {{ $item->id }})"
+                                        <a type="button"
+                                            onclick="Livewire.emit('showModal', 'deletar', '{{ $modulo = 'Turma' }}', '{{ route('turma.destroy', ['turma' => $item->id]) }}')"
                                             class="me-3 link-secondary text-decoration-none"><i title="Deletar Registro"
                                                 class="icofont-ui-delete"></i></a>
                                     </td>
@@ -57,8 +63,8 @@
                 </table>
             </div>
             <div class="d-flex justify-content-center">
-                @if (isset($search))
-                    {{ $turmas->appends($search)->links() }}
+                @if (isset($busca))
+                    {{ $turmas->appends($busca)->links() }}
                 @else
                     {{ $turmas->links() }}
                 @endif
