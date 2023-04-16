@@ -14,7 +14,7 @@ class DisciplinaSeeder extends Seeder
      */
     public function run()
     {
-       //Define os valores 
+       //Define os valores
        $disciplinas = collect([
         [
            'nome' => 'Língua Portuguesa',
@@ -98,12 +98,12 @@ class DisciplinaSeeder extends Seeder
         ],
     ]);
 
-    //Insere os dados no banco
-    foreach ($disciplinas as $value) {
-        Disciplina::create([
-          'nome' => $value['nome'],
-          'observacao' => $value['observacao'],
-        ]);
-    }   
+        //Insere os dados no banco
+        foreach ($disciplinas as $valor) {
+            Disciplina::create([
+                'nome' => $valor['nome'],
+                'observacao' => $valor['observacao'],
+            ]);
+        }
     }
 }
