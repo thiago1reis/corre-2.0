@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Login\LoginController;
+use App\Http\Controllers\PainelController;
 use App\Http\Controllers\TurmaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\{Alunos, Disciplinas, Login, Painel, Servidores};
@@ -22,7 +23,7 @@ Route::get('/check-auth', [LoginController::class, 'checkAuth'])->name('checkAut
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::group(['prefix' => 'sistema', 'middleware' => ['auth']], function(){
-    Route::get('/',  Painel::class)->name('painel');
+    Route::get('/',  [PainelController::class, 'index'])->name('painel');
     Route::get('alunos', Alunos::class, 'render')->name('alunos');
     Route::get('disciplinas', Disciplinas::class, 'render')->name('disciplinas');
     Route::get('servidores', Servidores::class, 'render')->name('servidores');
