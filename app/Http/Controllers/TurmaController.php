@@ -40,6 +40,6 @@ class TurmaController extends Controller
     public function destroy(Turma $turma)
     {
         $turma->delete();
-        return redirect()->back()->with('success', 'Turma deletada com sucesso!');
+        return redirect()->back()->with('success', 'Dados da turma foram excluídos com sucesso!');
     }
 }

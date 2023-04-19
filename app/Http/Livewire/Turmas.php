@@ -52,7 +52,7 @@ class Turmas extends Component
         $this->turma->curso =  $this->turma->curso;
         $this->turma->observacao =  $this->turma->observacao;
         $this->turma->save();
-        return redirect()->route('turma.index')->with('success', 'Dados da turma salvos com sucesso!');
+        return redirect()->route('turma.index')->with('success', 'Dados da turma foram salvos com sucesso!');
     }
 
 
