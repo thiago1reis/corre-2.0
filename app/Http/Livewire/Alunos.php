@@ -3,11 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Aluno;
-use App\Services\CreateService;
-use App\Services\DeleteService;
-use App\Services\GetAllService;
-use App\Services\UpdateService;
-use Exception;
+
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -19,21 +15,18 @@ class Alunos extends Component
     use WithPagination;
     use WithFileUploads;
 
-    private CreateService $createService;
-    private UpdateService $updateService;
-    private DeleteService $deleteService;
-    private GetAllService $getAllService;
     public Aluno $aluno;
-    public $arquivo;
-    public $field;
+    public $acao;
     public $foto;
-    public $modulo;
-    public $modal;
-    public $busca;
-    protected $paginationTheme = 'bootstrap';
 
-    //Valida os campos obrigatórios
-    protected  function rules() {
+
+    /**
+     * rules
+     *
+     * @return void
+     */
+    protected  function rules()
+    {
         return [
             'foto' => [
                 'nullable', 'mimes:jpg,bmp,png', 'max:1024',
@@ -48,206 +41,82 @@ class Alunos extends Component
             'aluno.data_nascimento' => ['required'],
             'aluno.sexo' => ['required'],
             'aluno.telefone' => '',
-            'aluno.email' => '',
+            'aluno.email' => ['nullable', 'email', 'min:6'],
             'aluno.responsavel' => '',
             'aluno.telefone_responsavel' => '',
             'aluno.observacao' => '',
         ];
     }
 
-    //Limpa os campos
-    protected function clearFields()
-    {
-        $this->foto = '';
-        $this->aluno->foto = '';
-        $this->aluno->nome = '';
-        $this->aluno->matricula = '';
-        $this->aluno->data_nascimento = '';
-        $this->aluno->sexo = '';
-        $this->aluno->telefone = '';
-        $this->aluno->email = '';
-        $this->aluno->responsavel = '';
-        $this->aluno->telefone_responsavel = '';
-        $this->aluno->observacao = '';
-    }
 
-    //Inicializa as services
-    public function boot(
-        CreateService $createService,
-        UpdateService $updateService,
-        DeleteService $deleteService,
-        GetAllService $getAllService,
-        )
-    {
-        $this->createService = $createService;
-        $this->updateService = $updateService;
-        $this->deleteService = $deleteService;
-        $this->getAllService = $getAllService;
-    }
-
-    //Monta o componente
+    /**
+     * mount
+     *
+     * @param  \App\Models\Aluno $aluno
+     * @return \App\Models\Aluno
+     */
     public function mount(Aluno $aluno)
     {
         $this->aluno = $aluno;
     }
 
-    //Abre modal
-    public function showModal($modal, $id = null){
-        $this->modal = $modal;
-        if($this->modal == 'Editar'){
-            $this->aluno = $this->aluno->find($id);
-            $this->dispatchBrowserEvent('show-save-modal');
-        } elseif ($this->modal == 'Vizualizar') {
-            $this->aluno = $this->aluno->find($id);
-            $this->field = 'disabled';
-            $this->dispatchBrowserEvent('show-save-modal');
-        } elseif ($this->modal == 'Deletar') {
-            $this->modulo = 'Aluno';
-            $this->aluno = $this->aluno->find($id);
-            $this->dispatchBrowserEvent('show-delete-modal');
-        } elseif ($this->modal == 'Importar') {
-            $this->aluno->id = null;
-            $this->dispatchBrowserEvent('show-import-modal');
-        } else {
-            $this->aluno->id = null;
-            $this->dispatchBrowserEvent('show-save-modal');
-       }
-    }
 
-    //Fecha modal
-    public function closeModal(){
-        $this->clearFields();
-        $this->dispatchBrowserEvent('close-modal');
-    }
-
-    //Adiciona ou atualiza aluno
-    public function save(){
-
+    /**
+     * save
+     *
+     * @return void
+     */
+    public function save()
+    {
         $this->validate();
-
         if ($this->foto) {
             //Renomeia o arquivo.
             $nomeArquivo = $this->aluno->matricula . '.' . $this->foto->getClientOriginalExtension();
             //Faz o upload no diretório.
-            $upload = $this->foto->storeAS('Alunos', $nomeArquivo, 'public');
+            $caminho = $this->foto->storeAS('Alunos', $nomeArquivo, 'public');
+            //Adiciona o caminho da foto.
+            $this->aluno->foto = $caminho;
+            //Remove os arquivos temporarios
         }
-
-        $dados = [
-            'nome' => $this->aluno->nome,
-            'matricula' => $this->aluno->matricula,
-            'data_nascimento' => $this->aluno->data_nascimento,
-            'sexo' => $this->aluno->sexo,
-            'telefone' => $this->aluno->telefone,
-            'email' => $this->aluno->email,
-            'responsavel' => $this->aluno->responsavel,
-            'matritelefone_responsavelcula' => $this->aluno->telefone_responsavel,
-            'observacao' => $this->aluno->observacao,
-        ];
-
-        if (isset($upload)) {
-            $dados['foto'] = $upload;
-        }
-
-        try{
-            if($this->aluno->id){
-                $this->updateService->update($this->aluno, $dados);
-            }else{
-                $this->createService->create($this->aluno, $dados);
-            }
-            $this->closeModal();
-            session()->flash('success', 'Dados do aluno salvos com sucesso.');
-        }catch(Exception $e){
-            //dd($e);
-            $this->closeModal();
-            session()->flash('error', 'Algo saiu errado, tente novamente mais tarde.');
-        }
+        $this->aluno->nome = $this->aluno->nome;
+        $this->aluno->matricula = $this->aluno->matricula;
+        $this->aluno->data_nascimento = $this->aluno->data_nascimento;
+        $this->aluno->sexo = $this->aluno->sexo;
+        $this->aluno->telefone = $this->aluno->telefone;
+        $this->aluno->telefone = $this->aluno->telefone;
+        $this->aluno->responsavel = $this->aluno->responsavel;
+        $this->aluno->telefone_responsavel = $this->aluno->telefone_responsavel;
+        $this->aluno->observacao = $this->aluno->observacao;
+        $this->aluno->save();
+        return redirect()->route('aluno.index')->with('success', 'Dados do aluno foram salvos com sucesso!');
     }
 
-    //Renderiza a página
+
+    /**
+     * render
+     *
+     * @return void
+     */
     public function render()
     {
-        //Campos que irão como parâmetro para retornar os dados
-        $campos = [
-            'nome',
-            'matricula',
-        ];
-        //Numero de páginas
-        $paginas = 10;
-        $alunos = $this->getAllService->getAll($this->aluno, $campos, $this->busca, $paginas);
-        return view('livewire.alunos.alunos', ['alunos' => $alunos ]);
-    }
-
-    //Importa dados  para o banco
-    // public function import()
-    // {
-    //     dd('passei');
-
-    //     try {
-    //         //coloca o arquivo em uma pasta temporaria e trasforma em array sting
-    //         $alunos = file($this->arquivo->path());
-    //         $addAluno = '';
-    //         foreach ($alunos as $aluno) {
-    //             //Retira os espaços e os ";" da string
-    //             $valor = explode(';', $aluno = trim($aluno));
-    //             //Elimina os dado do aluno caso ele ja esteja cadastrado.
-    //             if ($verificaMat = Aluno::where('matricula', $valor[1])->exists()) {
-    //                 unset($aluno);
-    //             }
-    //             //Salva dados do aluno no banco caso seu cadastro não tenha sido feito anteriormente.
-    //             if (!$verificaMat) {
-    //                 $addAluno = Aluno::create([
-    //                     'nome' => $valor[0],
-    //                     'matricula' => $valor[1],
-    //                     'data_nascimento' => $valor[2],
-    //                     'sexo' => $valor[3],
-    //                 ]);
-    //             }
-    //         }
-    //         //Retorna caso nenhum aluno vindo do arquivo exista antes no banco.
-    //         if (!$verificaMat && $addAluno) {
-    //             return session()->flash('successModal', 'Dados dos alunos foram importados com sucesso.');
-    //             $this->arquivo = '';
-    //         }
-    //         //Retorna caso todos os alunos do arquivo existam no banco
-    //         if ($verificaMat && !$addAluno) {
-    //             return session()->flash('errorModal', 'Esses alunos já foram adicionados.');
-    //             $this->arquivo = '';
-    //         }
-    //         //Retorna caso alguns alunos do arquivo existam no banco e outros não.
-    //         if ($verificaMat &&  $addAluno) {
-    //             return session()->flash('attentionModal', 'Dados dos alunos importados com sucesso, alguns alunos foram ingnorados pois seus dados já havim sido adicionado anteriormente.');
-    //             $this->arquivo = '';
-    //         }
-    //     } catch (Exception $e) {
-    //         session()->flash('errorModal', $e);
-    //     }
-    // }
-
-    //Deleta dados do banco
-    public function delete()
-    {
-        try {
-            Storage::disk('public')->delete($this->aluno->foto);
-            $this->deleteService->delete($this->aluno);
-            $this->clearFields();
-            $this->dispatchBrowserEvent('close-modal');
-            session()->flash('success', 'Aluno deletado com sucesso!');
-        } catch (Exception $e) {
-            //dd($e);
-            session()->flash('error', 'Algo saiu errado, tente novamente mais tarde.');
+        if ($this->aluno->id) {
+            $this->acao = 'Editar Aluno';
+        } else {
+            $this->acao = 'Adicionar Aluno';
         }
+        return view('aluno.modal-salvar-aluno');
     }
 
-    //Deleta foto do aluno
-    public function deleteFoto(){
+
+    /**
+     * deleteFoto
+     *
+     * @return void
+     */
+    public function deleteFoto()
+    {
         Storage::disk('public')->delete($this->aluno->foto);
-
-        $dados = [
-            'foto' => "",
-        ];
-
-        $this->updateService->update($this->aluno, $dados);
-
+        $this->aluno->foto = '';
+        $this->aluno->save();
     }
 }
-    //398 linhas de código !------>> diminuir 50%.

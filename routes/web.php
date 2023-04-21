@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlunoController;
 use App\Http\Controllers\Login\LoginController;
 use App\Http\Controllers\PainelController;
 use App\Http\Controllers\TurmaController;
@@ -23,8 +24,13 @@ Route::get('/check-auth', [LoginController::class, 'checkAuth'])->name('checkAut
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::group(['prefix' => 'sistema', 'middleware' => ['auth']], function(){
+
     Route::get('/',  [PainelController::class, 'index'])->name('painel');
-    Route::get('alunos', Alunos::class, 'render')->name('alunos');
+
+    Route::get('aluno', [AlunoController::class, 'index'])->name('aluno.index');
+    Route::delete('aluno/deletar/{aluno}', [AlunoController::class, 'destroy'])->name('aluno.destroy');
+
+
     Route::get('disciplinas', Disciplinas::class, 'render')->name('disciplinas');
     Route::get('servidores', Servidores::class, 'render')->name('servidores');
 
