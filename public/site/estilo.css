@@ -1,68 +1,53 @@
-body{
+body {
     background-color: rgba(236, 243, 243, 0.781) !important;
 }
 
-.bg-modal{
+.bg-modal {
     background-color: rgba(236, 243, 243) !important;
 }
 
-.pagina-login{
-    margin-top: 90px; 
+.bg-icon-card-painel {
+    background-color: rgb(197, 225, 212) !important;
+}
+
+.pagina-login {
+    margin-top: 90px;
     margin-bottom: 90px;
 }
 
-.card-painel {
-   width: 20rem;
-   height: 19rem;
- }
-
-.card-painel a{
-    color: #6c757d;
- }
-
-.btn-fixed-size{
+.btn-fixed-size {
     width: 8em;
 }
 
-.btn-search-fixed-size{
-    width: 100%;
-}
-
-.admin-option :hover{
-    border-color: #6c757d;
-}
-
-
-  
 /* max-width  */
 @media screen and (max-width: 600px) {
-	.logo-corre{
+    .logo-corre {
         width: 65%;
     }
 
-    .logo-ifto{
+    .logo-ifto {
         width: 65%;
     }
 }
 
 /* min-width & max-width */
 @media screen and (min-width: 600px) and (max-width: 900px) {
-	.logo-corre{
+    .logo-corre {
         width: 75%;
     }
 
-    .logo-ifto{
+    .logo-ifto {
         width: 75%;
     }
 }
 
 /* max device width */
 @media screen and (max-device-width: 480px) {
-    .logo-corre{
+    .logo-corre {
         width: 65%;
     }
 
-    .logo-ifto{
+    .logo-ifto {
         width: 65%;
     }
 }
