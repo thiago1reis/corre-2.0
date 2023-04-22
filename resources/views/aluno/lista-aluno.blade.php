@@ -5,8 +5,8 @@
 @section('content')
     <div class="container-fluid">
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 mb-2">
-            <button wire:click="showModal('Importar')" type="button" class="btn btn-outline-primary float-end"><i
-                    class="icofont-ui-copy"></i> Importar</button>
+            <button onclick="Livewire.emit('showModal', 'importar-aluno')" type="button"
+                class="btn btn-outline-primary float-end"><i class="icofont-ui-copy"></i> Importar</button>
             <button onclick="Livewire.emit('showModal', 'alunos')" type="button" class="btn btn-primary float-end"><i
                     class="icofont-ui-add"></i>
                 Adicionar</button>
