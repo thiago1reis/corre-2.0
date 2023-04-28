@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlunoController;
+use App\Http\Controllers\DisciplinaController;
 use App\Http\Controllers\Login\LoginController;
 use App\Http\Controllers\PainelController;
 use App\Http\Controllers\TurmaController;
@@ -24,17 +25,20 @@ Route::get('/check-auth', [LoginController::class, 'checkAuth'])->name('checkAut
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::group(['prefix' => 'sistema', 'middleware' => ['auth']], function(){
-
+    /*Painel*/
     Route::get('/',  [PainelController::class, 'index'])->name('painel');
 
+    /*Aluno*/
     Route::get('aluno', [AlunoController::class, 'index'])->name('aluno.index');
     Route::delete('aluno/deletar/{aluno}', [AlunoController::class, 'destroy'])->name('aluno.destroy');
 
+    /*Disciplina*/
+    Route::get('disciplina', [DisciplinaController::class, 'index'])->name('disciplina.index');
+    Route::delete('disciplina/deletar/{disciplina}', [DisciplinaController::class, 'destroy'])->name('disciplina.destroy');
 
-    Route::get('disciplinas', Disciplinas::class, 'render')->name('disciplinas');
     Route::get('servidores', Servidores::class, 'render')->name('servidores');
 
-
+    /*Turma*/
     Route::get('turma', [TurmaController::class, 'index'])->name('turma.index');
     Route::delete('turma/deletar/{turma}', [TurmaController::class, 'destroy'])->name('turma.destroy');
 });

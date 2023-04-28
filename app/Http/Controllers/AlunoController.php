@@ -41,7 +41,7 @@ class AlunoController extends Controller
     /**
      * destroy
      *
-     * @param Request $request
+     * @param Aluno $aluno
      * @return void
      */
     public function destroy(Aluno $aluno)

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Turma;
+use App\Http\Controllers\Controller;
+use App\Models\Disciplina;
 use Illuminate\Http\Request;
 
-class TurmaController extends Controller
+class DisciplinaController extends Controller
 {
     /**
      * index
@@ -16,30 +17,28 @@ class TurmaController extends Controller
     public function index(Request $request)
     {
         $busca = request()->input('busca');
-        $turmas = Turma::query()
+        $disciplinas = Disciplina::query()
             ->when($busca, function ($query, $busca) {
                 $query->where(function ($query) use ($busca) {
-                    $query->where('etapa_modalidade', 'LIKE', '%' . $busca . '%')
-                        ->orWhere('modulo_serie', 'LIKE', '%' . $busca . '%')
-                        ->orWhere('curso', 'LIKE', '%' . $busca . '%')
+                    $query->where('nome', 'LIKE', '%' . $busca . '%')
                         ->orWhere('observacao', 'LIKE', '%' . $busca . '%');
                 });
             })
             ->orderBy('created_at', 'DESC')
             ->paginate(10);
-        return view('turma.lista-turma', compact('turmas', 'busca'));
+        return view('disciplina.lista-disciplina', compact('disciplinas', 'busca'));
     }
 
 
     /**
      * destroy
      *
-     * @param Turma $turma
+     * @param Disciplina $disciplina
      * @return void
      */
-    public function destroy(Turma $turma)
+    public function destroy(Disciplina $disciplina)
     {
-        $turma->delete();
-        return redirect()->back()->with('success', 'Dados da turma foram excluídos com sucesso!');
+        $disciplina->delete();
+        return redirect()->back()->with('success', 'Dados da disciplina foram excluídos com sucesso!');
     }
 }

@@ -25,7 +25,7 @@
 
     @yield('content')
 
-    {{ isset($slot) }}
+    {{-- {{ isset($slot) }} --}}
     {{-- {{ $slot }} --}}
 
     @include('layouts.rodape')
