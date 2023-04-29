@@ -20,7 +20,7 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="{{ route('aluno.index') }}">Alunos</a></li>
                         <li><a class="dropdown-item" href="{{ route('disciplina.index') }}">Disciplinas</a></li>
-                        <li><a class="dropdown-item" href="{{ route('servidores') }}">Servidores</a></li>
+                        <li><a class="dropdown-item" href="{{ route('servidor.index') }}">Servidores</a></li>
                         <li><a class="dropdown-item" href="{{ route('turma.index') }}">Turmas</a></li>
                     </ul>
                 </li>

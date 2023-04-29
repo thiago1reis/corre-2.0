@@ -29,7 +29,6 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-
                     <div class="col-sm-4 my-2">
                         <label class="form-label">Curso <span class="text-danger fw-bold">*</span></label>
                         <input type="text" class="form-control @error('turma.curso') is-invalid @enderror"
@@ -38,7 +37,6 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-
                     <div class="col-sm-12 my-2">
                         <label for="observacao" class="form-label">Observações:</label>
                         <input type="text" class="form-control" wire:model.lazy="turma.observacao">

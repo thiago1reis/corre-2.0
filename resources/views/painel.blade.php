@@ -24,7 +24,7 @@
                         <div class="mb-3 position-absolute bottom-0 ">
                             <a href="{{ route('aluno.index') }}" class="card-link ms-0 me-3">Alunos</a>
                             <a href="{{ route('disciplina.index') }}" class="card-link ms-0 me-3">Disciplinas</a>
-                            <a href="#" class="card-link ms-0 me-3">Servidores</a>
+                            <a href="{{ route('servidor.index') }}" class="card-link ms-0 me-3">Servidores</a>
                             <a href="{{ route('turma.index') }}" class="card-link ms-0 me-3">Turmas</a>
                             <a href="#" class="card-link ms-0 me-3">Usuários</a>
                         </div>
