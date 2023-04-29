@@ -5,7 +5,6 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
             <ul class="navbar-nav me-auto mb-lg-0">
                 <li class="nav-item pe-3">
                     <a class="nav-link" aria-current="page" href="{{ route('painel') }}"><i class="icofont-ui-home"></i>
@@ -22,6 +21,7 @@
                         <li><a class="dropdown-item" href="{{ route('disciplina.index') }}">Disciplinas</a></li>
                         <li><a class="dropdown-item" href="{{ route('servidor.index') }}">Servidores</a></li>
                         <li><a class="dropdown-item" href="{{ route('turma.index') }}">Turmas</a></li>
+                        <li><a class="dropdown-item" href="{{ route('usuario.index') }}">Usuários</a></li>
                     </ul>
                 </li>
                 <li class="nav-item pe-3">
@@ -41,13 +41,13 @@
             </ul>
             <div class="d-flex">
                 <ul class="navbar-nav">
-                    <li class="nav-item dropdown ">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle " href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="icofont-ui-user"></i>
                             {{ auth()->user()->name }}
                         </a>
-                        <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="#">Configurações</a></li>
                             <li><a class="dropdown-item" href="{{ route('logout') }}">Sair</a></li>
                         </ul>

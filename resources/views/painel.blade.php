@@ -26,7 +26,7 @@
                             <a href="{{ route('disciplina.index') }}" class="card-link ms-0 me-3">Disciplinas</a>
                             <a href="{{ route('servidor.index') }}" class="card-link ms-0 me-3">Servidores</a>
                             <a href="{{ route('turma.index') }}" class="card-link ms-0 me-3">Turmas</a>
-                            <a href="#" class="card-link ms-0 me-3">Usuários</a>
+                            <a href="{{ route('usuario.index') }}" class="card-link ms-0 me-3">Usuários</a>
                         </div>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
                             </span>
                             <span class="mx-3">
                                 <h4 class="card-title">Cadastrar</h4>
-                                <h6 class="card-subtitle mb-2 text-muted">Cadastra nova ocorrência no sistema</h6>
+                                <h6 class="card-subtitle mb-2 text-muted">Cadastra ocorrência de um aluno</h6>
                             </span>
                         </div>
                         <p class="card-text">Neste card, você pode cadastrar uma nova ocorrência escolar para manter um
@@ -63,7 +63,7 @@
                             </span>
                             <span class="mx-3">
                                 <h4 class="card-title">Consultar</h4>
-                                <h6 class="card-subtitle mb-2 text-muted">Consulta informações no sistema</h6>
+                                <h6 class="card-subtitle mb-2 text-muted">Consulta informações de ocorrências</h6>
                             </span>
                         </div>
                         <p class="card-text"> Neste card, você pode consultar as ocorrências registradas no sistema. Utilize

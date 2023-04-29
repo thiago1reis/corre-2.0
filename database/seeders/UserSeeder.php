@@ -16,9 +16,29 @@ class UserSeeder extends Seeder
     {
         User::factory(
             [
-                'name' => 'Thiago Alexandre',
+                'name' => 'Usuário Administrador',
+                'email' => 'adm@corre.com',
+                'password' => bcrypt('4a6d3m'),
+                'tipo' => 1,
+                'status' => 1,
+            ]
+        )->create();
+
+        User::factory(
+            [
+                'name' => 'Usuário Padrão',
+                'email' => 'pdr@corre.com',
+                'password' => bcrypt('9p6d2r'),
+                'tipo' => 0,
+                'status' => 1,
+            ]
+        )->create();
+
+        User::factory(
+            [
+                'name' => 'Thiago Alexandre Reis',
                 'email' => 'thiagoalexandreis@gmail.com',
-                'password' => bcrypt('123456789'),
+                'password' => bcrypt('usu2217th'),
                 'tipo' => 1,
                 'status' => 1,
             ]

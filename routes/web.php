@@ -6,6 +6,7 @@ use App\Http\Controllers\Login\LoginController;
 use App\Http\Controllers\PainelController;
 use App\Http\Controllers\ServidorController;
 use App\Http\Controllers\TurmaController;
+use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,4 +43,8 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['auth']], function(){
     /*Turma*/
     Route::get('turma', [TurmaController::class, 'index'])->name('turma.index');
     Route::delete('turma/deletar/{turma}', [TurmaController::class, 'destroy'])->name('turma.destroy');
+
+    /*Usuário*/
+    Route::get('usuario', [UsuarioController::class, 'index'])->name('usuario.index');
+    Route::delete('usuario/deletar/{usuario}', [UsuarioController::class, 'destroy'])->name('usuario.destroy');
 });
