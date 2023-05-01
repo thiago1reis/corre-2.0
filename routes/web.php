@@ -47,4 +47,9 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['auth']], function(){
     /*Usuário*/
     Route::get('usuario', [UsuarioController::class, 'index'])->name('usuario.index');
     Route::delete('usuario/deletar/{usuario}', [UsuarioController::class, 'destroy'])->name('usuario.destroy');
+
+    /*Configuração*/
+    Route::get('/configuracao/{usuario}',  [UsuarioController::class, 'edit'])->name('usuario.edit');
+    Route::put('/configuracao/atualizar',  [UsuarioController::class, 'update'])->name('usuario.update');
+
 });
