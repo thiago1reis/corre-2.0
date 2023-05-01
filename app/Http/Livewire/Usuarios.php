@@ -21,7 +21,7 @@ class Usuarios extends Component
     {
         return [
             'usuario.name' => 'required',
-            'usuario.email' => ['required', Rule::unique(Usuario::class, 'email')->ignore($this->usuario)],
+            'usuario.email' => ['required', 'email', Rule::unique(Usuario::class, 'email')->ignore($this->usuario)],
             'senha' => $this->usuario->id ? 'nullable' : 'required',
             'usuario.tipo' => 'required',
             'usuario.status' => 'required',

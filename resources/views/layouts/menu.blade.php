@@ -48,8 +48,17 @@
                             {{ auth()->user()->name }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Configurações</a></li>
-                            <li><a class="dropdown-item" href="{{ route('logout') }}">Sair</a></li>
+                            <li>
+                                <a class="dropdown-item"
+                                    href="{{ route('usuario.edit', ['usuario' => auth()->user()->id]) }}">
+                                    Configurações
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('logout') }}">
+                                    Sair
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
