@@ -5,7 +5,7 @@
 @section('content')
     <div class="container-fluid">
         <fieldset class="border border-secondary p-3 my-3">
-            <legend class="float-none w-auto">Configurações do Usuários</legend>
+            <legend class="float-none w-auto">Configurações do Usuário</legend>
             @include('layouts.alertas')
             <form method="POST" action="{{ route('usuario.update') }}" id="confirm-form">
                 @csrf

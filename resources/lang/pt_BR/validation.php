@@ -169,6 +169,10 @@ return [
     */
 
     'attributes' => [
+        'turma_id' => 'turma',
+        'disciplina_id' => 'disciplina',
+        'servidor_id' => 'servidor',
+        'setor_encaminhado' => 'setor encaminhado',
         'address'   => 'endereço',
         'age'       => 'idade',
         'body'      => 'conteúdo',

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AlunoController;
 use App\Http\Controllers\DisciplinaController;
 use App\Http\Controllers\Login\LoginController;
+use App\Http\Controllers\OcorrenciaController;
 use App\Http\Controllers\PainelController;
 use App\Http\Controllers\ServidorController;
 use App\Http\Controllers\TurmaController;
@@ -51,5 +52,9 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['auth']], function(){
     /*Configuração*/
     Route::get('/configuracao/{usuario}',  [UsuarioController::class, 'edit'])->name('usuario.edit');
     Route::put('/configuracao/atualizar',  [UsuarioController::class, 'update'])->name('usuario.update');
+
+    /*Ocorrência*/
+    Route::get('cadastro-ocorrencia', [OcorrenciaController::class, 'create'])->name('ocorrencia.create');
+
 
 });

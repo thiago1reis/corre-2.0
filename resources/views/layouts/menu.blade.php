@@ -25,7 +25,8 @@
                     </ul>
                 </li>
                 <li class="nav-item pe-3">
-                    <a class="nav-link" href="#"><i class="icofont-ui-note"></i> Cadastar Ocorrência</a>
+                    <a class="nav-link" href="{{ route('ocorrencia.create') }}"><i class="icofont-ui-note"></i> Cadastar
+                        Ocorrência</a>
                 </li>
                 <li class="nav-item dropdown pe-3">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"

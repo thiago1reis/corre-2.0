@@ -9,7 +9,7 @@
                 <div class="card my-3" style="height: 25rem">
                     <div class="card-body position-relative">
                         <div class="d-flex align-items-center mb-3">
-                            <span class="badge rounded-pill bg-icon-card-painel p-3">
+                            <span class="badge rounded-pill bg-success bg-opacity-25 p-3">
                                 <i class="icofont-ui-add fs-2"></i>
                             </span>
                             <span class="mx-3">
@@ -35,7 +35,7 @@
                 <div class="card my-3" style="height: 25rem">
                     <div class="card-body ">
                         <div class="d-flex align-items-center mb-3">
-                            <span class="badge rounded-pill bg-icon-card-painel p-3">
+                            <span class="badge rounded-pill bg-success bg-opacity-25 p-3">
                                 <i class="icofont-ui-note fs-2"></i>
                             </span>
                             <span class="mx-3">
@@ -49,7 +49,7 @@
                             relevantes para a escola.
                         </p>
                         <div class="position-absolute bottom-0 py-3">
-                            <a href="#" class="card-link ms-0 me-3">Ocorrência</a>
+                            <a href="{{ route('ocorrencia.create') }}" class="card-link ms-0 me-3">Ocorrência</a>
                         </div>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                 <div class="card my-3" style="height: 25rem">
                     <div class="card-body ">
                         <div class="d-flex align-items-center mb-3">
-                            <span class="badge rounded-pill bg-icon-card-painel p-3">
+                            <span class="badge rounded-pill bg-success bg-opacity-25 p-3">
                                 <i class="icofont-ui-search fs-2"></i>
                             </span>
                             <span class="mx-3">
