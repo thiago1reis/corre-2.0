@@ -21,19 +21,19 @@ class TurmaSeeder extends Seeder
             [
                 'etapa_modalidade' => 'Técnico Integrado Ensino Médio',
                 'modulo_serie' => '1º ano',
-                'curso' => 'Técnico em Informática para Internet',
+                'curso' => 'Informática para Internet',
                 'observacao' =>  'Período integral',
             ],
             [
                 'etapa_modalidade' => 'Técnico Integrado Ensino Médio',
                 'modulo_serie' => '2º ano',
-                'curso' => 'Técnico em Informática para Internet',
+                'curso' => 'Informática para Internet',
                 'observacao' =>  'Período integral',
             ],
             [
                 'etapa_modalidade' => 'Técnico Integrado Ensino Médio',
                 'modulo_serie' => '3º ano',
-                'curso' => 'Técnico em Informática para Internet',
+                'curso' => 'Informática para Internet',
                 'observacao' =>  'Período vespertino',
             ],
 
@@ -41,19 +41,19 @@ class TurmaSeeder extends Seeder
             [
                 'etapa_modalidade' => 'Técnico Integrado Ensino Médio',
                 'modulo_serie' => '1º ano',
-                'curso' => 'Técnico em Meio Ambiente',
+                'curso' => 'Meio Ambiente',
                 'observacao' =>  'Período integral',
             ],
             [
                 'etapa_modalidade' => 'Técnico Integrado Ensino Médio',
                 'modulo_serie' => '2º ano',
-                'curso' => 'Técnico em Meio Ambiente',
+                'curso' => 'Meio Ambiente',
                 'observacao' =>  'Período integral',
             ],
             [
                 'etapa_modalidade' => 'Técnico Integrado Ensino Médio',
                 'modulo_serie' => '3º ano',
-                'curso' => 'Técnico em Meio Ambiente',
+                'curso' => 'Meio Ambiente',
                 'observacao' =>  'Período vespertino',
             ],
 
@@ -61,19 +61,19 @@ class TurmaSeeder extends Seeder
             [
                 'etapa_modalidade' => 'Técnico Integrado Ensino Médio',
                 'modulo_serie' => '1º ano',
-                'curso' => 'Técnico em Administração',
+                'curso' => 'Administração',
                 'observacao' =>  'Período integral',
             ],
             [
                 'etapa_modalidade' => 'Técnico Integrado Ensino Médio',
                 'modulo_serie' => '2º ano',
-                'curso' => 'Técnico em Administração',
+                'curso' => 'Administração',
                 'observacao' =>  'Período integral',
             ],
             [
                 'etapa_modalidade' => 'Técnico Integrado Ensino Médio',
                 'modulo_serie' => '3º ano',
-                'curso' => 'Técnico em Administração',
+                'curso' => 'Administração',
                 'observacao' =>  'Período vespertino',
             ],
 
@@ -81,19 +81,19 @@ class TurmaSeeder extends Seeder
             [
                 'etapa_modalidade' => 'Técnico Subsequente',
                 'modulo_serie' => '1º módulo',
-                'curso' => 'Técnico em Informática',
+                'curso' => 'Informática',
                 'observacao' =>  'Período vespertino',
             ],
             [
                 'etapa_modalidade' => 'Técnico Subsequente',
                 'modulo_serie' => '2º módulo',
-                'curso' => 'Técnico em Informática',
+                'curso' => 'Informática',
                 'observacao' =>  'Período vespertino',
             ],
             [
                 'etapa_modalidade' => 'Técnico Subsequente',
                 'modulo_serie' => '3º módulo',
-                'curso' => 'Técnico em Informática',
+                'curso' => 'Informática',
                 'observacao' =>  'Período vespertino',
             ],
 
@@ -101,19 +101,19 @@ class TurmaSeeder extends Seeder
             [
                 'etapa_modalidade' => 'Técnico Subsequente',
                 'modulo_serie' => '1º módulo',
-                'curso' => 'Técnico em Logística',
+                'curso' => 'Logística',
                 'observacao' =>  'Período vespertino',
             ],
             [
                 'etapa_modalidade' => 'Técnico Subsequente',
                 'modulo_serie' => '2º módulo',
-                'curso' => 'Técnico em Logística',
+                'curso' => 'Logística',
                 'observacao' =>  'Período vespertino',
             ],
             [
                 'etapa_modalidade' => 'Técnico Subsequente',
                 'modulo_serie' => '3º módulo',
-                'curso' => 'Técnico em Logística',
+                'curso' => 'Logística',
                 'observacao' =>  'Período vespertino',
             ],
 

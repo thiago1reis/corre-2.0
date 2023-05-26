@@ -18,6 +18,7 @@ class Ocorrencias extends Component
     public $turmas;
     public $disciplinas;
     public $servidores;
+    public $ocorrenciaId;
 
 
     /**
@@ -54,6 +55,17 @@ class Ocorrencias extends Component
         $this->turmas = Turma::all();
         $this->disciplinas = Disciplina::all();
         $this->servidores = Servidor::all();
+
+        if (!empty($this->ocorrenciaId)) {
+
+            $this->ocorrencia = Ocorrencia::find($this->ocorrenciaId);
+
+            $this->aluno = Aluno::where('id', $this->ocorrencia->aluno_id)->first();
+
+            $this->matricula =  $this->aluno->matricula;
+
+            $this->disabled = true;
+        }
     }
 
 
@@ -88,18 +100,13 @@ class Ocorrencias extends Component
         $this->ocorrencia->bolsa_aluno = $this->ocorrencia->bolsa_aluno;
         $this->ocorrencia->setor_encaminhado = $this->ocorrencia->setor_encaminhado;
         $this->ocorrencia->data = $this->ocorrencia->data;
-
-        if (!$this->ocorrencia->usuario_id) {
-            //Na hora de editar não pode alterar
-            $this->ocorrencia->usuario_id = auth()->user()->id;
-        }
-
+        $this->ocorrencia->usuario_id = $this->ocorrencia->usuario_id ?: auth()->user()->id;
         $this->ocorrencia->servidor_id = $this->ocorrencia->servidor_id;
         $this->ocorrencia->disciplina_id = $this->ocorrencia->disciplina_id;
         $this->ocorrencia->aluno_id = $this->aluno->id;
         $this->ocorrencia->turma_id = $this->ocorrencia->turma_id;
         $this->ocorrencia->save();
-        return redirect()->route('ocorrencia.create')->with('success', 'Ocorrência cadastrada com sucesso!');
+        return redirect()->route('ocorrencia.index')->with('success', 'Dados da ocorrência salvos com sucesso!');
     }
 
 
@@ -110,6 +117,10 @@ class Ocorrencias extends Component
      */
     public function render()
     {
+        if (!$this->matricula) {
+            $this->disabled = false;
+        }
+
         return view('ocorrencia.formulario-ocorrencia');
     }
 }

@@ -8,8 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Servidor extends Model
 {
     use HasFactory;
+
     protected $table = 'servidores';
+
     protected $fillable = ['nome', 'tipo', 'observacao'];
+
     public static function tipos()
     {
       return collect([
@@ -17,4 +20,10 @@ class Servidor extends Model
         'Tec. Admin. Educacional' => 'Tec. Admin. Educacional',
       ]);
     }
+
+    public function ocorrencias()
+    {
+        return $this->hasMany(Ocorrencia::class);
+    }
+
 }

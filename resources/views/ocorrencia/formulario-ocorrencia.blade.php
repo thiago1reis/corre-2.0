@@ -216,7 +216,7 @@
         <button wire:click="save" type="submit" class="btn btn-success btn-fixed-size" wire:loading.attr="disabled"
             {{ !$disabled ? 'disabled' : '' }}>
             {{-- Texto padrão do botão --}}
-            <span wire:click="save" wire:loading.remove.delay.shortest>Cadastrar</span>
+            <span wire:click="save" wire:loading.remove.delay.shortest>Salvar</span>
             {{-- Efeito de carregamento quando o butão é acionado --}}
             <span wire:click="save" wire:loading.delay.shortest class="spinner-border spinner-border-sm text-white"
                 role="status"></span>

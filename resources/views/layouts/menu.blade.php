@@ -36,7 +36,7 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="">Aluno</a></li>
-                        <li><a class="dropdown-item" href="">Ocorrencias</a></li>
+                        <li><a class="dropdown-item" href="{{ route('ocorrencia.index') }}">Ocorrencias</a></li>
                     </ul>
                 </li>
             </ul>

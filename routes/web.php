@@ -54,7 +54,7 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['auth']], function(){
     Route::put('/configuracao/atualizar',  [UsuarioController::class, 'update'])->name('usuario.update');
 
     /*Ocorrência*/
-    Route::get('cadastro-ocorrencia', [OcorrenciaController::class, 'create'])->name('ocorrencia.create');
-
+    Route::get('cadastrar-ocorrencia', [OcorrenciaController::class, 'create'])->name('ocorrencia.create');
+    Route::get('consultar-ocorrencia', [OcorrenciaController::class, 'index'])->name('ocorrencia.index');
 
 });
