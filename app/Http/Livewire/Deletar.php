@@ -15,7 +15,7 @@ class Deletar extends Component
      *
      * @param  string $modulo
      * @param  string $rota
-     * @return string
+     * @return void
      */
     public function mount($modulo, $rota)
     {

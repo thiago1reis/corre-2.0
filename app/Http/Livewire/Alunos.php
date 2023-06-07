@@ -23,7 +23,7 @@ class Alunos extends Component
     /**
      * rules
      *
-     * @return void
+     * @return array As regras de validação para o formulário de cadastar alunos.
      */
     protected  function rules()
     {

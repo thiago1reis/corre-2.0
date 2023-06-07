@@ -14,7 +14,7 @@ class Disciplinas extends Component
     /**
      * rules
      *
-     * @return array
+     * @return array As regras de validação para o formulário de cadastar disciplinas.
      */
     protected  function rules()
     {
@@ -29,7 +29,7 @@ class Disciplinas extends Component
      * mount
      *
      * @param  Disciplina $turma
-     * @return Disciplina
+     * @return void
      */
     public function mount(Disciplina $disciplina)
     {

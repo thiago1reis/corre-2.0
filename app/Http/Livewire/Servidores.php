@@ -15,7 +15,7 @@ class Servidores extends Component
     /**
      * rules
      *
-     * @return array
+     * @return array As regras de validação para o formulário de cadastar servidores.
      */
     protected  function rules()
     {

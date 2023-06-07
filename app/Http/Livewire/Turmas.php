@@ -14,7 +14,7 @@ class Turmas extends Component
     /**
      * rules
      *
-     * @return array
+     * @return array As regras de validação para o formulário de cadastar turmas.
      */
     protected  function rules()
     {
@@ -31,7 +31,7 @@ class Turmas extends Component
      * mount
      *
      * @param  Turma $turma
-     * @return Turma
+     * @return void
      */
     public function mount(Turma $turma)
     {

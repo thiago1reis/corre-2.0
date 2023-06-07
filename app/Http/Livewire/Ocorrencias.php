@@ -24,7 +24,7 @@ class Ocorrencias extends Component
     /**
      * rules
      *
-     * @return void
+     * @return array As regras de validação para o formulário de cadastar ocorrencias.
      */
     protected  function rules()
     {
@@ -47,7 +47,7 @@ class Ocorrencias extends Component
      * mount
      *
      * @param  Ocorrencia $ocorrencia
-     * @return Ocorrencia
+     * @return void
      */
     public function mount(Ocorrencia $ocorrencia)
     {
@@ -90,6 +90,11 @@ class Ocorrencias extends Component
     }
 
 
+    /**
+     * save
+     *
+     * @return void
+     */
     public function save()
     {
         $this->validate();

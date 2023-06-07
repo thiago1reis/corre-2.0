@@ -15,7 +15,7 @@ class Usuarios extends Component
     /**
      * rules
      *
-     * @return array
+     * @return array As regras de validação para o formulário de cadastar usuários.
      */
     protected  function rules()
     {
@@ -32,7 +32,7 @@ class Usuarios extends Component
      * mount
      *
      * @param  Usuario $usuario
-     * @return Usuario
+     * @return void
      */
     public function mount(Usuario $usuario)
     {

@@ -18,8 +18,8 @@ class ImportarAluno extends Component
     /**
      * mount
      *
-     * @param  \App\Models\Aluno $aluno
-     * @return \App\Models\Aluno
+     * @param  Aluno $aluno
+     * @return void
      */
     public function mount(Aluno $aluno)
     {

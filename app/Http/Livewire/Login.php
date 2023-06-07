@@ -14,7 +14,7 @@ class Login extends Component
     /**
      * login
      *
-     * @return void
+     * @return void|bool
      */
     public function login()
     {
@@ -39,6 +39,7 @@ class Login extends Component
         }
 
         $this->addError('email', 'Usuário não encontrado');
+
         return false;
     }
 
