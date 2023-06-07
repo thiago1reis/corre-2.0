@@ -5,10 +5,10 @@
 @section('content')
     <div class="container-fluid">
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 mb-2">
-            <button type="button" class="btn btn-outline-primary float-end">
+            <a type="button" href="{{ route('ocorrencia.pdf') }}" target="blank" class="btn btn-outline-primary float-end">
                 <i class="icofont-ui-file"></i>
                 Relatório PDF
-            </button>
+            </a>
         </div>
         <fieldset class="border border-secondary p-3 mb-3">
             <legend class="float-none w-auto">Ocorrências Cadastradas</legend>
@@ -102,7 +102,8 @@
                                     </small>
                                     <small class="text-muted mx-1">|</small>
                                     <small class="fs-6">
-                                        <a type="button" class="mx-2 link-primary text-decoration-none">
+                                        <a href="{{ route('ocorrencia.pdf', ['ocorrenciaId' => $item->id]) }}"
+                                            target="blank" type="button" class="mx-2 link-primary text-decoration-none">
                                             <i title="Imprimir Ocorrência" class="icofont-ui-file"></i>
                                         </a>
                                         <a href="{{ route('ocorrencia.create', ['ocorrenciaId' => $item->id]) }}"
