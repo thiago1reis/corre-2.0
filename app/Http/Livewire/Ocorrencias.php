@@ -37,9 +37,9 @@ class Ocorrencias extends Component
             'ocorrencia.tipo' => 'required',
             'ocorrencia.servidor_id' => 'required',
             'ocorrencia.setor_encaminhado' => 'required',
-            'ocorrencia.descricao' => 'required|max:255',
-            'ocorrencia.medida_adotada' => 'required|max:255',
-            'ocorrencia.observacao' => 'max:255',
+            'ocorrencia.descricao' => 'required|max:500',
+            'ocorrencia.medida_adotada' => 'required|max:500',
+            'ocorrencia.observacao' => 'max:500',
         ];
     }
 

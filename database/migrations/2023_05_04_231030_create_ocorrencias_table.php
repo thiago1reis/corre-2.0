@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('ocorrencias', function (Blueprint $table) {
             $table->id();
             $table->string('tipo');
-            $table->string('descricao');
-            $table->string('medida_adotada');
-            $table->string('observacao')->nullable();
+            $table->string('descricao', 500);
+            $table->string('medida_adotada', 500);
+            $table->string('observacao', 500)->nullable();
             $table->string('bolsa_aluno')->nullable();
             $table->string('setor_encaminhado');
             $table->date('data');

@@ -56,6 +56,6 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['auth']], function(){
     /*Ocorrência*/
     Route::get('cadastrar-ocorrencia', [OcorrenciaController::class, 'create'])->name('ocorrencia.create');
     Route::get('consultar-ocorrencia', [OcorrenciaController::class, 'index'])->name('ocorrencia.index');
-    Route::get('relatorio-ocorrencia/{ocorrenciaId?}', [OcorrenciaController::class, 'gerarPDF'])->name('ocorrencia.pdf');
+    Route::get('relatorio-ocorrencia/{ocorrenciaIdOrBusca?}', [OcorrenciaController::class, 'gerarPDF'])->name('ocorrencia.pdf');
 
 });
