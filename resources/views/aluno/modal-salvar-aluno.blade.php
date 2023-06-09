@@ -9,7 +9,7 @@
                 <div class="row">
                     <div class="col-sm-2">
                         <div class="my-2">
-                            <label class="form-label ">Foto:</label>
+                            <label class="form-label ">Foto</label>
                             <input class="form-control mb-4 {{ $aluno->foto ? 'd-none' : '' }}" type="file"
                                 wire:model.lazy="foto" accept="image/*">
                             <span class="mb-4 {{ $aluno->foto ? 'd-none' : '' }}" style="font-size: 11.5px">Dimenssões:
@@ -39,7 +39,7 @@
                     <div class="col-sm-10">
                         <div class="row">
                             <div class="col-sm-4 my-2">
-                                <label class="form-label">Nome: <span class="text-danger fw-bold">*</span></label>
+                                <label class="form-label">Nome <span class="text-danger fw-bold">*</span></label>
                                 <input type="text" class="form-control  @error('aluno.nome') is-invalid @enderror"
                                     wire:model.lazy="aluno.nome" placeholder="Informe o nome do aluno">
                                 @error('aluno.nome')
@@ -47,7 +47,7 @@
                                 @enderror
                             </div>
                             <div class="col-sm-4 my-2">
-                                <label class="form-label">Matrícula: <span class="text-danger fw-bold">*</span></label>
+                                <label class="form-label">Matrícula <span class="text-danger fw-bold">*</span></label>
                                 <input type="text"
                                     class="form-control @error('aluno.matricula') is-invalid @enderror"
                                     wire:model.lazy="aluno.matricula" maxLength="14"
@@ -57,7 +57,7 @@
                                 @enderror
                             </div>
                             <div class="col-sm-4 my-2">
-                                <label class="form-label">Data de Nascimento: <span
+                                <label class="form-label">Data de Nascimento <span
                                         class="text-danger fw-bold">*</span></label>
                                 <input type="date"
                                     class="form-control  @error('aluno.data_nascimento') is-invalid @enderror"
@@ -67,7 +67,7 @@
                                 @enderror
                             </div>
                             <div class="col-sm-4 my-2">
-                                <label class="form-label">Sexo: <span class="text-danger fw-bold">*</span></label><br>
+                                <label class="form-label">Sexo <span class="text-danger fw-bold">*</span></label><br>
                                 <div class="form-check form-check-inline me-1">
                                     <label class="form-check-label" for="inlineRadio1">Feminino</label>
                                     <input class="form-check-input @error('aluno.sexo') is-invalid @enderror"
@@ -88,12 +88,12 @@
                                 @enderror
                             </div>
                             <div class="col-sm-4 my-2">
-                                <label for="telefone" class="form-label">Telefone:</label>
-                                <input type="text" class="form-control" wire:model.lazy="aluno.telefone"
-                                    maxlength="15" placeholder="(00) 00000-0000">
+                                <label for="telefone" class="form-label">Telefone</label>
+                                <input type="text" class="form-control mascara-celular"
+                                    wire:model.lazy="aluno.telefone" maxlength="15" placeholder="(00) 00000-0000">
                             </div>
                             <div class="col-sm-4 my-2">
-                                <label for="email" class="form-label">Email:</label>
+                                <label for="email" class="form-label">E-mail</label>
                                 <input type="text" class="form-control  @error('aluno.email') is-invalid @enderror"
                                     wire:model.lazy="aluno.email" placeholder="nome@email.com">
                                 @error('aluno.email')
@@ -101,18 +101,18 @@
                                 @enderror
                             </div>
                             <div class="col-sm-4 my-2">
-                                <label for="responsavel" class="form-label">Responsável:</label>
+                                <label for="responsavel" class="form-label">Responsável</label>
                                 <input type="text" class="form-control" wire:model.lazy="aluno.responsavel"
                                     placeholder="Informe o responsável pelo aluno">
                             </div>
                             <div class="col-sm-4 my-2">
-                                <label for="telefone_responsavel" class="form-label">Telefone do Responsável:</label>
-                                <input type="text" class="form-control"
+                                <label for="telefone_responsavel" class="form-label">Telefone do Responsável</label>
+                                <input type="text" class="form-control mascara-celular"
                                     wire:model.lazy="aluno.telefone_responsavel" maxlength="15"
-                                    placeholder="(00) 00000-0000">
+                                    placeholder="(00) 0 0000-0000">
                             </div>
                             <div class="col-sm-12 my-2">
-                                <label for="observacao" class="form-label">Observações:</label>
+                                <label for="observacao" class="form-label">Observações</label>
                                 <textarea class="form-control" id="observacao" wire:model.lazy="aluno.observacao" style="height: 100px"></textarea>
                             </div>
                         </div>

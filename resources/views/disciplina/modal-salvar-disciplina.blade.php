@@ -16,7 +16,7 @@
                         @enderror
                     </div>
                     <div class="col-sm-6 my-2">
-                        <label for="observacao" class="form-label">Observações:</label>
+                        <label for="observacao" class="form-label">Observações</label>
                         <input type="text" class="form-control" wire:model.lazy="disciplina.observacao">
                     </div>
                 </div>
