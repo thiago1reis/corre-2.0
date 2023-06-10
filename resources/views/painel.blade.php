@@ -72,7 +72,7 @@
                             lista completa de todas
                             as ocorrências registradas no sistema.</p>
                         <div class="position-absolute bottom-0 py-3">
-                            <a href="#" class="card-link ms-0 me-3">Alunos</a>
+                            <a href="{{ route('aluno.show') }}" class="card-link ms-0 me-3">Alunos</a>
                             <a href="{{ route('ocorrencia.index') }}" class="card-link ms-0 me-3">Ocorrências</a>
                         </div>
                     </div>

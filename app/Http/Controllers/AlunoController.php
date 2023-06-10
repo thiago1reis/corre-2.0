@@ -39,6 +39,25 @@ class AlunoController extends Controller
 
 
     /**
+     * show
+     *
+     * @param  Request $request
+     * @return void
+     */
+    public function show(Request $request)
+    {
+        $busca = request()->input('busca');
+        $aluno = Aluno::where('matricula', $busca)->first();
+
+        if (!empty($busca) && $aluno === null) {
+            return redirect()->route('aluno.show')->withInput(['busca' => $busca])->with('attention', 'Não foi encontrado nenhum aluno com essa matrícula!');
+        }
+
+        return view('aluno.detalhe-aluno', compact('aluno', 'busca'));
+    }
+
+
+    /**
      * destroy
      *
      * @param Aluno $aluno

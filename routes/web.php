@@ -32,6 +32,8 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['auth']], function(){
     /*Aluno*/
     Route::get('aluno', [AlunoController::class, 'index'])->name('aluno.index');
     Route::delete('aluno/deletar/{aluno}', [AlunoController::class, 'destroy'])->name('aluno.destroy');
+    Route::get('consultar-aluno', [AlunoController::class, 'show'])->name('aluno.show');
+
 
     /*Disciplina*/
     Route::get('disciplina', [DisciplinaController::class, 'index'])->name('disciplina.index');
