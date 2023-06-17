@@ -3,7 +3,7 @@
         <!-- Dados do Aluno -->
         <span class="fw-bold mb-2">Dados do Aluno</span>
         <span class="border-bottom mx-1"></span>
-        <div class="col-sm-1 my-2">
+        <div class="col-sm-6 col-md-2 col-lg-1 my-2">
             @php
                 if (!empty($aluno->foto)) {
                     $localFoto = url("storage/{$aluno->foto}");
@@ -11,14 +11,16 @@
                     $localFoto = asset('imagens/aluno.png');
                 }
             @endphp
+            <label class="form-label">Foto</label><br>
+
             <img style="width:75px; background-color:#e9ecef;" class="img-thumbnail" src="{{ $localFoto }}"
                 alt="Foto do Aluno">
         </div>
-        <div class="col-sm-3 my-2">
+        <div class="col-sm-6 col-md-5 col-lg-3 my-2">
             <label class="form-label">Nome</label>
             <input type="text" class="form-control" value="{{ !empty($aluno->nome) ? $aluno->nome : '' }}" disabled>
         </div>
-        <div class="col-sm-3 my-2">
+        <div class="col-sm-6 col-md-5 col-lg-3 my-2">
             <label class="form-label">Matrícula <span class="text-danger fw-bold">*</span></label>
             <input type="text" class="form-control @error('matricula') is-invalid @enderror" maxLength="14"
                 placeholder="Informe a matrícula do aluno" wire:model.lazy="matricula" autofocus>
@@ -26,12 +28,12 @@
                 <span class="text-danger">{{ $message }}</span>
             @enderror
         </div>
-        <div class="col-sm-3 my-2">
+        <div class="col-sm-6 col-md-7 col-lg-3 my-2">
             <label class="form-label">Data de Nascimento</label>
             <input type="date" class="form-control "
                 value="{{ !empty($aluno->data_nascimento) ? $aluno->data_nascimento : '' }}" disabled>
         </div>
-        <div class="col-sm-2 my-2">
+        <div class="col-sm-6 col-md-5 col-lg-2 my-2">
             <label class="form-label">Sexo</label><br>
             <div class="form-check form-check-inline me-1">
                 <label class="form-check-label" for="inlineRadio1">Feminino</label>
@@ -54,7 +56,7 @@
         <!-- Dados da Ocorrência -->
         <span class="fw-bold my-2">Dados da Ocorrência</span>
         <span class="border-bottom mx-1"></span>
-        <div class="col-sm-4 my-2">
+        <div class="col-sm-6 col-md-7 col-lg-4 my-2">
             <label class="form-label">Turma <span class="text-danger fw-bold">*</span></label>
             <select class="form-select @error('ocorrencia.turma_id') is-invalid @enderror"
                 wire:model.lazy="ocorrencia.turma_id" {{ !$disabled ? 'disabled' : '' }}>
@@ -71,7 +73,7 @@
                 <span class="text-danger">{{ $message }}</span>
             @enderror
         </div>
-        <div class="col-sm-3 my-2">
+        <div class="col-sm-6 col-md-5 col-lg-3 my-2">
             <label class="form-label">Bolsa do aluno</label>
             <select class="form-select" wire:model.lazy="ocorrencia.bolsa_aluno" {{ !$disabled ? 'disabled' : '' }}>
                 <option value="" selected>Selecione...</option>
@@ -81,7 +83,7 @@
                 </option>
             </select>
         </div>
-        <div class="col-sm-3 my-2">
+        <div class="col-sm-6 col-md-7 col-lg-3 my-2">
             <label class="form-label">Disciplina em que houve a ocorrência
                 <span class="text-danger fw-bold">*</span></label>
             <select class="form-select @error('ocorrencia.disciplina_id') is-invalid @enderror"
@@ -97,7 +99,7 @@
                 <span class="text-danger">{{ $message }}</span>
             @enderror
         </div>
-        <div class="col-sm-2 my-2">
+        <div class="col-sm-6 col-md-5 col-lg-2 my-2">
             <label class="form-label">Data da corrência <span class="text-danger fw-bold">*</span></label>
             <input type="date" class="form-control  @error('ocorrencia.data') is-invalid @enderror"
                 wire:model.lazy="ocorrencia.data" {{ !$disabled ? 'disabled' : '' }}>
@@ -105,7 +107,7 @@
                 <span class="text-danger">{{ $message }}</span>
             @enderror
         </div>
-        <div class="col-sm-4 my-2">
+        <div class="col-sm-6 col-md-7 col-lg-4 my-2">
             <label class="form-label">Tipo da Ocorrência <span class="text-danger fw-bold">*</span></label>
             <select class="form-select  @error('ocorrencia.tipo') is-invalid @enderror"
                 wire:model.lazy="ocorrencia.tipo" {{ !$disabled ? 'disabled' : '' }}>
@@ -125,7 +127,7 @@
             @enderror
         </div>
 
-        <div class="col-sm-3 my-2">
+        <div class="col-sm-6 col-md-5 col-lg-3 my-2">
             <label class="form-label">Ocorrência encaminhada por
                 <span class="text-danger fw-bold">*</span></label>
             <select class="form-select @error('ocorrencia.servidor_id') is-invalid @enderror"
@@ -143,7 +145,7 @@
             @enderror
         </div>
 
-        <div class="col-sm-5 my-2">
+        <div class="col-sm-6 col-md-12 col-lg-5 my-2">
             <label class="form-label">Setor encaminhado <span class="text-danger fw-bold">*</span></label>
             <select class="form-select  @error('ocorrencia.setor_encaminhado') is-invalid @enderror"
                 wire:model.lazy="ocorrencia.setor_encaminhado" {{ !$disabled ? 'disabled' : '' }}>
@@ -212,9 +214,9 @@
         </div>
         <!------------------------->
     </div>
-    <div class=" my-3 float-end ">
-        <button wire:click="save" type="submit" class="btn btn-success btn-fixed-size" wire:loading.attr="disabled"
-            {{ !$disabled ? 'disabled' : '' }}>
+    <div class="my-3 d-flex gap-3">
+        <button wire:click="save" type="submit" class="btn btn-success btn-fixed-size  ms-auto"
+            wire:loading.attr="disabled" {{ !$disabled ? 'disabled' : '' }}>
             {{-- Texto padrão do botão --}}
             <span wire:click="save" wire:loading.remove.delay.shortest>Salvar</span>
             {{-- Efeito de carregamento quando o butão é acionado --}}

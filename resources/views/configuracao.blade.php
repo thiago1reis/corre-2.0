@@ -37,8 +37,8 @@
                         @enderror
                     </div>
                 </div>
-                <div class=" my-3 float-end ">
-                    <button type="submit" id="confirm-button" class="btn btn-success btn-fixed-size">
+                <div class="my-3 d-flex gap-3">
+                    <button type="submit" id="confirm-button" class="btn btn-success btn-fixed-size  ms-auto">
                         {{-- Texto padrão do botão --}}
                         <span id="confirm-text">Salvar</span>
                         {{-- Efeito de carregamento quando o botão é acionado --}}

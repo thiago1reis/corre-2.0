@@ -129,7 +129,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-12 my-1">
-                                                <span class="card-text fw-semibold">Dados do Registro / Ações</span><br>
+                                                <span class="card-text fw-semibold">Dados do Cadastro</span><br>
                                                 <small class="text-muted">
                                                     {{ $ocorrencia->usuario->name }} em
                                                     {{ $ocorrencia->created_at->format('d/m/Y H:i:s') }}

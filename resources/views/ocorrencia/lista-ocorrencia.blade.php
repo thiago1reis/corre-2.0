@@ -118,7 +118,7 @@
                             <hr class="text-secondary text-opacity-25">
                             <div class="row">
                                 <div class="col-sm-12 my-1">
-                                    <span class="card-text fw-semibold">Dados do Registro / Ações</span><br>
+                                    <span class="card-text fw-semibold">Dados do Cadastro / Ações</span><br>
                                     <small class="text-muted">
                                         {{ $item->usuario->name }} em
                                         {{ $item->created_at->format('d/m/Y H:i:s') }}

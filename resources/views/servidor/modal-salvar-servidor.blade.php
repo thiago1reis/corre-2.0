@@ -33,8 +33,8 @@
                         <input type="text" class="form-control" wire:model.lazy="servidor.observacao">
                     </div>
                 </div>
-                <div class=" my-3 float-end ">
-                    <button type="button" class="btn btn-outline-danger btn-fixed-size"
+                <div class="my-3 d-flex gap-3">
+                    <button type="button" class="btn btn-outline-danger btn-fixed-size ms-auto"
                         data-bs-dismiss="modal">Cancelar</button>
                     <button wire:click="save" type="submit" class="btn btn-success btn-fixed-size"
                         wire:loading.attr="disabled">

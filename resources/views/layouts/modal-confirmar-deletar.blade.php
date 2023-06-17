@@ -1,5 +1,5 @@
 <div class="modal-dialog">
-    <div class="modal-content">
+    <div class="modal-content bg-modal">
         <div class="modal-header">
             <h5 class="modal-title">Deletar {{ $modulo }}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -11,8 +11,8 @@
             <form method="POST" action="{{ $rota }}" id="confirm-form">
                 @csrf
                 @method('DELETE')
-                <div class=" my-3 float-end ">
-                    <button type="button" class="btn btn-outline-danger btn-fixed-size"
+                <div class="my-3 d-flex gap-3">
+                    <button type="button" class="btn btn-outline-danger btn-fixed-size ms-auto"
                         data-bs-dismiss="modal">Cancelar</button>
                     <button type="submit" id="confirm-button" class="btn btn-success btn-fixed-size">
                         {{-- Texto padrão do botão --}}

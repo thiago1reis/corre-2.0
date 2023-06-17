@@ -7,7 +7,7 @@
         <div class="modal-body">
             <form method="POST" wire:submit.prevent="save" enctype="multipart/form-data">
                 <div class="row">
-                    <div class="col-sm-2">
+                    <div class="col-sm-6 col-md-12 col-lg-2">
                         <div class="my-2">
                             <label class="form-label ">Foto</label>
                             <input class="form-control mb-4 {{ $aluno->foto ? 'd-none' : '' }}" type="file"
@@ -36,9 +36,9 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-sm-10">
+                    <div class="col-sm-6 col-md-12 col-lg-10">
                         <div class="row">
-                            <div class="col-sm-4 my-2">
+                            <div class="col-sm-6 col-md-6 col-lg-4 my-2">
                                 <label class="form-label">Nome <span class="text-danger fw-bold">*</span></label>
                                 <input type="text" class="form-control  @error('aluno.nome') is-invalid @enderror"
                                     wire:model.lazy="aluno.nome" placeholder="Informe o nome do aluno">
@@ -46,7 +46,7 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="col-sm-4 my-2">
+                            <div class="col-sm-6 col-md-6 col-lg-4 my-2">
                                 <label class="form-label">Matrícula <span class="text-danger fw-bold">*</span></label>
                                 <input type="text"
                                     class="form-control @error('aluno.matricula') is-invalid @enderror"
@@ -56,7 +56,7 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="col-sm-4 my-2">
+                            <div class="col-sm-6 col-md-6 col-lg-4 my-2">
                                 <label class="form-label">Data de Nascimento <span
                                         class="text-danger fw-bold">*</span></label>
                                 <input type="date"
@@ -66,7 +66,7 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="col-sm-4 my-2">
+                            <div class="col-sm-6 col-md-6 col-lg-4 my-2">
                                 <label class="form-label">Sexo <span class="text-danger fw-bold">*</span></label><br>
                                 <div class="form-check form-check-inline me-1">
                                     <label class="form-check-label" for="inlineRadio1">Feminino</label>
@@ -87,12 +87,12 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="col-sm-4 my-2">
+                            <div class="col-sm-6 col-md-6 col-lg-4 my-2">
                                 <label for="telefone" class="form-label">Telefone</label>
                                 <input type="text" class="form-control mascara-celular"
                                     wire:model.lazy="aluno.telefone" maxlength="15" placeholder="(00) 00000-0000">
                             </div>
-                            <div class="col-sm-4 my-2">
+                            <div class="col-sm-6 col-md-6 col-lg-4 my-2">
                                 <label for="email" class="form-label">E-mail</label>
                                 <input type="text" class="form-control  @error('aluno.email') is-invalid @enderror"
                                     wire:model.lazy="aluno.email" placeholder="nome@email.com">
@@ -100,12 +100,12 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="col-sm-4 my-2">
+                            <div class="col-sm-6 col-md-6 col-lg-4 my-2">
                                 <label for="responsavel" class="form-label">Responsável</label>
                                 <input type="text" class="form-control" wire:model.lazy="aluno.responsavel"
                                     placeholder="Informe o responsável pelo aluno">
                             </div>
-                            <div class="col-sm-4 my-2">
+                            <div class="col-sm-6 col-md-6 col-lg-4 my-2">
                                 <label for="telefone_responsavel" class="form-label">Telefone do Responsável</label>
                                 <input type="text" class="form-control mascara-celular"
                                     wire:model.lazy="aluno.telefone_responsavel" maxlength="15"
@@ -116,19 +116,20 @@
                                 <textarea class="form-control" id="observacao" wire:model.lazy="aluno.observacao" style="height: 100px"></textarea>
                             </div>
                         </div>
-                        <div class=" my-3 float-end ">
-                            <button type="button" class="btn btn-outline-danger btn-fixed-size"
-                                data-bs-dismiss="modal">Cancelar</button>
-                            <button wire:click="save" type="submit" class="btn btn-success btn-fixed-size"
-                                wire:loading.attr="disabled">
-                                {{-- Texto padrão do botão --}}
-                                <span wire:click="save" wire:loading.remove.delay.shortest>Salvar</span>
-                                {{-- Efeito de carregamento quando o butão é acionado --}}
-                                <span wire:click="save" wire:loading.delay.shortest
-                                    class="spinner-border spinner-border-sm text-white" role="status"></span>
-                            </button>
-                        </div>
+
                     </div>
+                </div>
+                <div class="my-3 d-flex gap-3">
+                    <button type="button" class="btn btn-outline-danger btn-fixed-size ms-auto"
+                        data-bs-dismiss="modal">Cancelar</button>
+                    <button wire:click="save" type="submit" class="btn btn-success btn-fixed-size"
+                        wire:loading.attr="disabled">
+                        {{-- Texto padrão do botão --}}
+                        <span wire:click="save" wire:loading.remove.delay.shortest>Salvar</span>
+                        {{-- Efeito de carregamento quando o butão é acionado --}}
+                        <span wire:click="save" wire:loading.delay.shortest
+                            class="spinner-border spinner-border-sm text-white" role="status"></span>
+                    </button>
                 </div>
             </form>
         </div>

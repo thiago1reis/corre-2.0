@@ -1,50 +1,64 @@
+/* Estilo de cor de fundo para a aplicação */
 body {
+
     background-color: rgba(236, 243, 243, 0.781) !important;
+
 }
 
+/* Estilo de cor de fundo para as modais */
 .bg-modal {
+
     background-color: rgba(236, 243, 243) !important;
+
 }
 
+/* Estilos para fixar tamanho do formulário de login */
+.formulario-login {
 
-.pagina-login {
-    margin-top: 90px;
-    margin-bottom: 90px;
+    width: 23.7rem;
+
 }
 
+/* Estilos para fixar tamanho dos botões */
 .btn-fixed-size {
+
     width: 8em;
+
 }
 
-/* max-width  */
-@media screen and (max-width: 600px) {
-    .logo-corre {
-        width: 65%;
-    }
+/* Estilos padrão para as imagens */
+.cabecalho img {
 
-    .logo-ifto {
-        width: 65%;
-    }
+    max-width: 100%;
+    height: auto;
+
 }
 
-/* min-width & max-width */
-@media screen and (min-width: 600px) and (max-width: 900px) {
-    .logo-corre {
-        width: 75%;
-    }
+/* Estilos padrão para tamanho dos cards no painel*/
+.card-painel {
 
-    .logo-ifto {
-        width: 75%;
-    }
+    height: 25rem;
+
 }
 
-/* max device width */
-@media screen and (max-device-width: 480px) {
-    .logo-corre {
-        width: 65%;
+/* Estilos para dispositivos com largura até 280px */
+@media screen and (max-width: 280px) {
+
+    .cabecalho img {
+        height: 3.1rem;
     }
 
-    .logo-ifto {
-        width: 65%;
+    .card-painel {
+        height: 30rem;
     }
+
+}
+
+/* Estilos para dispositivos com largura entre 281px e 1024px */
+@media screen and (min-width:281px) and (max-width: 1024px) {
+
+    .cabecalho img {
+        height: 4.6rem;
+    }
+
 }

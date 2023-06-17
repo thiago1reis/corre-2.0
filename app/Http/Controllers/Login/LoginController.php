@@ -28,7 +28,7 @@ class LoginController extends Controller
         if(Auth::check() === true){
             return redirect()->route('painel');
         }
-        return redirect()->route('login')->with('attention-login', 'Faça login para continuar.');
+        return redirect()->route('login')->with('attention', 'Faça login para continuar.');
     }
 
 

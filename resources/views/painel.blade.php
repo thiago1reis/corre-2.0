@@ -6,8 +6,8 @@
     <div class="container">
         <div class="row my-3">
             <div class="col-sm-6 col-md-6 col-lg-4 col-xxl-4">
-                <div class="card my-3" style="height: 25rem">
-                    <div class="card-body position-relative">
+                <div class="card my-3">
+                    <div class="card-body card-painel position-relative">
                         <div class="d-flex align-items-center mb-3">
                             <span class="badge rounded-pill bg-success bg-opacity-25 p-3">
                                 <i class="icofont-ui-add fs-2"></i>
@@ -32,8 +32,8 @@
                 </div>
             </div>
             <div class="col-sm-6 col-md-6 col-lg-4 col-xxl-4">
-                <div class="card my-3" style="height: 25rem">
-                    <div class="card-body ">
+                <div class="card my-3">
+                    <div class="card-body card-painel">
                         <div class="d-flex align-items-center mb-3">
                             <span class="badge rounded-pill bg-success bg-opacity-25 p-3">
                                 <i class="icofont-ui-note fs-2"></i>
@@ -55,8 +55,8 @@
                 </div>
             </div>
             <div class="col-sm-6 col-md-6 col-lg-4 col-xxl-4">
-                <div class="card my-3" style="height: 25rem">
-                    <div class="card-body ">
+                <div class="card my-3">
+                    <div class="card-body card-painel">
                         <div class="d-flex align-items-center mb-3">
                             <span class="badge rounded-pill bg-success bg-opacity-25 p-3">
                                 <i class="icofont-ui-search fs-2"></i>

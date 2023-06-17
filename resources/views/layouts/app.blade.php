@@ -25,9 +25,6 @@
 
     @yield('content')
 
-    {{-- {{ isset($slot) }} --}}
-    {{-- {{ $slot }} --}}
-
     @include('layouts.rodape')
 
     <livewire:modals />
