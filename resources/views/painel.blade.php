@@ -5,32 +5,37 @@
 @section('content')
     <div class="container">
         <div class="row my-3">
-            <div class="col-sm-6 col-md-6 col-lg-4 col-xxl-4">
-                <div class="card my-3">
-                    <div class="card-body card-painel position-relative">
-                        <div class="d-flex align-items-center mb-3">
-                            <span class="badge rounded-pill bg-success bg-opacity-25 p-3">
-                                <i class="icofont-ui-add fs-2"></i>
-                            </span>
-                            <span class="mx-3">
-                                <h4 class="card-title">Adicionar</h4>
-                                <h6 class="card-subtitle mb-2 text-muted">Adiciona novos dados ao sistema</h6>
-                            </span>
-                        </div>
-                        <p class="card-text"> Neste card, você pode adicionar novos dados ao sistema selecionando uma das
-                            opções disponíveis:
-                            Aluno, Disciplinas, Servidores, Turmas e Usuários. Cada opção permite que você preencha um
-                            formulário com as informações necessárias para incluir esses elementos no sistema.</p>
-                        <div class="mb-3 position-absolute bottom-0 ">
-                            <a href="{{ route('aluno.index') }}" class="card-link ms-0 me-3">Alunos</a>
-                            <a href="{{ route('disciplina.index') }}" class="card-link ms-0 me-3">Disciplinas</a>
-                            <a href="{{ route('servidor.index') }}" class="card-link ms-0 me-3">Servidores</a>
-                            <a href="{{ route('turma.index') }}" class="card-link ms-0 me-3">Turmas</a>
-                            <a href="{{ route('usuario.index') }}" class="card-link ms-0 me-3">Usuários</a>
+
+            @if (auth()->user()->tipo == 1)
+                <div class="col-sm-6 col-md-6 col-lg-4 col-xxl-4">
+                    <div class="card my-3">
+                        <div class="card-body card-painel position-relative">
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="badge rounded-pill bg-success bg-opacity-25 p-3">
+                                    <i class="icofont-ui-add fs-2"></i>
+                                </span>
+                                <span class="mx-3">
+                                    <h4 class="card-title">Adicionar</h4>
+                                    <h6 class="card-subtitle mb-2 text-muted">Adiciona novos dados ao sistema</h6>
+                                </span>
+                            </div>
+                            <p class="card-text"> Neste card, você pode adicionar novos dados ao sistema selecionando uma
+                                das
+                                opções disponíveis:
+                                Aluno, Disciplinas, Servidores, Turmas e Usuários. Cada opção permite que você preencha um
+                                formulário com as informações necessárias para incluir esses elementos no sistema.</p>
+                            <div class="mb-3 position-absolute bottom-0 ">
+                                <a href="{{ route('aluno.index') }}" class="card-link ms-0 me-3">Alunos</a>
+                                <a href="{{ route('disciplina.index') }}" class="card-link ms-0 me-3">Disciplinas</a>
+                                <a href="{{ route('servidor.index') }}" class="card-link ms-0 me-3">Servidores</a>
+                                <a href="{{ route('turma.index') }}" class="card-link ms-0 me-3">Turmas</a>
+                                <a href="{{ route('usuario.index') }}" class="card-link ms-0 me-3">Usuários</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            @endif
+
             <div class="col-sm-6 col-md-6 col-lg-4 col-xxl-4">
                 <div class="card my-3">
                     <div class="card-body card-painel">
@@ -54,6 +59,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-sm-6 col-md-6 col-lg-4 col-xxl-4">
                 <div class="card my-3">
                     <div class="card-body card-painel">
@@ -78,6 +84,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 @endsection

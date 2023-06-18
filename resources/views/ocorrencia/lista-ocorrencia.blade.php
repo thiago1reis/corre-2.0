@@ -129,10 +129,18 @@
                                             target="blank" type="button" class="mx-2 link-primary text-decoration-none">
                                             <i title="Imprimir Ocorrência" class="icofont-ui-file"></i>
                                         </a>
-                                        <a href="{{ route('ocorrencia.create', ['ocorrenciaId' => $item->id]) }}"
-                                            type="button" class="mx-2 link-primary text-decoration-none">
-                                            <i title="Editar Ocorrência" class="icofont-ui-edit"></i>
-                                        </a>
+
+                                        @php
+                                            $usuarioCadastro = $item->usuario_id == auth()->user()->id;
+                                            $usuarioAdministrador = auth()->user()->tipo == 1;
+                                        @endphp
+
+                                        @if ($usuarioCadastro || $usuarioAdministrador)
+                                            <a href="{{ route('ocorrencia.create', ['ocorrenciaId' => $item->id]) }}"
+                                                type="button" class="mx-2 link-primary text-decoration-none">
+                                                <i title="Editar Ocorrência" class="icofont-ui-edit"></i>
+                                            </a>
+                                        @endif
                                     </small>
                                 </div>
                             </div>
