@@ -7,8 +7,8 @@ use Livewire\Component;
 
 class Login extends Component
 {
-    public $email;
-    public $password;
+    public $email = 'adm@corre.com';
+    public $password = '4a6d3m';
 
 
     /**
