@@ -33,15 +33,5 @@ class UserSeeder extends Seeder
                 'status' => 1,
             ]
         )->create();
-
-        User::factory(
-            [
-                'name' => 'Thiago Alexandre Reis',
-                'email' => 'thiagoalexandreis@gmail.com',
-                'password' => bcrypt('usu2217th'),
-                'tipo' => 1,
-                'status' => 1,
-            ]
-        )->create();
     }
 }
