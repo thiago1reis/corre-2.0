@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="{{ asset('site/estilo.css') }}">
     <link rel="stylesheet" href="{{ asset('site/icofont/icofont.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/app.css') }}">
-    @livewireStyles
+    <livewire:styles />
 </head>
 
 <body>
@@ -29,6 +29,7 @@
 
     <livewire:modals />
     <livewire:scripts />
+
     <script src="{{ asset('assets/jquery.js') }}"></script>
     <script src="{{ asset('assets/app.js') }}"></script>
 </body>

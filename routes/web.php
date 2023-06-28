@@ -21,10 +21,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [LoginController::class, 'index'])->name('login');
+/*Login*/
+Route::view('/', 'login')->name('login');
+Route::post('/logar', [LoginController::class, 'logar'])->name('logar');
 Route::get('/check-auth', [LoginController::class, 'checkAuth'])->name('checkAuth');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
+/*Sistema*/
 Route::group(['prefix' => 'sistema', 'middleware' => ['auth']], function(){
     /*Painel*/
     Route::get('/',  [PainelController::class, 'index'])->name('painel');

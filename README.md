@@ -63,16 +63,20 @@ Siga as etapas abaixo para instalar e configurar o projeto em seu ambiente local
     ```shell
     php artisan key:generate
     ```
-7. Execute as migrações do banco de dados para criar as tabelas:
+7. Crie o link simbólico da pasta de armazenamento para a pasta pública:
+    ```shell
+    php artisan storage:link
+    ```
+8. Execute as migrações do banco de dados para criar as tabelas:
     ```shell
     php artisan migrate --seed
     ```
-8. Instale as demais dependências:    
+9. Instale as demais dependências:    
      ```shell
      npm install
      npm run dev
      ```
-9. Inicie o servidor de desenvolvimento:
+10. Inicie o servidor de desenvolvimento:
     ```shell
     php artisan serve
     ```
